@@ -30,7 +30,7 @@ flutter:
 flutter_native_splash:
 
     color: "#42a5f5"
-    image: assets/Icon-01.png
+    image: assets/splash.png
 
     web: true
     # web_image_mode can be one of the following modes: center, contain, stretch, and cover.
