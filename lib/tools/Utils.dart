@@ -8,8 +8,8 @@ loginUser(BuildContext context, String email, String password) async {
   showProgress(context, msg: "Login in progress");
 
   Client().post(Uri.parse(AppUrls.login), body: {
-    "staff_email": email,
-    "staff_password": password,
+    "email": email,
+    "password": password,
   }).then((value) {
     if (value.statusCode == 200) {
       var data = jsonDecode(value.body);

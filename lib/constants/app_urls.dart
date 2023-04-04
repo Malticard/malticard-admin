@@ -4,7 +4,7 @@ class AppUrls {
   static String imageUrl = "assets/images/";
   static String iconUrl = "assets/icons/";
   // post urls
-  static String login = devURL + "post/staff-login";
+  static String login = devURL + "post/admin-login";
   static String addClass = devURL + "post/class/create";
   static String addStaff = devURL + "post/staff/create";
   static String addSchool = devURL + "post/schools/create";
