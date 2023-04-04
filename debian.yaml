@@ -1,0 +1,14 @@
+#flutter_app:
+#  command: skooltym
+#  arch: x64
+#  parent: /usr/local/lib
+#
+#control:
+#  Package: Skooltym App
+#  Version: 1.0.0
+#  Architecture: amd64
+#  Essential: no
+#  Priority: optional
+#  Depends:
+#  Maintainer:
+#  Description: Mega Cool App that does everything!
