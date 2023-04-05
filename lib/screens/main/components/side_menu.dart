@@ -36,8 +36,7 @@ class _SideMenuState extends State<SideMenu> {
                   Image.asset("assets/images/logo.png"),
                   Space(),
                   Text(
-                      "${context.read<SchoolController>()
-                          .state['schoolName']}",
+                      "Malticard",
                           overflow: TextOverflow.ellipsis,
                           style:TextStyles(context)
                       .getBoldStyle().copyWith(color:Colors.white,fontSize: 16),)

@@ -84,6 +84,7 @@ export 'package:crop_your_image/crop_your_image.dart';
 export 'package:currency_picker/currency_picker.dart';
 export 'package:shared_preferences/shared_preferences.dart';
 export 'package:file_picker/file_picker.dart';
+// export 'package:image_picker_web/image_picker_web.dart';
 export 'package:internet_connection_checker/internet_connection_checker.dart';
 export 'package:art_sweetalert/art_sweetalert.dart';
 export 'package:custom_searchable_dropdown/custom_searchable_dropdown.dart';

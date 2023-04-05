@@ -51,7 +51,18 @@ class _CommonFormFieldsState extends State<CommonFormFields>
   var _cropController = CropController();
   var _imageBytes;
   _handleImageUpload(int a) async {
-    FilePicker.platform.pickFiles(
+    if (kIsWeb) {
+    // final picked = await  ImagePickerWeb.getImageAsBytes();
+    // if (picked != null) {
+    //     setState(() {
+    //     _imageBytes = picked;
+    //     widget.formControllers[a].text = json.encode(picked);
+    //   });
+    // }
+        
+
+    } else {
+FilePicker.platform.pickFiles(
       dialogTitle: "${widget.formFields[a]['title']}",
       type: FileType.custom,
       allowedExtensions: ['jpg', 'png,', 'jpeg'],
@@ -59,7 +70,7 @@ class _CommonFormFieldsState extends State<CommonFormFields>
       var file = value;
       setState(() {
         _imageBytes = File(file!.files.first.path!).readAsBytesSync();
-        widget.formControllers[a].text = file.files.first.path!;
+        widget.formControllers[a].text = json.encode(file.files.first.path!);
       });
       // showDialog(
       //   context: context,
@@ -81,6 +92,8 @@ class _CommonFormFieldsState extends State<CommonFormFields>
       //   ),
       // );
     });
+    }
+    
     // widget.formControllers[a].text = = file!.files.first.pat
   }
 

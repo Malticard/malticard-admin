@@ -12,6 +12,7 @@ class MainController extends ChangeNotifier {
   int _stepCount = 0;
   List<dynamic> _multiselect = [];
   List<OvertimeModel> _pendingOvertime = [];
+  // List<SchoolModel> _schools = [];
 
 // getters
   List<StudentModel> get students => _students;
@@ -25,8 +26,9 @@ class MainController extends ChangeNotifier {
   List<OvertimeModel> get pendingOvertime => _pendingOvertime;
   List<dynamic> get multiselect => _multiselect;
   List<ClassModel> get classes => _classes;
-  // end of getters
+  // List<SchoolModel> get schools = _schools;
 
+  // end of getters
   void controlMenu() {
     if (!_scaffoldKey.currentState!.isDrawerOpen) {
       _scaffoldKey.currentState!.openDrawer();

@@ -44,9 +44,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       return Expanded(
                         flex: 5,
                         child: SizedBox(
-                          width: MediaQuery.of(context).size.width / 2,
-                          height: MediaQuery.of(context).size.width / 2.4,
-                          child: SingleChildScrollView(child: child),
+                          width: MediaQuery.of(context).size.width / 1.5,
+                          height: MediaQuery.of(context).size.width / 2,
+                          child: Padding(
+                            padding: const EdgeInsets.only(bottom:16.0),
+                            child: SingleChildScrollView(child: child),
+                          ),
                         ),
                       );
                     }),

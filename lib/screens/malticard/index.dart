@@ -130,69 +130,64 @@ class _MalticardViewState extends State<MalticardView>
   List<String> _schoolErrorFields = List.generate(_schoolControllers.length, (i) => '');
 
     Size size = MediaQuery.of(context).size;
-    return Scaffold(
-      backgroundColor: Colors.grey[100],
-      body: SafeArea(
-        child: BottomTopMoveAnimationView(
+    return BottomTopMoveAnimationView(
           animationController: _controller!,
           child: Form(
             key: formKey,
-            child: ListView(
-              // crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                CommonAppbarView(
-                  fontWeight: FontWeight.w200,
-                  titleTextSize: 30,
-                  titleText: "Add new  School",
-                ),
-                Padding(
-                  padding: EdgeInsets.only(
-                      left: size.width / 10,
-                      right: size.width / 10,
-                      top: 10,
-                      bottom: 16),
-                  child: Card(
-                    elevation: 0,
+            child: Card(
+              elevation: 0,
                     color: Colors.white,
-                    child: formGen(_school, _schoolControllers, _schoolErrorFields, "School Details")
-                  ),
+              child: SizedBox(
+                height: size.height ,
+              width: size.width * 0.09 ,
+                child: Column(
+                  // crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(
+                          left: size.width / 10,
+                          right: size.width / 10,
+                          top: 10,
+                          bottom: 16),
+                      child: formGen(_school, _schoolControllers, _schoolErrorFields, "School Details"),
+                    ),
+                    CommonButton(
+                      buttonText: "Submit school details",
+                      onTap: () {
+                        if (formKey.currentState!.validate() == true) {
+                          String uri = _schoolControllers[3].text.trim();
+                          if (uri == '') {
+                            showMessage(
+                                context: context,
+                                msg: 'Image upload required....!!',
+                                type: 'danger');
+                          } else if (_schoolControllers[0]
+                                  .text
+                                  .trim()
+                                  .split(" ")
+                                  .length <
+                              2) {
+                            showMessage(
+                                context: context,
+                                msg: 'Please provide both names',
+                                type: 'warning');
+                          } else {
+                            saveSchoolDetail();
+                          }
+                        }
+                      },
+                      padding: EdgeInsets.only(
+                          right: MediaQuery.of(context).size.width * 0.21,
+                          left: MediaQuery.of(context).size.width * 0.2),
+                      height: 55,
+                    ),
+                    
+                  ],
                 ),
-                CommonButton(
-                  buttonText: "Submit school details",
-                  onTap: () {
-                    if (formKey.currentState!.validate() == true) {
-                      String uri = _schoolControllers[3].text.trim();
-                      if (uri == '') {
-                        showMessage(
-                            context: context,
-                            msg: 'Image upload required....!!',
-                            type: 'danger');
-                      } else if (_schoolControllers[0]
-                              .text
-                              .trim()
-                              .split(" ")
-                              .length <
-                          2) {
-                        showMessage(
-                            context: context,
-                            msg: 'Please provide both names',
-                            type: 'warning');
-                      } else {
-                        saveSchoolDetail();
-                      }
-                    }
-                  },
-                  padding: EdgeInsets.only(
-                      right: MediaQuery.of(context).size.width * 0.21,
-                      left: MediaQuery.of(context).size.width * 0.2),
-                  height: 55,
-                ),
-                
-              ],
+              ),
             ),
           ),
-        ),
-      ),
+       
     );
   }
 
@@ -211,11 +206,11 @@ class _MalticardViewState extends State<MalticardView>
     // school badge upload
     request.files.add(
       MultipartFile(
-          'school_badge',
+          'image',
           kIsWeb
               ? Stream.value(jsonDecode(uri))
-              : File(uri).readAsBytes().asStream(),
-          File(uri).lengthSync(),
+              : File(json.decode(uri)).readAsBytes().asStream(),
+          File(json.decode(uri)).lengthSync(),
           filename: uri.split("/").last),
     );
     // end of school badge upload
