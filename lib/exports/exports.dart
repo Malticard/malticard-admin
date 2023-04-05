@@ -101,6 +101,7 @@ export '/models/Guardians.dart';
 export '/models/GuardianModel.dart';
 export '/models/PickUpModel.dart';
 export '/models/ClassModel.dart';
+export '/models/SchoolModel.dart';
 export '/models/DropOffModels.dart';
 
 // themes

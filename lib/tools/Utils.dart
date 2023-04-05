@@ -438,7 +438,13 @@ Future<List<OvertimeModel>> fetchOvertimeData(String status) async {
   return overtimeModelFromJson(response.body).where((element) => element.status == status).toList();
   // return response;
 }
-
+ Future<List<SchoolModel>> fetchSchools() async{
+  var response = await Client().get(Uri.parse(AppUrls.schools));
+      return response.statusCode == 200 ?schoolModelFromJson(response.body):[];
+      
+    
+  
+  }
 // function handling scan intervals
 
 DateTime time = DateTime.now();
@@ -453,8 +459,9 @@ String handSanIntervals() {
 // fetch dashboard meta data
 Future<List<Map<String, dynamic>>> fetchDashboardMetaData(
     BuildContext context) async {
-  // get students total
-  // int students = await computeStudentsTotal();
+      
+  // get students tot
+  var schools = await fetchSchools();
   // // var drops = await dropOffs();
   // var picks = await pickUps();
   // var clearedOvertimes = await fetchOvertimeData("Cleared");
@@ -509,7 +516,7 @@ Future<List<Map<String, dynamic>>> fetchDashboardMetaData(
   List<Map<String, dynamic>> malticardData = [
     {
       "label": "SCHOOLS",
-      "value": 0,//pendingOvertimes.length,
+      "value": schools.length,//pendingOvertimes.length,
       "icon": "assets/icons/005-overtime.svg",
       'color': Color.fromARGB(255, 50, 66, 95),
       "last_updated": "14:45"

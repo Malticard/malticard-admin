@@ -29,17 +29,21 @@ class _SideMenuState extends State<SideMenu> {
         children: [
           DrawerHeader(
             child: SizedBox(
-              height: MediaQuery.of(context).size.height * 0.08,
+              height: MediaQuery.of(context).size.height * 0.1,
               child: Column(
                 children: [
-                  Space(space: 0.04),
-                  Image.asset("assets/images/logo.png"),
-                  Space(),
+                  Space(space: 0.01),
+                  Image.asset(
+                    "assets/images/malticard.png",
+                    height: 100,
+                    width: 110,
+                  ),
+                  // Space(),
                   Text(
                       "Malticard",
                           overflow: TextOverflow.ellipsis,
                           style:TextStyles(context)
-                      .getBoldStyle().copyWith(color:Colors.white,fontSize: 16),)
+                      .getBoldStyle().copyWith(color:Colors.white,fontSize: 18),)
                 ],
               ),
             ),

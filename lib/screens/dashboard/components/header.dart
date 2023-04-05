@@ -73,7 +73,7 @@ class _ProfileCardState extends State<ProfileCard> {
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: defaultPadding / 2),
                 child: Text(
-                    "${context.read<SchoolController>().state['fname']} ${context.read<SchoolController>().state['lname']}"),
+                    " ${context.read<SchoolController>().state['data']['Admin_email']}"),
               ),
             PopupMenuButton(
               icon: const Icon(Icons.keyboard_arrow_down),

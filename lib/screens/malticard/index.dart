@@ -1,6 +1,5 @@
 // ignore_for_file: invalid_return_type_for_catch_error
 
-import 'dart:convert';
 
 import '/exports/exports.dart';
 
@@ -112,14 +111,20 @@ class _MalticardViewState extends State<MalticardView>
       showProgress(context);
       _handleSchoolRegistration().then((value) {
         Routes.popPage(context);
-        showSuccessDialog(_schoolControllers[0].text.trim(), context,
-            onPressed: () => Routes.popPage(context));
+        // showSuccessDialog(_schoolControllers[0].text.trim(), context,
+        //     onPressed: () => Routes.popPage(context));
       }).whenComplete(
-        () => showMessage(
+        () {
+          showMessage(
           context: context,
           type: 'success',
-          msg: "Added new staff successfully",
-        ),
+          msg: "Added new school successfully",
+        );
+        context.read<WidgetController>().pushWidget(const Dashboard());
+         context
+                        .read<TitleController>()
+                        .setTitle("Dashboard");
+        } 
       );
     }
   }
