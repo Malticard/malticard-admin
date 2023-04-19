@@ -537,16 +537,18 @@ Future<Map<String, dynamic>> fetchSpecificGuardian(String id) async {
 // get the coresponding student for this guardian
   var student =
       await Client().get(Uri.parse(AppUrls.getStudent + guardianData.student));
+      debugPrint("Student ${student.body}");
   var studentData = studentModelFromJson(student.body)[0];
   //  fetch the corresponding guardians or other guardians
   var otherGuardians = await Client()
       .get(Uri.parse(AppUrls.getOtherGaurdians + guardianData.student));
+      debugPrint("Guardian ${otherGuardians.body}");
   var otherGuardianData = guardiansFromJson(otherGuardians.body);
   // output resonse of data
   Map<String, dynamic> results = {
     "student_name": "${studentData.studentFname} ${studentData.studentLname}",
     "student_pic": studentData.studentProfilePic,
-    "student_class": studentData.studentClass,
+    "student_class": studentData.studentModelClass,
     "student_id": studentData.id,
     "picker_name":
         "${guardianData.guardianFname} ${guardianData.guardianLname}",

@@ -12,6 +12,7 @@ void main() async {
     MultiProvider(
       providers: [
         BlocProvider(create: (context) => WidgetController()),
+        BlocProvider(create: (context) => ImageUploadController()),
         ChangeNotifierProvider(create: (context) => MainController()),
         BlocProvider(create: (context) => ThemeController()),
         BlocProvider(create: (context) => IntervalController()),

@@ -30,21 +30,23 @@ class _SideMenuState extends State<SideMenu> {
           DrawerHeader(
             child: SizedBox(
               height: MediaQuery.of(context).size.height * 0.1,
-              child: Column(
-                children: [
-                  Space(space: 0.01),
-                  Image.asset(
-                    "assets/images/malticard.png",
-                    height: 100,
-                    width: 110,
-                  ),
-                  // Space(),
-                  Text(
-                      "Malticard",
-                          overflow: TextOverflow.ellipsis,
-                          style:TextStyles(context)
-                      .getBoldStyle().copyWith(color:Colors.white,fontSize: 18),)
-                ],
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Space(space: 0.01),
+                    Image.asset(
+                      "assets/images/malticard.png",
+                      height: 100,
+                      width: 110,
+                    ),
+                    // Space(),
+                    Text(
+                        "Malticard",
+                            overflow: TextOverflow.ellipsis,
+                            style:TextStyles(context)
+                        .getBoldStyle().copyWith(color:Colors.white,fontSize: 18),)
+                  ],
+                ),
               ),
             ),
           ),

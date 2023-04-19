@@ -209,15 +209,16 @@ class _MalticardViewState extends State<MalticardView>
     request.fields['school_email'] = _schoolControllers[1].text.trim();
     request.fields['school_about'] = _schoolControllers[5].text.trim();
     // school badge upload
-    request.files.add(
-      MultipartFile(
-          'image',
-          kIsWeb
-              ? Stream.value(jsonDecode(uri))
-              : File(json.decode(uri)).readAsBytes().asStream(),
-          File(json.decode(uri)).lengthSync(),
-          filename: uri.split("/").last),
-    );
+     if (kIsWeb) {
+      request.files.add(MultipartFile(
+        "image", context.read<ImageUploadController>().state.readStream!, context.read<ImageUploadController>().state.size,
+        filename: context.read<ImageUploadController>().state.name));
+    } else {
+      request.files.add(MultipartFile('image',
+        File(uri).readAsBytes().asStream(), File(uri).lengthSync(),
+        filename: uri.split("/").last));
+    }
+     
     // end of school badge upload
     request.fields['school_key[key]'] = "0";
 

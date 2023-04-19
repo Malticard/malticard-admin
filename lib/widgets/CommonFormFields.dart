@@ -50,28 +50,26 @@ class _CommonFormFieldsState extends State<CommonFormFields>
 
   var _cropController = CropController();
   var _imageBytes;
+  PlatformFile ? _imageFile;
   _handleImageUpload(int a) async {
-    if (kIsWeb) {
-    // final picked = await  ImagePickerWeb.getImageAsBytes();
-    // if (picked != null) {
-    //     setState(() {
-    //     _imageBytes = picked;
-    //     widget.formControllers[a].text = json.encode(picked);
-    //   });
-    // }
-        
-
-    } else {
-FilePicker.platform.pickFiles(
+    FilePicker.platform.pickFiles(
       dialogTitle: "${widget.formFields[a]['title']}",
       type: FileType.custom,
+      withReadStream: true,
       allowedExtensions: ['jpg', 'png,', 'jpeg'],
     ).then((value) {
       var file = value;
-      setState(() {
+      if (kIsWeb) {
+         _imageBytes = value!.files.single.bytes;
+        context.read<ImageUploadController>().uploadImage(value.files.single);
+         
+      } else {
+         setState(() {
         _imageBytes = File(file!.files.first.path!).readAsBytesSync();
-        widget.formControllers[a].text = json.encode(file.files.first.path!);
+        widget.formControllers[a].text = file.files.first.path!;
       });
+      }
+     
       // showDialog(
       //   context: context,
       //   builder: (context) => Dialog(
@@ -92,8 +90,6 @@ FilePicker.platform.pickFiles(
       //   ),
       // );
     });
-    }
-    
     // widget.formControllers[a].text = = file!.files.first.pat
   }
 
