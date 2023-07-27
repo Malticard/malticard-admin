@@ -20,7 +20,7 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
-    context.read<MainController>().fetchUpdates(context);
+
     return Scaffold(
       // key: context.read<MainController>().scaffoldKey,
       drawer: const SideMenu(),

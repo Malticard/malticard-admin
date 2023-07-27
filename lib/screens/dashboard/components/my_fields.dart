@@ -59,17 +59,6 @@ class FileInfoCardGridView extends StatefulWidget {
 }
 
 class _FileInfoCardGridViewState extends State<FileInfoCardGridView> {
-  @override
-  void initState() {
-    Provider.of<MainController>(context, listen: false).fetchUpdates(context);
-    super.initState();
-  }
-
-  @override
-  void didUpdateWidget(oldWidget) {
-    context.watch<MainController>().fetchUpdates(context);
-    super.didUpdateWidget(oldWidget);
-  }
 
   @override
   Widget build(BuildContext context) {

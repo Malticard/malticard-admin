@@ -347,7 +347,6 @@ Future<SchoolModel> fetchSchools({int page = 1, int limit = 10}) async {
 Future<List<StudentModel>> fetchGuardianStudents(String schoolId) async {
   var response =
       await Client().get(Uri.parse(AppUrls.guardianStudents + schoolId));
-  print(response.body);
   return response.statusCode == 200 ? studentModelFromJson(response.body) : [];
 }
 // fetch all taps made
@@ -368,7 +367,7 @@ Future<int> fetchTaps() async {
     });
 
     int totalTapsInYear = monthCounts.values.reduce((sum, count) => sum + count);
-    print("Total Taps in the Year: $totalTapsInYear");
+    // print("Total Taps in the Year: $totalTapsInYear");
     return totalTapsInYear;
 }
 // function handling scan intervals
@@ -387,7 +386,29 @@ String handSanIntervals() {
           ? "PickUps"
           : "Nothing taking place currently";
 }
-  Future<void> saveQRCode(BuildContext context,GlobalKey key,String name) async {
+// function to search for schools
+Future<SchoolModel> searchSchools(String schoolName,{int page = 1,int limit = 20}) async {
+  var response = await Client()
+      .get(Uri.parse(AppUrls.searchSchool + "?name=$schoolName&page=$page&pageSize=$limit"));
+  SchoolModel schoolModel = schoolModelFromJson(response.body);
+  return schoolModel;
+}
+// function to search for guardians
+Future<Guardians> searchGuardians(String schoolId, String guardianName,{int page = 1,int limit = 20}) async {
+  var response = await Client().get(Uri.parse(
+      AppUrls.searchGuardians +
+          schoolId +
+          "?name=$guardianName&page=$page&pageSize=$limit"));
+  return guardiansFromJson(response.body);
+}
+// function to search for students
+Future<List<StudentModel>> searchStudents(String schoolId, String studentName,{int page = 1,int limit = 20}) async {
+  var response = await Client().get(Uri.parse(
+      AppUrls.searchStudents + schoolId + "?name=$studentName&page=$page&pageSize=$limit"));
+  return studentModelFromJson(response.body);
+}
+// function save QR code 
+Future<void> saveQRCode(BuildContext context,GlobalKey key,String name) async {
     RenderRepaintBoundary boundary = key.currentContext!.findRenderObject() as RenderRepaintBoundary;
     ui.Image image = await boundary.toImage(pixelRatio: 3.0);
     ByteData? byteData = await image.toByteData(format: ui.ImageByteFormat.png);

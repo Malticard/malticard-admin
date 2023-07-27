@@ -2,6 +2,7 @@ import 'package:malticard/controllers/DashbaordWidgetController.dart';
 
 import '/exports/exports.dart';
 import 'controllers/BreadCrumbController.dart';
+import 'controllers/GuardianIdController.dart';
 import 'controllers/SidebarController.dart';
 
 void main() async {
@@ -18,6 +19,7 @@ void main() async {
         ChangeNotifierProvider(create: (context) => MainController()),
         BlocProvider(create: (context) => BreadCrumbController()),
         BlocProvider(create: (context) => ThemeController()),
+        BlocProvider(create: (context) => GuardianIdController()),
         BlocProvider(create: (context) => SchoolController()),
         BlocProvider(create: (context) => DashboardWidgetController()),
         BlocProvider(create: (context) => LightDarkController()),

@@ -1,4 +1,6 @@
-// ignore_for_file: unnecessary_null_comparison
+// ignore_for_file: unnecessary_null_comparison, invalid_use_of_visible_for_testing_member
+
+import 'package:image_picker/image_picker.dart';
 
 import '../models/StudentModel.dart';
 import '/exports/exports.dart';
@@ -39,6 +41,7 @@ class _CommonFormFieldsState extends State<CommonFormFields>
   // Error messages
 
   List<String?>? dropMsg;
+   var _imageBytes = null;
 
   @override
   void initState() {
@@ -49,73 +52,36 @@ class _CommonFormFieldsState extends State<CommonFormFields>
     super.initState();
     // _controller = AnimationController(vsync: this,);
   }
-
-  // var _cropController = CropController();
-  var _imageBytes;
-  // PlatformFile ? _imageFile;
-
-  //  _startFilePicker() async {
-  //   FileUploadInputElement uploadInput = FileUploadInputElement();
-  //   uploadInput.click();
-
-  //   uploadInput.onChange.listen((e) {
-  //     // read file content as dataURL
-  //     final files = uploadInput.files;
-  //     if (files!.length == 1) {
-  //       final file = files[0];
-  //       FileReader reader =  FileReader();
-
-  //       reader.onLoadEnd.listen((e) {
-  //                   setState(() {
-  //                     uploadedImage = reader.result;
-  //                   });
-  //       });
-
-  //       reader.onError.listen((fileEvent) {
-  //         setState(() {
-  //           // option1Text = "Some Error occured while reading the file";
-  //         });
-  //       });
-
-  //       reader.readAsArrayBuffer(file);
-  //     }
-  //   });
-  //   }
-  Uint8List fileStreamToUint8List(Stream<List<int>> fileStream) {
-    final bytes = <int>[];
-    fileStream.forEach((data) {
-      bytes.addAll(data);
-    });
-    return (Uint8List.fromList(bytes));
-  }
-
-  _handleImageUpload(int a) async {
-    FilePicker.platform.pickFiles(
-      dialogTitle: "${widget.formFields[a]['title']}",
-      type: FileType.custom,
-      withReadStream: true,
-      allowedExtensions: ['jpg', 'png,', 'jpeg'],
-    ).then((value) {
-      if (kIsWeb) {
-        setState(() {
-          _imageBytes = fileStreamToUint8List(value!.files.first.readStream!);
+void _handleImageUpload(int a) async {
+    if (kIsWeb) {
+    PickedFile? picker =  await ImagePicker.platform.pickImage(source: ImageSource.gallery);
+    if (picker != null) {
+      var element = await picker.readAsBytes();
+          setState(() {
+            _imageBytes = element;
+          });
+        BlocProvider.of<ImageUploadController>(context).uploadImage({
+          "image": picker.readAsBytes().asStream(),
+          "name": widget.formControllers[0].text,
+          "size": picker.readAsBytes().asStream().length,
         });
-        context.read<ImageUploadController>().uploadImage({
-          "image": value!.files.first.readStream,
-          "byte":Uint8List.fromList(value.files.first.readStream!.toList() as List<int>),
-          "name": value.files.first.name,
-          "size": value.files.first.size
-        });
-        
-      } else {
+    }
+
+    } else {
+      FilePicker.platform.pickFiles(
+        dialogTitle: "${widget.formFields[a]['title']}",
+        type: FileType.custom,
+        withReadStream: true,
+        allowedExtensions: ['jpg', 'png,', 'jpeg', 'gif'],
+      ).then((value) {
         setState(() {
           _imageBytes = File(value!.files.first.path!).readAsBytesSync();
           widget.formControllers[a].text = value.files.first.path!;
         });
-      }
-    });
-    // widget.formControllers[a].text = = file!.files.first.pat
+      });
+    }
   }
+
 
   ImageProvider<Object>? drawImage(var url) {
     if (url == null) {
@@ -143,7 +109,11 @@ class _CommonFormFieldsState extends State<CommonFormFields>
                   radius: 35,
                   backgroundImage: drawImage(x['byte']),
                 );
-              }, listener: ( context,state) {  },
+              }, listener: ( context,state) { 
+                setState(() {
+                  _imageBytes = state['byte'];
+                });
+               },
             ),
           ),
           // code for uploading profile picture  using file picker
@@ -262,9 +232,9 @@ class _CommonFormFieldsState extends State<CommonFormFields>
                                   onChange: (v) {
                                     debugPrint("data => $v");
                                     if (v != null) {
-                                      Provider.of<MainController>(context,
-                                              listen: false)
-                                          .newSelection(v);
+                                      // Provider.of<MainController>(context,
+                                      //         listen: false)
+                                      //     .newSelection(v);
                                     }
                                   },
                                 )

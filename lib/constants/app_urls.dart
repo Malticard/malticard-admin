@@ -45,5 +45,9 @@ class AppUrls {
   static String deleteClass = devURL + "delete/class/";
 // guardianStudents
 static String guardianStudents = devURL + "guardianStudents/guardian/";
+// searching 
+static String searchStudents = devURL + "search/search-students/";
+static String searchGuardians = devURL + "search/search-guardians/";
+static String searchSchool = devURL + "search/search-schools";
 }
 

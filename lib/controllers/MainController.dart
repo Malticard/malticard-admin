@@ -37,19 +37,6 @@ class MainController with ChangeNotifier {
   void disposeKey() {
     _scaffoldKey.currentState!.dispose();
   }
-  void fetchUpdates(BuildContext context) {
-    fetchDashboardMetaData(context).asStream().listen((v) {
-      _dashData = v;
-      notifyListeners();
-    });
-  }
-// check for new entries of students
-  void staffUpdate() {
-    Client().get(Uri.parse(AppUrls.staff)).then((response) {
-      _availableStaff = staffModelFromJson(response.body);
-      notifyListeners();
-    });
-  }
 
   // check new guardians
   void newGuardians() {
@@ -58,32 +45,5 @@ class MainController with ChangeNotifier {
       notifyListeners();
     });
   }
-
-//  fetch pending overtimes
-void fetchPendingOvertime(String status){
-  Client().get(Uri.parse(AppUrls.specficOvertime + status)).then((value) {
-    _pendingOvertime = overtimeModelFromJson(value.body);
-    notifyListeners();
-  });
-}
-//
-void newSelection(List<dynamic> selection){
-    _multiselect = selection;
-    notifyListeners();
-}
-
-  void searchStaff(String value){
-    Client().get(Uri.parse(AppUrls.staff)).then((value) {
-      if(value.statusCode == 200){
-        _availableStaff = staffModelFromJson(value.body).where((element) => element.staffFname == value || element.staffLname == value).toList();
-        notifyListeners();
-      }
-    });
-  }
- void imageUpload(PlatformFile file) {
-  _imageFile = file;
-  debugPrint("${file.path}");
-  notifyListeners();
- }
 
 }

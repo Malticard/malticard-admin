@@ -1,8 +1,7 @@
 import 'package:malticard/screens/malticard/Schools.dart';
 import 'package:malticard/screens/malticard/Students.dart';
-
-import '../../controllers/BreadCrumbController.dart';
 import '../../controllers/DashbaordWidgetController.dart';
+import '../../controllers/GuardianIdController.dart';
 import '/screens/malticard/helpers/DataSource.dart';
 
 import '/exports/exports.dart';
@@ -20,12 +19,53 @@ class _SchoolGuardiansState extends State<SchoolGuardians> {
   int _currentPage = 1;
   int _rowsPerpage = 20;
   final _paginatorController = PaginatorController();
+  // stream controller
+  StreamController<Guardians> _guardianController =
+      StreamController<Guardians>();
+  Timer? timer;
+  @override
+  void initState() {
+    super.initState();
+    _fetchRealTimeData();
+  }
+
+  @override
+  void dispose() {
+    if (_guardianController.hasListener) {
+      _guardianController.close();
+    }
+    timer?.cancel();
+    super.dispose();
+  }
+
+  void _fetchRealTimeData() async {
+    try {
+      // Add a check to see if the widget is still mounted before updating the state
+      if (mounted) {
+        var guardians = await fetchGuardians(widget.schoolId,
+            page: _currentPage, limit: _rowsPerpage);
+        _guardianController.add(guardians);
+      }
+      // Listen to the stream and update the UI
+
+      Timer.periodic(Duration(seconds: 3), (timer) async {
+        this.timer = timer;
+        // Add a check to see if the widget is still mounted before updating the state
+        if (mounted) {
+          var guardians = await fetchGuardians(widget.schoolId,
+              page: _currentPage, limit: _rowsPerpage);
+          _guardianController.add(guardians);
+        }
+      });
+    } on Exception catch (e) {
+      print(e);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-        stream: fetchGuardians(widget.schoolId,
-                page: _currentPage, limit: _rowsPerpage)
-            .asStream(),
+        stream: _guardianController.stream,
         builder: (context, snapshot) {
           var guardians = snapshot.data;
           _filteredRows = snapshot.data?.results ?? [];
@@ -60,6 +100,8 @@ class _SchoolGuardiansState extends State<SchoolGuardians> {
                     onTap: (guardianId) {
                       BlocProvider.of<DashboardWidgetController>(context)
                           .changeWidget(StudentsView(guardianId: guardianId));
+                           // capture guardian id
+                      BlocProvider.of<GuardianIdController>(context).setGuardianId(widget.schoolId.trim());
                     },
                     currentPage: _currentPage,
                     totalDocuments: guardians?.totalDocuments ?? 0,
@@ -67,14 +109,15 @@ class _SchoolGuardiansState extends State<SchoolGuardians> {
                   empty: NoDataWidget(),
                   header: Row(
                     children: [
-                      TextButton(
+                      TextButton.icon(
                         onPressed: () {
                           BlocProvider.of<DashboardWidgetController>(context)
                               .changeWidget(
                             Schools(),
                           );
                         },
-                        child: Text("Back to Schools"),
+                        icon: Icon(Icons.arrow_back),
+                        label: Text("Back to Schools"),
                       ),
                     ],
                   ),

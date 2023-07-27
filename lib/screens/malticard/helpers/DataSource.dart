@@ -153,12 +153,12 @@ class StudentsDataSource extends DataTableSource {
   List<StudentModel> data;
   BuildContext context;
   final String guardianId;
-  final GlobalKey globalKey = GlobalKey();
+  
 // Replace with your actual data source
 
   @override
   DataRow? getRow(int index) {
-    bool isCopied = false;
+     List<GlobalKey> keys = List.generate(data.length, (index) => GlobalKey());
     final rowData = data[index];
     return DataRow.byIndex(
       index: index,
@@ -188,7 +188,7 @@ class StudentsDataSource extends DataTableSource {
         ),
         DataCell(
           RepaintBoundary(
-            key: globalKey,
+            key: keys[index],
             child: QrImageView(
               data: "$guardianId,${rowData.id}",
               version: QrVersions.auto,
@@ -201,7 +201,7 @@ class StudentsDataSource extends DataTableSource {
             onPressed: () {
               print("download");
               saveQRCode(context,
-                  globalKey, rowData.studentFname + "_" + rowData.studentLname);
+                  keys[index], rowData.studentFname + "_" + rowData.studentLname);
             },
             icon: Icon(
                 Icons.download),

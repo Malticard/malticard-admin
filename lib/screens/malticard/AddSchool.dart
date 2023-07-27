@@ -1,5 +1,7 @@
 // ignore_for_file: invalid_return_type_for_catch_error
 
+import 'dart:math';
+
 import '/exports/exports.dart';
 
 class AddSchoolView extends StatefulWidget {
@@ -92,7 +94,7 @@ class _AddSchoolViewState extends State<AddSchoolView> {
       ),
     );
   }
-
+Map<String,dynamic> schoolData = {};
   void saveSchoolDetail() {
     if (validateEmail(_schoolControllers[1].text, context) != false) {
      
@@ -124,62 +126,71 @@ class _AddSchoolViewState extends State<AddSchoolView> {
         List.generate(_schoolControllers.length, (i) => '');
 
     Size size = MediaQuery.of(context).size;
-    return Form(
-      key: formKey,
-      child: Dialog(
-        backgroundColor: Colors.transparent,
-        child: Card(
-          color: Theme.of(context).brightness == Brightness.dark
-              ? Theme.of(context).canvasColor
-              : Colors.white,
-          elevation: 0,
-          margin: EdgeInsets.only(left: 20, right: 20),
-          child: SizedBox(
-            width: size.width / 3,
-            height: size.width / 1.5,
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  formGen(_school, _schoolControllers, _schoolErrorFields,
-                      "School Details"),
-                  CommonButton(
-                    buttonText: "Submit school details",
-                    onTap: () {
-                      if (formKey.currentState!.validate() == true) {
-                        // String uri = _schoolControllers[3].text.trim();
-                        /**
-                               *   if (uri = '') {
-                                showMessage(
-                                    context: context,
-                                    msg: 'Image upload required....!!',
-                                    type: 'danger');
-                              } else
-                               */
-                        if (_schoolControllers[0]
-                                .text
-                                .trim()
-                                .split(" ")
-                                .length <
-                            2) {
-                          showMessage(
-                              context: context,
-                              msg: 'Please provide both names',
-                              type: 'warning');
-                        } else {
-                          saveSchoolDetail();
-                        }
-                      }
-                    },
-                    padding: EdgeInsets.all(30),
-                    height: 55,
+    return BlocConsumer<ImageUploadController, Map<String,dynamic>>(
+      listener: (context, state) {
+        setState(() {
+          schoolData  = state;
+        });
+      },
+      builder: (context, state) {
+        return Form(
+          key: formKey,
+          child: Dialog(
+            backgroundColor: Colors.transparent,
+            child: Card(
+              color: Theme.of(context).brightness == Brightness.dark
+                  ? Theme.of(context).canvasColor
+                  : Colors.white,
+              elevation: 0,
+              margin: EdgeInsets.only(left: 20, right: 20),
+              child: SizedBox(
+                width: size.width / 3,
+                height: size.width / 1.5,
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      formGen(_school, _schoolControllers, _schoolErrorFields,
+                          "School Details"),
+                      CommonButton(
+                        buttonText: "Submit school details",
+                        onTap: () {
+                          if (formKey.currentState!.validate() == true) {
+                            // String uri = _schoolControllers[3].text.trim();
+                            /**
+                                   *   if (uri = '') {
+                                    showMessage(
+                                        context: context,
+                                        msg: 'Image upload required....!!',
+                                        type: 'danger');
+                                  } else
+                                   */
+                            if (_schoolControllers[0]
+                                    .text
+                                    .trim()
+                                    .split(" ")
+                                    .length <
+                                2) {
+                              showMessage(
+                                  context: context,
+                                  msg: 'Please provide both names',
+                                  type: 'warning');
+                            } else {
+                              saveSchoolDetail();
+                            }
+                          }
+                        },
+                        padding: EdgeInsets.all(30),
+                        height: 55,
+                      ),
+                    ],
                   ),
-                ],
+                ),
               ),
             ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 
@@ -199,17 +210,18 @@ class _AddSchoolViewState extends State<AddSchoolView> {
     if (kIsWeb) {
       request.files.add(MultipartFile(
           "image",
-          context.read<ImageUploadController>().state['image'],
-          context.read<ImageUploadController>().state['size'],
-          filename: context.read<ImageUploadController>().state['name']));
+          schoolData['image'],
+          schoolData['size'],
+          filename: schoolData['name']));
     } else {
       request.files.add(MultipartFile(
           'image', File(uri).readAsBytes().asStream(), File(uri).lengthSync(),
           filename: uri.split("/").last));
     }
+
     // end of school badge upload
     request.fields['school_key[key]'] = "0";
-    request.fields['username'] = "0";
+    request.fields['username'] = "${_schoolControllers[0].text}_${Random.secure().nextInt(1000000)}";
     // end of school badge upload
     // ================================ school fields ====================
     // ====================================================================
