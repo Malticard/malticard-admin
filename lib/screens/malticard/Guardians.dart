@@ -15,6 +15,7 @@ class SchoolGuardians extends StatefulWidget {
 }
 
 class _SchoolGuardiansState extends State<SchoolGuardians> {
+  final _queryController = TextEditingController();
   List<GuardianModel> _filteredRows = [];
   int _currentPage = 1;
   int _rowsPerpage = 20;
@@ -42,9 +43,17 @@ class _SchoolGuardiansState extends State<SchoolGuardians> {
     try {
       // Add a check to see if the widget is still mounted before updating the state
       if (mounted) {
-        var guardians = await fetchGuardians(widget.schoolId,
-            page: _currentPage, limit: _rowsPerpage);
-        _guardianController.add(guardians);
+        if (_queryController.text.isNotEmpty) {
+          // logic for searching available guardians
+          var guardians = await searchGuardians(
+              widget.schoolId, _queryController.text,
+              page: _currentPage, limit: _rowsPerpage);
+          _guardianController.add(guardians);
+        } else {
+          var guardians = await fetchGuardians(widget.schoolId,
+              page: _currentPage, limit: _rowsPerpage);
+          _guardianController.add(guardians);
+        }
       }
       // Listen to the stream and update the UI
 
@@ -89,9 +98,10 @@ class _SchoolGuardiansState extends State<SchoolGuardians> {
                       width: MediaQuery.of(context).size.width / 4,
                       height: 100,
                       child: TextFormField(
+                          controller: _queryController,
                           decoration: InputDecoration(
-                        labelText: "Search",
-                      )),
+                            labelText: "Search",
+                          )),
                     )
                   ],
                   source: GuardiansDataSource(
@@ -100,8 +110,9 @@ class _SchoolGuardiansState extends State<SchoolGuardians> {
                     onTap: (guardianId) {
                       BlocProvider.of<DashboardWidgetController>(context)
                           .changeWidget(StudentsView(guardianId: guardianId));
-                           // capture guardian id
-                      BlocProvider.of<GuardianIdController>(context).setGuardianId(widget.schoolId.trim());
+                      // capture guardian id
+                      BlocProvider.of<GuardianIdController>(context)
+                          .setGuardianId(widget.schoolId.trim());
                     },
                     currentPage: _currentPage,
                     totalDocuments: guardians?.totalDocuments ?? 0,

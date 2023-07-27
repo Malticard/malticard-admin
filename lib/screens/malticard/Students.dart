@@ -22,6 +22,7 @@ class _StudentsViewState extends State<StudentsView> {
   // stream controller
   StreamController<List<StudentModel>> _studentController =
       StreamController<List<StudentModel>>();
+  final _searchController = TextEditingController();
   @override
   void initState() {
     super.initState();
@@ -52,15 +53,23 @@ class _StudentsViewState extends State<StudentsView> {
         this.timer = timer;
         // Add a check to see if the widget is still mounted before updating the state
         if (mounted) {
-          var students = await fetchGuardianStudents(widget.guardianId);
-          _studentController.add(students);
+          if (_searchController.text.isNotEmpty) {
+            var students = await searchStudents(
+                widget.guardianId, _searchController.text,
+                page: 1, limit: rowsPerPage);
+            _studentController.add(students);
+          } else {
+            var students = await fetchGuardianStudents(widget.guardianId);
+            _studentController.add(students);
+          }
         }
       });
     } on Exception catch (e) {
       print(e);
     }
   }
-String schoolId = "";
+
+  String schoolId = "";
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
@@ -76,6 +85,7 @@ String schoolId = "";
                       width: MediaQuery.of(context).size.width / 4,
                       height: 100,
                       child: TextFormField(
+                          controller: _searchController,
                           onChanged: (value) {
                             setState(() {
                               if (value.isEmpty) {
@@ -99,9 +109,7 @@ String schoolId = "";
                   ),
                   empty: NoDataWidget(),
                   header: BlocConsumer<GuardianIdController, String>(
-                    listener: (context, state) {
-                  
-                    },
+                    listener: (context, state) {},
                     builder: (context, school_Id) {
                       return Row(
                         children: [
@@ -110,9 +118,9 @@ String schoolId = "";
                               BlocProvider.of<DashboardWidgetController>(
                                       context)
                                   .changeWidget(
-                                 SchoolGuardians(
-                          schoolId: school_Id,
-                        ),
+                                SchoolGuardians(
+                                  schoolId: school_Id,
+                                ),
                               );
                               print("Back to => ${school_Id}");
                             },

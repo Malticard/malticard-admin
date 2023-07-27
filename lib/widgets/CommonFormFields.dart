@@ -107,12 +107,12 @@ void _handleImageUpload(int a) async {
               builder: (context,x) {
                 return CircleAvatar(
                   radius: 35,
-                  backgroundImage: drawImage(x['byte']),
+                  backgroundImage: drawImage(_imageBytes),
                 );
               }, listener: ( context,state) { 
-                setState(() {
-                  _imageBytes = state['byte'];
-                });
+                // setState(() {
+                //   _imageBytes = state['byte'];
+                // });
                },
             ),
           ),

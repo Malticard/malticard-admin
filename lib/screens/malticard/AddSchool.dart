@@ -101,15 +101,15 @@ Map<String,dynamic> schoolData = {};
       showProgress(context);
       _handleSchoolRegistration().then((value) {
         Routes.popPage(context);
-        showSuccessDialog(_schoolControllers[0].text.trim(), context,
-            onPressed: () {
-          Routes.popPage(context);
-          context.read<WidgetController>().pushWidget(const Dashboard());
-          context.read<TitleController>().setTitle("Dashboard");
-        });
+        // showSuccessDialog(_schoolControllers[0].text.trim(), context,
+        //     onPressed: () {
+        //   Routes.popPage(context);
+        //   context.read<WidgetController>().pushWidget(const Dashboard());
+        //   context.read<TitleController>().setTitle("Dashboard");
+        // });
          Routes.popPage(context);
       }).whenComplete(() {
-        
+        // Routes.popPage(context);
         showMessage(
           context: context,
           type: 'success',
@@ -156,15 +156,6 @@ Map<String,dynamic> schoolData = {};
                         buttonText: "Submit school details",
                         onTap: () {
                           if (formKey.currentState!.validate() == true) {
-                            // String uri = _schoolControllers[3].text.trim();
-                            /**
-                                   *   if (uri = '') {
-                                    showMessage(
-                                        context: context,
-                                        msg: 'Image upload required....!!',
-                                        type: 'danger');
-                                  } else
-                                   */
                             if (_schoolControllers[0]
                                     .text
                                     .trim()

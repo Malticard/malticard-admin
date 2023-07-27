@@ -67,7 +67,6 @@ class _LineChartPageState extends State<LineChartPage> {
                 sideTitles: SideTitles(
                   showTitles: true,
                   getTitlesWidget: (value, x) {
-                    print("Value : ${value.toInt()}");
                     switch (value.toInt()) {
                       case 1:
                         return Text('Jan');

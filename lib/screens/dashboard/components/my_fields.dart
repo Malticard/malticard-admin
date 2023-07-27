@@ -59,42 +59,77 @@ class FileInfoCardGridView extends StatefulWidget {
 }
 
 class _FileInfoCardGridViewState extends State<FileInfoCardGridView> {
+StreamController<List<Map<String,dynamic>>> _dashboardController = StreamController<List<Map<String,dynamic>>>();
+Timer? _timer;
+@override
+void initState() { 
+  super.initState();
+  liveDashboardUpdates();
+}
+void liveDashboardUpdates() async {
+  // initial data loaded
+    var _dashData = await fetchDashboardMetaData(context);
+    _dashboardController.add(_dashData);
 
+    // check new events for every 4 seconds
+    Timer.periodic(const Duration(seconds: 4), (timer) async {
+      this._timer = timer;
+      if(mounted){
+        var _dashData = await fetchDashboardMetaData(context);
+        _dashboardController.add(_dashData);
+      }
+    });
+ }
+
+ @override
+ void dispose() { 
+   super.dispose();
+   _timer?.cancel();
+   if(_dashboardController.hasListener){
+     _dashboardController.close();
+   }
+ }
   @override
   Widget build(BuildContext context) {
-    var dash = context.watch<MainController>().dashboardData;
-    return GridView.builder(
-      physics: const NeverScrollableScrollPhysics(),
-      shrinkWrap: true,
-      itemCount: dash.length,
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: widget.crossAxisCount,
-        crossAxisSpacing: defaultPadding,
-        mainAxisSpacing: defaultPadding,
-        childAspectRatio: widget.childAspectRatio,
-      ),
-      itemBuilder: (context, index) => TapEffect(
-        onClick: () {
-          if (index == 0) {
-            // update page title
-            context
-                .read<TitleController>()
-                .setTitle(malticardViews[1]['title']);
-            // update rendered page
-            context
-                .read<WidgetController>()
-                .pushWidget(malticardViews[1]['page']);
-                 context.read<SidebarController>().changeView(1);
-          }
-        },
-        child: FileInfoCard(
-          label: dash[index]['label'],
-          value: dash[index]['value'],
-          icon: dash[index]['icon'],
-          color: dash[index]['color'],
-          last_updated: dash[index]['last_updated'],
-        ),
-      ),
+    
+    return StreamBuilder(
+      stream: _dashboardController.stream,
+      builder: (context, snapshot) {
+        var dash = snapshot.data;
+        return snapshot.hasData ? GridView.builder(
+          physics: const NeverScrollableScrollPhysics(),
+          shrinkWrap: true,
+          itemCount: dash?.length ?? 0,
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: widget.crossAxisCount,
+            crossAxisSpacing: defaultPadding,
+            mainAxisSpacing: defaultPadding,
+            childAspectRatio: widget.childAspectRatio,
+          ),
+          itemBuilder: (context, index) => TapEffect(
+            onClick: () {
+              if (index == 0) {
+                // update page title
+                context
+                    .read<TitleController>()
+                    .setTitle(malticardViews[1]['title']);
+                // update rendered page
+                context
+                    .read<WidgetController>()
+                    .pushWidget(malticardViews[1]['page']);
+                     context.read<SidebarController>().changeView(1);
+              }
+            },
+            child: FileInfoCard(
+              label: dash![index]['label'],
+              value: dash[index]['value'],
+              icon: dash[index]['icon'],
+              color: dash[index]['color'],
+              last_updated: dash[index]['last_updated'],
+            ),
+          ),
+        ) : Loader(text: "Updates..",);
+      }
     );
   }
 }
