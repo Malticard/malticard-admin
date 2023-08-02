@@ -1,5 +1,6 @@
 import '/exports/exports.dart';
 import 'components/GrapStats.dart';
+import 'components/WeeklyTaps.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
@@ -32,21 +33,21 @@ class _DashboardState extends State<Dashboard> {
           SizedBox(
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.width * 0.3,
-            child: LineChartPage(),
+            child: BarChartPage(),
           ),
-          //  Row(
-          //   children: [
-          //     Text(
-          //       "Weekly stats",
-          //       style: TextStyles(context).getTitleStyle(),
-          //     ),
-          //   ],
-          // ),
-          // SizedBox(
-          //   width: MediaQuery.of(context).size.width,
-          //   height: MediaQuery.of(context).size.width * 0.3,
-          //   child: WeeklyTaps(),
-          // ),
+           Row(
+            children: [
+              Text(
+                "Weekly stats",
+                style: TextStyles(context).getTitleStyle(),
+              ),
+            ],
+          ),
+          SizedBox(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.width * 0.3,
+            child: WeeklyTaps(),
+          ),
           Space(
             space: 0.07,
           )

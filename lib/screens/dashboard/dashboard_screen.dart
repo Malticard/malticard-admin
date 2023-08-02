@@ -27,13 +27,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
             ),
             child: const Header(),
           ),
-          const SizedBox(height: defaultPadding),
+          const SizedBox(height: defaultPadding / 2),
           // ====== end of header section ======
-          Padding(
-              padding: EdgeInsets.only(
-                  top: size.width * 0.031,
+          Container(
+              margin: EdgeInsets.only(
+                  top: size.width * 0,
                   left: size.width * 0.081,
-                  right: size.width * 0.068),
+                  right: size.width * 0.081),
               // ======= body section =======
               child: BlocBuilder<WidgetController, Widget>(
                       builder: (context, child) {
@@ -41,7 +41,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       width: MediaQuery.of(context).size.width / 1.5,
                       height: MediaQuery.of(context).size.width / 2,
                       child: Padding(
-                        padding: const EdgeInsets.only(bottom:16.0),
+                        padding:  EdgeInsets.only(bottom:size.width * 0.02),
                         child: child,
                       ),
                     );

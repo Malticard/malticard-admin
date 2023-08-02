@@ -389,7 +389,7 @@ String handSanIntervals() {
 // function to search for schools
 Future<SchoolModel> searchSchools(String schoolName,{int page = 1,int limit = 20}) async {
   var response = await Client()
-      .get(Uri.parse(AppUrls.searchSchool + "?name=$schoolName&page=$page&pageSize=$limit"));
+      .get(Uri.parse(AppUrls.searchSchool + "?query=$schoolName&page=$page&pageSize=$limit"));
   SchoolModel schoolModel = schoolModelFromJson(response.body);
   return schoolModel;
 }
@@ -398,13 +398,13 @@ Future<Guardians> searchGuardians(String schoolId, String guardianName,{int page
   var response = await Client().get(Uri.parse(
       AppUrls.searchGuardians +
           schoolId +
-          "?name=$guardianName&page=$page&pageSize=$limit"));
+          "?query=$guardianName&page=$page&pageSize=$limit"));
   return guardiansFromJson(response.body);
 }
 // function to search for students
 Future<List<StudentModel>> searchStudents(String schoolId, String studentName,{int page = 1,int limit = 20}) async {
   var response = await Client().get(Uri.parse(
-      AppUrls.searchStudents + schoolId + "?name=$studentName&page=$page&pageSize=$limit"));
+      AppUrls.searchStudents + schoolId + "?query=$studentName&page=$page&pageSize=$limit"));
   return studentModelFromJson(response.body);
 }
 // function save QR code 

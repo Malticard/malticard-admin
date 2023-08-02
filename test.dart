@@ -1,8 +1,11 @@
 import 'package:http/http.dart';
 import 'package:malticard/constants/app_urls.dart';
-import 'package:malticard/models/Taps.dart';void main(List<String> args) {
+import 'package:malticard/models/Taps.dart';
+
+void main(List<String> args) {
   Client().get(Uri.parse(AppUrls.getTaps)).then((value) {
     var data = tapsFromJson(value.body);
+    print(value.body);
     Map<int, int> monthCounts = {}; // Map to store counts for each month
 
     // Initialize the monthCounts map with default values (0 counts) for all months

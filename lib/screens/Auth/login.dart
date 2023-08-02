@@ -96,7 +96,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Expanded(
-                        flex: 5,
+                        flex: 3,
                         child: Column(
                           children: [
                             Padding(
@@ -118,27 +118,25 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ),
                       Expanded(
-                        flex: 4,
-                        child: Padding(
-                          padding: EdgeInsets.only(
+                        flex: 3,
+                        child: Container(
+                         margin: EdgeInsets.only(
                               right: size.width / 16,
                               left: size.width / 16,
                               bottom: size.width / 16,
                               top: size.width / 16),
-                          child: Container(
-                            decoration: BoxDecoration(
-                                borderRadius: const BorderRadius.only(
-                                  topLeft: Radius.circular(50),
-                                  topRight: Radius.circular(50),
-                                  bottomLeft: Radius.circular(50),
-                                  bottomRight: Radius.circular(50),
-                                ),
-                                color: Theme.of(context).brightness ==
-                                        Brightness.dark
-                                    ? Colors.black26
-                                    : Colors.white.withOpacity(1)),
-                            child: _buildForm(),
-                          ),
+                          decoration: BoxDecoration(
+                              borderRadius: const BorderRadius.only(
+                                topLeft: Radius.circular(50),
+                                topRight: Radius.circular(50),
+                                bottomLeft: Radius.circular(50),
+                                bottomRight: Radius.circular(50),
+                              ),
+                              color: Theme.of(context).brightness ==
+                                      Brightness.dark
+                                  ? Colors.black26
+                                  : Colors.white.withOpacity(1)),
+                          child: _buildForm(),
                         ),
                       ),
                     ],

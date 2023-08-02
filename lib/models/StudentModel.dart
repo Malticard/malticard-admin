@@ -47,7 +47,7 @@ class StudentModel {
     factory StudentModel.fromJson(Map<String, dynamic> json) => StudentModel(
         id: json["_id"],
         school: json["school"],
-        studentModelClass: Class.fromJson(json["_class"]),
+        studentModelClass: Class.fromJson(json["_class"] ?? {}),
         guardians: List<dynamic>.from(json["guardians"].map((x) => x)),
         studentFname: json["student_fname"],
         studentLname: json["student_lname"],
@@ -127,7 +127,7 @@ class Class {
     });
 
     factory Class.fromJson(Map<String, dynamic> json) => Class(
-        className: json["class_name"],
+        className: json["class_name"] ?? "",
     );
 
     Map<String, dynamic> toJson() => {

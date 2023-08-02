@@ -22,7 +22,6 @@ class Responsive extends StatelessWidget {
     BuildContext context,
     BoxConstraints constraints,
   ) desktopBuilder;
-
   static bool isMobile(BuildContext context) =>
       MediaQuery.of(context).size.width < 600;
 
