@@ -203,21 +203,17 @@ Widget buildActionButtons(
   );
 }
 
-Future<Uint8List?> fetchAndDisplayImage(String imageURL) async {
-  Uint8List? processedImageBytes;
-  final response =
-      await Client().get(Uri.parse(AppUrls.liveImages + imageURL), headers: {
-    "Access-Control-Allow-Origin": "*",
-    'Content-Type': 'application/json',
-    'Accept': '*/*'
-  });
-  if (response.statusCode == 200) {
-    final imageBytes = response.bodyBytes;
-    final imageBase64 = base64Encode(imageBytes);
-    // Display the image
-    processedImageBytes = base64Decode(imageBase64);
-  }
-  return processedImageBytes;
+Future<String?> fetchAndDisplayImage(String imageURL) async {
+  // Uint8List? processedImageBytes;
+  // final response =
+  //     await Client().get(Uri.parse(AppUrls.liveImages + imageURL));
+  // if (response.statusCode == 200) {
+  //   final imageBytes = response.bodyBytes;
+  //   final imageBase64 = base64Encode(imageBytes);
+  //   // Display the image
+  //   processedImageBytes = base64Decode(imageBase64);
+  // }
+  return AppUrls.liveImages + imageURL;
 }
 
 // malticard views
@@ -337,7 +333,6 @@ List<String> months = <String>[
 ];
 
 Future<SchoolModel> fetchSchools({int page = 1, int limit = 10}) async {
-  print("Current Page: $page");
   var response = await Client()
       .get(Uri.parse(AppUrls.schools + "?page=$page&pageSize=$limit"));
   SchoolModel schoolModel = schoolModelFromJson(response.body);

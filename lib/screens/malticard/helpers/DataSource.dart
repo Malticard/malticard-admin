@@ -164,14 +164,14 @@ class StudentsDataSource extends DataTableSource {
       index: index,
       cells: [
         DataCell(
-          FutureBuilder<Uint8List?>(
+          FutureBuilder<String?>(
               future: fetchAndDisplayImage(rowData.studentProfilePic),
               builder: (context, snapshot) {
                 return snapshot.hasData
                     ? Padding(
                         padding: const EdgeInsets.all(5.0),
                         child:
-                            Image.memory(snapshot.data!, width: 50, height: 50),
+                            Image.network(snapshot.data!, width: 50, height: 50),
                       )
                     : CircularProgressIndicator.adaptive();
               }),
