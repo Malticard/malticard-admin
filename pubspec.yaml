@@ -68,12 +68,12 @@ dev_dependencies:
 # splash screen
 flutter_native_splash:
 
-  color: "#4c6c7c"
+  color: "#F6F6F7"
 
-  image: assets/images/app_icon.png
+  image: assets/images/malticard.png
   web: true
 
-  image_web: assets/images/app_icon.png
+  image_web: assets/images/malticard.png
   #
   # web_image_mode can be one of the following modes: center, contain, stretch, and cover.
   web_image_mode: center
