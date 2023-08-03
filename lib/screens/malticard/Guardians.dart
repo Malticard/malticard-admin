@@ -23,6 +23,7 @@ class _SchoolGuardiansState extends State<SchoolGuardians> {
   // stream controller
   StreamController<Guardians> _guardianController =
       StreamController<Guardians>();
+  String? _query;
   Timer? timer;
   @override
   void initState() {
@@ -43,27 +44,27 @@ class _SchoolGuardiansState extends State<SchoolGuardians> {
     try {
       // Add a check to see if the widget is still mounted before updating the state
       if (mounted) {
-        if (_queryController.text.isNotEmpty) {
-          // logic for searching available guardians
-          var guardians = await searchGuardians(
-              widget.schoolId, _queryController.text,
-              page: _currentPage, limit: _rowsPerpage);
-          _guardianController.add(guardians);
-        } else {
-          var guardians = await fetchGuardians(widget.schoolId,
-              page: _currentPage, limit: _rowsPerpage);
-          _guardianController.add(guardians);
-        }
+        var guardians = await fetchGuardians(widget.schoolId,
+            page: _currentPage, limit: _rowsPerpage);
+        _guardianController.add(guardians);
       }
       // Listen to the stream and update the UI
 
-      Timer.periodic(Duration(seconds: 3), (timer) async {
+      Timer.periodic(Duration(seconds: 1), (timer) async {
         this.timer = timer;
         // Add a check to see if the widget is still mounted before updating the state
         if (mounted) {
-          var guardians = await fetchGuardians(widget.schoolId,
-              page: _currentPage, limit: _rowsPerpage);
-          _guardianController.add(guardians);
+          if (_queryController.text.isNotEmpty) {
+            // logic for searching available guardians
+            var guardians = await searchGuardians(
+                widget.schoolId, _queryController.text,
+                page: _currentPage, limit: _rowsPerpage);
+            _guardianController.add(guardians);
+          } else {
+            var guardians = await fetchGuardians(widget.schoolId,
+                page: _currentPage, limit: _rowsPerpage);
+            _guardianController.add(guardians);
+          }
         }
       });
     } on Exception catch (e) {
