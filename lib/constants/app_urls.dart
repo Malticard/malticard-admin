@@ -43,11 +43,14 @@ class AppUrls {
   static String deletePickUp = devURL + "delete/pickup/";
   static String deleteDropOff = devURL + "delete/dropoff/";
   static String deleteClass = devURL + "delete/class/";
+  static String deleteSchool = devURL + "delete/school/";
 // guardianStudents
-static String guardianStudents = devURL + "guardianStudents/guardian/";
+static String guardianStudents = devURL + "guardianStudents/guardian-students/";
 // searching 
 static String searchStudents = devURL + "search/search-students/";
 static String searchGuardians = devURL + "search/search-guardians/";
 static String searchSchool = devURL + "search/search-schools";
+// updating school
+static String updateSchool = devURL + "update/school/";
 }
 

@@ -1,20 +1,32 @@
-// ignore_for_file: invalid_return_type_for_catch_error
-
 import 'dart:math';
 
-import '/exports/exports.dart';
+import '../../exports/exports.dart';
 
-class AddSchoolView extends StatefulWidget {
-  const AddSchoolView({super.key});
+class UpdateSchool extends StatefulWidget {
+  final Result schoolModel;
+  const UpdateSchool({super.key, required this.schoolModel});
 
   @override
-  State<AddSchoolView> createState() => _AddSchoolViewState();
+  State<UpdateSchool> createState() => _UpdateSchoolState();
 }
 
-class _AddSchoolViewState extends State<AddSchoolView> {
-  @override
+class _UpdateSchoolState extends State<UpdateSchool> {
+  List<TextEditingController> _schoolControllers = [];
+ @override
   void initState() {
     super.initState();
+      // school controllers
+ _schoolControllers = [
+      TextEditingController(text: widget.schoolModel.schoolName),
+      TextEditingController(text: widget.schoolModel.schoolEmail),
+      TextEditingController(text: widget.schoolModel.schoolContact),
+      TextEditingController(text: widget.schoolModel.schoolAddress),
+      TextEditingController(text: widget.schoolModel.schoolBadge),
+      TextEditingController(text: widget.schoolModel.schoolType),
+      TextEditingController(text: widget.schoolModel.schoolNature),
+      
+  ];
+
   }
 
   @override
@@ -65,9 +77,6 @@ class _AddSchoolViewState extends State<AddSchoolView> {
     },
   ];
 
-  // school controllers
-  final List<TextEditingController> _schoolControllers =
-      List.generate(_school.length, (index) => TextEditingController());
 
   // overall form padding
   EdgeInsets padding =
@@ -99,8 +108,7 @@ class _AddSchoolViewState extends State<AddSchoolView> {
 Map<String,dynamic> schoolData = {};
   void saveSchoolDetail() {
     if (validateEmail(_schoolControllers[1].text, context) != false) {
-     
-      showProgress(context,msg:"Adding new school..");
+      showProgress(context,msg: "Updating school details");
       _handleSchoolRegistration().then((value) {
         Routes.popPage(context);
         // showSuccessDialog(_schoolControllers[0].text.trim(), context,
@@ -189,7 +197,7 @@ Map<String,dynamic> schoolData = {};
 
   Future<StreamedResponse> _handleSchoolRegistration() async {
     String uri = _schoolControllers[4].text.trim();
-    var request = MultipartRequest('POST', Uri.parse(AppUrls.addSchool));
+    var request = MultipartRequest('POST', Uri.parse(AppUrls.updateSchool));
     // ================================ school fields ====================
 
     request.fields['school_name'] = _schoolControllers[0].text.trim();

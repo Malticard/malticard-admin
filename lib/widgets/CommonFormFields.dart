@@ -53,7 +53,7 @@ class _CommonFormFieldsState extends State<CommonFormFields>
     // _controller = AnimationController(vsync: this,);
   }
 void _handleImageUpload(int a) async {
-    if (kIsWeb) {
+    if (kIsWeb) { 
     PickedFile? picker =  await ImagePicker.platform.pickImage(source: ImageSource.gallery);
     if (picker != null) {
       var element = await picker.readAsBytes();

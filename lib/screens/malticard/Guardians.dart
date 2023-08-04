@@ -79,8 +79,10 @@ class _SchoolGuardiansState extends State<SchoolGuardians> {
         builder: (context, snapshot) {
           var guardians = snapshot.data;
           _filteredRows = snapshot.data?.results ?? [];
-          return snapshot.hasData
-              ? CustomDataTable(
+          return CustomDataTable(
+                empty: !snapshot.hasData ?  Loader(
+                  text: "Guardians...",
+                ) : NoDataWidget(text: "No Guardians found",),
                   rowsPerPage: _rowsPerpage,
                   onRowsPerPageChange: (rows) {
                     setState(() {
@@ -118,7 +120,7 @@ class _SchoolGuardiansState extends State<SchoolGuardians> {
                     currentPage: _currentPage,
                     totalDocuments: guardians?.totalDocuments ?? 0,
                   ),
-                  empty: NoDataWidget(),
+                  
                   header: Row(
                     children: [
                       TextButton.icon(
@@ -139,9 +141,6 @@ class _SchoolGuardiansState extends State<SchoolGuardians> {
                     DataColumn(label: Text('Guardian\'s Email')),
                   ],
                   topWidget: SizedBox(),
-                )
-              : Loader(
-                  text: "Guardians...",
                 );
         });
   }

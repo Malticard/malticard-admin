@@ -170,34 +170,31 @@ bool validateEmail(String email, BuildContext context) {
 // build Action Buttons
 Widget buildActionButtons(
     BuildContext context, VoidCallback edit, VoidCallback delete) {
-  return Row(
+return Row(
     children: [
-      TextButton(
-        onPressed: edit,
-        child: Icon(
+      const SizedBox(
+        width: 30,
+      ),
+      CommonButton(
+        onTap: edit,
+        width: 50, height: 50,
+        // padding: const EdgeInsets.only(top: 15, bottom: 15),
+        buttonTextWidget: const Icon(
           Icons.edit,
           color: Colors.white,
-        ),
-        style: TextButton.styleFrom(
-          backgroundColor: Colors.blue,
-          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+          size: 20,
         ),
       ),
-      SizedBox(
+      const SizedBox(
         width: 10,
       ),
-      TextButton(
-        onPressed: delete,
-        //     () {
-        //
-        //   showAppDialog(context,
-        //       title: "Are you sure you want to delete $text?");
-        // },
-        child: Icon(Icons.delete_outline_rounded, color: Colors.white),
-        style: TextButton.styleFrom(
-          backgroundColor: Colors.red,
-          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-        ),
+      CommonButton(
+        width: 50,
+        height: 50,
+        onTap: delete,
+        backgroundColor: Colors.red,
+        buttonTextWidget:
+            const Icon(Icons.delete_outline_rounded, color: Colors.white),
       ),
     ],
   );

@@ -76,8 +76,10 @@ class _StudentsViewState extends State<StudentsView> {
         stream: _studentController.stream,
         builder: (context, snapshot) {
           _filteredRows = snapshot.data ?? [];
-          return snapshot.hasData
-              ? CustomDataTable(
+          return CustomDataTable(
+                empty: !snapshot.hasData ?  Loader(
+                  text: "Students...",
+                ) : NoDataWidget(text: "No Students found",),
                   paginatorController: _controller,
                   title: "Guardian's Students",
                   actions: [
@@ -107,7 +109,7 @@ class _StudentsViewState extends State<StudentsView> {
                     guardianId: widget.guardianId,
                     context: context,
                   ),
-                  empty: NoDataWidget(),
+                 
                   header: BlocConsumer<GuardianIdController, String>(
                     listener: (context, state) {},
                     builder: (context, school_Id) {
@@ -139,10 +141,7 @@ class _StudentsViewState extends State<StudentsView> {
                     DataColumn(label: Text("Copy Code")),
                   ],
                   topWidget: SizedBox(),
-                )
-              : Loader(
-                  text: "Students...",
-                );
+              );
         });
   }
 }

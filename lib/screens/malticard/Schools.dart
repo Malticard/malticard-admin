@@ -71,8 +71,10 @@ class _SchoolsState extends State<Schools> {
         builder: (context, snapshot) {
           var schoolData = snapshot.data;
           filteredRows = snapshot.data?.results ?? [];
-          return snapshot.hasData
-              ? CustomDataTable(
+          return CustomDataTable(
+                empty: !snapshot.hasData ?  Loader(
+                  text: "Schools...",
+                ) : NoDataWidget(text: "No Schools found",),
                   paginatorController: _paginatorController,
                   rowsPerPage: _rowsPerpage,
                   header: Row(
@@ -136,6 +138,7 @@ class _SchoolsState extends State<Schools> {
                     });
                   },
                   source: SchoolDataSource(
+                    context,
                     paginatorController: _paginatorController,
                     totalDocuments: schoolData?.totalDocuments ?? 0,
                     data: filteredRows,
@@ -154,12 +157,11 @@ class _SchoolsState extends State<Schools> {
                     DataColumn(label: Text('School Badge')),
                     DataColumn(label: Text('School Name')),
                     DataColumn(label: Text('School Email')),
+                    DataColumn(label: Text('Actions')),
                   ],
                   topWidget: Container(),
                 )
-              : Loader(
-                  text: "Schools...",
-                );
+              ;
         });
   }
 }

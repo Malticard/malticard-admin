@@ -2,10 +2,12 @@ import 'package:malticard/widgets/FutureImage.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 import '../../../models/StudentModel.dart';
+import '../UpdateSchool.dart';
 import '/exports/exports.dart';
 
 class SchoolDataSource extends DataTableSource {
   SchoolDataSource(
+    this.context,
       {this.data = const [],
       this.paginatorController,
       required this.currentPage,
@@ -16,6 +18,7 @@ class SchoolDataSource extends DataTableSource {
   final int totalDocuments;
   final int currentPage;
   final ValueChanged<String>? onTap;
+  final BuildContext context;
 // Replace with your actual data source
   String _schoolId = "";
 
@@ -60,6 +63,24 @@ class SchoolDataSource extends DataTableSource {
           Text(
             rowData.schoolEmail,
           ),
+        ), DataCell(
+          buildActionButtons(context, () {
+             showDialog(
+                context: context,
+                builder: (context) {
+                  return UpdateSchool(schoolModel: rowData);
+                });
+           }, () {
+            showDialog(
+              context: context,
+              builder: (context) {
+                return CommonDelete(
+                    title:
+                        '${rowData.schoolName}',
+                    url: AppUrls.deleteSchool + rowData.id);
+              },
+            );
+            })
         ),
         // Add more DataCells for each column in your data
       ],
