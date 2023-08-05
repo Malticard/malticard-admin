@@ -264,34 +264,40 @@ void showMessage(
 
 // show progress widget
 void showProgress(BuildContext context, {String? msg}) {
-  showModal(
-    filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+  showDialog(
+    barrierDismissible: false,
     context: context,
-    builder: (context) => BottomSheet(
-      enableDrag: false,
-      backgroundColor: Colors.black12,
-      onClosing: () {},
-      builder: (context) => Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          SpinKitDualRing(
-              color: Theme.of(context).brightness == Brightness.dark
-                  ? Colors.white
-                  : Theme.of(context).primaryColor),
-          Space(
-            space: 0.03,
+    builder: (context) => Dialog(
+      backgroundColor: Colors.transparent,
+      child: Card(
+        child: SizedBox(
+          width: MediaQuery.of(context).size.width /5,
+          height: MediaQuery.of(context).size.width /5,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+               Space(space: 0.02,),
+              Padding(
+                padding: const EdgeInsets.all(18.0),
+                child: SpinKitDualRing(
+                    color: Theme.of(context).brightness == Brightness.dark
+                        ? Colors.white
+                        : Theme.of(context).primaryColor),
+              ),
+              Space(space: 0.05,),
+              Text(
+                "$msg..",
+                textAlign: TextAlign.center,
+                style: TextStyles(context).getRegularStyle().copyWith(fontSize: 17),
+              ),
+            ],
           ),
-          Text(
-            msg ?? "Task in progress",
-            style: TextStyles(context)
-                .getRegularStyle()
-                .copyWith(color: Colors.white),
-          )
-        ],
+        ),
       ),
     ),
   );
+
 }
 
 // mark dates

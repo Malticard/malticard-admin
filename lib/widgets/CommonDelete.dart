@@ -7,7 +7,6 @@ class CommonDelete extends StatefulWidget {
   @override
   State<CommonDelete> createState() => _CommonDeleteState();
 }
-
 class _CommonDeleteState extends State<CommonDelete> {
   @override
   Widget build(BuildContext context) {
@@ -20,9 +19,12 @@ class _CommonDeleteState extends State<CommonDelete> {
           child: Column(
             children: [
               Space(space: 0.02),
-              Center(
-                child: Text(
-                    "Are you sure you want to delete ${widget.title}",textAlign: TextAlign.center,),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Center(
+                  child: Text(
+                      "Are you sure you want to delete ${widget.title}",textAlign: TextAlign.center,),
+                ),
               ),
               Space(space: 0.032),
               Row(
@@ -36,13 +38,13 @@ class _CommonDeleteState extends State<CommonDelete> {
                           Routes.popPage(context);
                           showProgress(context,msg: "Removing ${widget.title}..");
                           Client().delete(Uri.parse(widget.url)).then((value) {
-                           
+                           Routes.popPage(context);
                             if(value.statusCode == 200 || value.statusCode == 201){
                               showMessage(context: context,type: 'success',msg: '${widget.title} removed successfully..');
                             } else{
                               showMessage(context: context,msg: 'Error ${value.reasonPhrase}',type: 'danger');
                             }
-                          }).whenComplete(() =>  Routes.popPage(context));
+                          });
                         },
                         child: Text(
                           "Yes",

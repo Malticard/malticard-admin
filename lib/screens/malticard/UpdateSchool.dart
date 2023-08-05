@@ -123,7 +123,7 @@ Map<String,dynamic> schoolData = {};
         showMessage(
           context: context,
           type: 'success',
-          msg: "Added new school successfully",
+          msg: "Updated ${widget.schoolModel.schoolName} successfully",
         );
       });
     }
@@ -197,7 +197,7 @@ Map<String,dynamic> schoolData = {};
 
   Future<StreamedResponse> _handleSchoolRegistration() async {
     String uri = _schoolControllers[4].text.trim();
-    var request = MultipartRequest('POST', Uri.parse(AppUrls.updateSchool));
+    var request = MultipartRequest('POST', Uri.parse(AppUrls.updateSchool + widget.schoolModel.id));
     // ================================ school fields ====================
 
     request.fields['school_name'] = _schoolControllers[0].text.trim();

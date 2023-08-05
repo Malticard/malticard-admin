@@ -16,7 +16,7 @@ class StudentModel {
     final String studentLname;
     final String otherName;
     final String username;
-    final Stream_ stream;
+    // final Stream_ stream;
     final String studentGender;
     final String studentProfilePic;
     final List<StudentKey> studentKey;
@@ -34,7 +34,7 @@ class StudentModel {
         required this.studentLname,
         required this.otherName,
         required this.username,
-        required this.stream,
+        // required this.stream,
         required this.studentGender,
         required this.studentProfilePic,
         required this.studentKey,
@@ -53,7 +53,7 @@ class StudentModel {
         studentLname: json["student_lname"],
         otherName: json["other_name"],
         username: json["username"],
-        stream: Stream_.fromJson(json["stream"]),
+        // stream: Stream_.fromJson(json["stream"]),
         studentGender: json["student_gender"],
         studentProfilePic: json["student_profile_pic"],
         studentKey: List<StudentKey>.from(json["student_key"].map((x) => StudentKey.fromJson(x))),
@@ -72,7 +72,7 @@ class StudentModel {
         "student_lname": studentLname,
         "other_name": otherName,
         "username": username,
-        "stream": stream.toJson(),
+        // "stream": stream.toJson(),
         "student_gender": studentGender,
         "student_profile_pic": studentProfilePic,
         "student_key": List<dynamic>.from(studentKey.map((x) => x.toJson())),

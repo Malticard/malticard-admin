@@ -36,8 +36,9 @@ void main() async {
                 ? ThemeMode.light
                 : ThemeMode.dark,
             theme: theme.copyWith(
+              useMaterial3: true,
               textTheme:
-                  GoogleFonts.poppinsTextTheme(Theme.of(context).textTheme)
+                  GoogleFonts.chilankaTextTheme(Theme.of(context).textTheme)
                       .apply(
                 bodyColor: theme.brightness == Brightness.light
                     ? Colors.black

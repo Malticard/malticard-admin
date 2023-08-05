@@ -103,12 +103,6 @@ Map<String,dynamic> schoolData = {};
       showProgress(context,msg:"Adding new school..");
       _handleSchoolRegistration().then((value) {
         Routes.popPage(context);
-        // showSuccessDialog(_schoolControllers[0].text.trim(), context,
-        //     onPressed: () {
-        //   Routes.popPage(context);
-        //   context.read<WidgetController>().pushWidget(const Dashboard());
-        //   context.read<TitleController>().setTitle("Dashboard");
-        // });
          Routes.popPage(context);
       }).whenComplete(() {
         // Routes.popPage(context);
@@ -191,7 +185,6 @@ Map<String,dynamic> schoolData = {};
     String uri = _schoolControllers[4].text.trim();
     var request = MultipartRequest('POST', Uri.parse(AppUrls.addSchool));
     // ================================ school fields ====================
-
     request.fields['school_name'] = _schoolControllers[0].text.trim();
     request.fields['school_nature'] = _schoolControllers[6].text.trim();
     request.fields['school_address'] = _schoolControllers[3].text.trim();
