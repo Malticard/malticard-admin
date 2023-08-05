@@ -35,7 +35,8 @@ loginUser(BuildContext context, String email, String password) async {
         if (value.statusCode == 200) {
           var data = jsonDecode(value.body);
           debugPrint("Login response ${data}");
-          BlocProvider.of<SchoolController>(context).setSchoolData(data);
+          BlocProvider.of<SchoolController>(context).setSchoolData(data);//0754979966
+          BlocProvider.of<TitleController>(context).setTitle("Dashboard");
           if (data['message'] == 'Password not found!!') {
             showMessage(context: context, msg: data['message'], type: 'danger');
           } else {

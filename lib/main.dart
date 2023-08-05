@@ -30,29 +30,34 @@ void main() async {
       child: BlocBuilder<ThemeController, ThemeData>(
         builder: (context, theme) {
           // school data
-          return MaterialApp(
-            debugShowCheckedModeBanner: false,
-            themeMode: theme.brightness == Brightness.light
-                ? ThemeMode.light
-                : ThemeMode.dark,
-            theme: theme.copyWith(
-              useMaterial3: true,
-              textTheme:
-                  GoogleFonts.chilankaTextTheme(Theme.of(context).textTheme)
-                      .apply(
-                bodyColor: theme.brightness == Brightness.light
-                    ? Colors.black
-                    : Colors.white,
-                displayColor: theme.brightness == Brightness.light
-                    ? Colors.black
-                    : Colors.white,
-              ),
-            ),
-            initialRoute: (prefs.getBool('isLogin') == true) &&
-                    (prefs.getString("schoolData") == null)
-                ? Routes.home
-                : Routes.login,
-            routes: routes(context),
+          return BlocBuilder<TitleController, String>(
+            builder: (context, title) {
+              return MaterialApp(
+                title: "Malticard | $title",
+                debugShowCheckedModeBanner: false,
+                themeMode: theme.brightness == Brightness.light
+                    ? ThemeMode.light
+                    : ThemeMode.dark,
+                theme: theme.copyWith(
+                  useMaterial3: true,
+                  textTheme:
+                      GoogleFonts.chilankaTextTheme(Theme.of(context).textTheme)
+                          .apply(
+                    bodyColor: theme.brightness == Brightness.light
+                        ? Colors.black
+                        : Colors.white,
+                    displayColor: theme.brightness == Brightness.light
+                        ? Colors.black
+                        : Colors.white,
+                  ),
+                ),
+                initialRoute: (prefs.getBool('isLogin') == true) &&
+                        (prefs.getString("schoolData") == null)
+                    ? Routes.home
+                    : Routes.login,
+                routes: routes(context),
+              );
+            },
           );
         },
       ),

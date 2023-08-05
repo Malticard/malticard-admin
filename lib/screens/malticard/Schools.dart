@@ -149,6 +149,7 @@ class _SchoolsState extends State<Schools> {
                           schoolId: value.trim(),
                         ),
                       );
+                      BlocProvider.of<TitleController>(context).setTitle("Guardians");
                     },
                     currentPage: _page,
                   ),

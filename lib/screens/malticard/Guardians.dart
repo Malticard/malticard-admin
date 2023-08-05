@@ -23,7 +23,7 @@ class _SchoolGuardiansState extends State<SchoolGuardians> {
   // stream controller
   StreamController<Guardians> _guardianController =
       StreamController<Guardians>();
-  String? _query;
+
   Timer? timer;
   @override
   void initState() {
@@ -113,6 +113,7 @@ class _SchoolGuardiansState extends State<SchoolGuardians> {
                     onTap: (guardianId) {
                       BlocProvider.of<DashboardWidgetController>(context)
                           .changeWidget(StudentsView(guardianId: guardianId));
+                          BlocProvider.of<TitleController>(context).setTitle("Students");
                       // capture guardian id
                       BlocProvider.of<GuardianIdController>(context)
                           .setGuardianId(widget.schoolId.trim());
@@ -125,6 +126,7 @@ class _SchoolGuardiansState extends State<SchoolGuardians> {
                     children: [
                       TextButton.icon(
                         onPressed: () {
+                          BlocProvider.of<TitleController>(context).setTitle("Schools");
                           BlocProvider.of<DashboardWidgetController>(context)
                               .changeWidget(
                             Schools(),

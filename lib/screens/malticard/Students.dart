@@ -123,8 +123,9 @@ class _StudentsViewState extends State<StudentsView> {
                                 SchoolGuardians(
                                   schoolId: school_Id,
                                 ),
+                                
                               );
-                              print("Back to => ${school_Id}");
+                             BlocProvider.of<TitleController>(context).setTitle("Guardians");
                             },
                             label: Text("Back to Guardians"),
                             icon: Icon(Icons.arrow_back),
