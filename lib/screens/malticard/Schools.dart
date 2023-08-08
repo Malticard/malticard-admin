@@ -90,10 +90,10 @@ class _SchoolsState extends State<Schools> {
                                 context: context,
                                 builder: (context) {
                                   return SizedBox(
-                                    width:
-                                        MediaQuery.of(context).size.width / 50,
-                                    height:
-                                        MediaQuery.of(context).size.width / 50,
+                                    // width:
+                                    //     MediaQuery.of(context).size.width / 50,
+                                    // height:
+                                    //     MediaQuery.of(context).size.width / 50,
                                     child: AddSchoolView(),
                                   );
                                 });

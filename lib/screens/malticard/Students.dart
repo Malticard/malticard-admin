@@ -139,6 +139,7 @@ class _StudentsViewState extends State<StudentsView> {
                     DataColumn(label: Text('Student\'s Name')),
                     DataColumn(label: Text('Student\'s Class')),
                     DataColumn(label: Text("Qr Code")),
+                    DataColumn(label: Text("Copy Code")),
                     DataColumn(label: Text("Download QrCode")),
                   ],
                   topWidget: SizedBox(),

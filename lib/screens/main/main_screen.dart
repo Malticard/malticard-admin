@@ -1,3 +1,4 @@
+import '../../controllers/MenuAppController.dart';
 import '/exports/exports.dart';
 import 'components/side_menu.dart';
 
@@ -13,7 +14,7 @@ class _MainScreenState extends State<MainScreen> {
   void initState() {
     // app theme state
     context.read<ThemeController>().getTheme();
-    // retrive session state
+    // retrieve session state
     context.read<SchoolController>().getSchoolData();
     super.initState();
   }
@@ -22,7 +23,7 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
 
     return Scaffold(
-      // key: context.read<MainController>().scaffoldKey,
+      key: context.read<MenuAppController>().scaffoldKey,
       drawer: const SideMenu(),
       body: SafeArea(
         child: Row(

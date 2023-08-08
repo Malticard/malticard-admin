@@ -13,11 +13,14 @@ class _SchoolsViewState extends State<SchoolsView> {
   @override
   Widget build(BuildContext context) {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
         BlocConsumer<DashboardWidgetController, Widget>(
           builder: (context, state) {
-            return state;
+            return Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: state,
+            );
           },
           listener: (context, state) {},
         ),

@@ -56,11 +56,11 @@ class FileInfoCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                "$value Records",
+               value == 1 ? "$value Record":"$value Records",
                 style: TextStyles(context).getBoldStyle(),
               ),
               Text(
-                last_updated,
+                "",
                 style: Theme.of(context).textTheme.caption,
               ),
             ],

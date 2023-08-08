@@ -1,3 +1,4 @@
+import '../../../controllers/MenuAppController.dart';
 import '/exports/exports.dart';
 
 class Header extends StatelessWidget {
@@ -11,29 +12,32 @@ class Header extends StatelessWidget {
       children: [
         if (!Responsive.isDesktop(context))
           IconButton(
-            icon: const Icon(Icons.menu),
-            onPressed: context.read<MainController>().controlMenu,
+            icon: Icon(Icons.menu),
+            onPressed: context.read<MenuAppController>().controlMenu,
           ),
-        if (!Responsive.isMobile(context))
+        // if (!Responsive.isMobile(context))
           BlocBuilder<TitleController, String>(builder: (context, title) {
-            return Text(
-              title,
-              style: TextStyles(context).getTitleStyle(),
+            return Padding(
+              padding: const EdgeInsets.only(left:18.0),
+              child: Text(
+                title,
+                style:Responsive.isMobile(context)?  TextStyles(context).getTitleStyle().copyWith(fontSize: 18): TextStyles(context).getTitleStyle(),
+              ),
             );
           }),
         if (!Responsive.isMobile(context))
           Spacer(flex: Responsive.isDesktop(context) ? 2 : 1),
-
-        CommonButton(
-          width: 50,
-          buttonTextWidget: Icon(
-            Theme.of(context).brightness == Brightness.light
-                ? Icons.dark_mode
-                : Icons.light_mode,
-            color: Colors.white70,
-          ),
-          onTap: () => context.read<ThemeController>().toggleDarkLightTheme(),
-        ),
+        Expanded(child: Container()),
+        // CommonButton(
+        //   width: 50,
+        //   buttonTextWidget: Icon(
+        //     Theme.of(context).brightness == Brightness.light
+        //         ? Icons.dark_mode
+        //         : Icons.light_mode,
+        //     color: Colors.white70,
+        //   ),
+        //   onTap: () => context.read<ThemeController>().toggleDarkLightTheme(),
+        // ),
         const ProfileCard()
       ],
     );
@@ -53,55 +57,58 @@ class _ProfileCardState extends State<ProfileCard> {
   @override
   Widget build(BuildContext context) {
     return Container(
-        margin: const EdgeInsets.only(left: defaultPadding),
-        padding: const EdgeInsets.symmetric(
-          horizontal: defaultPadding,
-          vertical: defaultPadding / 2,
-        ),
-        decoration: BoxDecoration(
-          color: Theme.of(context).canvasColor,
-          borderRadius: const BorderRadius.all(Radius.circular(10)),
-          border: Border.all(color: Colors.white10),
-        ),
-        child: Row(
-          children: [
-      //  Image.memory(context.read<SchoolController>().state['data']['pr']),
-            if (!Responsive.isMobile(context))
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: defaultPadding / 2),
-                child: Text(
-                    " ${context.read<SchoolController>().state['data']['Admin_email']}"),
-              ),
-            PopupMenuButton(
-              icon: const Icon(Icons.keyboard_arrow_down),
-              itemBuilder: (BuildContext context) {
-                return List.generate(
-                  StaffPopUpOptions.options.length,
-                  (index) => PopupMenuItem(
-                      child: ListTile(
-                    leading: Icon(StaffPopUpOptions.options[index].icon),
-                    title: Text(StaffPopUpOptions.options[index].title!),
-                    onTap: () {
-                      StaffPopUpOptions.options[index].title == 'Logout'
-                          ? Routes.logout(context)
-                          : context
-                              .read<WidgetController>()
-                              .pushWidget(AdminProfile());
-                      Navigator.pop(context);
-                    },
-                  )),
-                );
-              },
+      margin: const EdgeInsets.only(left: defaultPadding),
+      padding: const EdgeInsets.symmetric(
+        horizontal: defaultPadding,
+        vertical: defaultPadding / 2,
+      ),
+      decoration: BoxDecoration(
+        color: Theme.of(context).canvasColor,
+        borderRadius: const BorderRadius.all(Radius.circular(10)),
+        border: Border.all(color: Colors.white10),
+      ),
+      child: Row(
+        children: [
+          //  Image.memory(context.read<SchoolController>().state['data']['pr']),
+          if (!Responsive.isMobile(context))
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: defaultPadding / 2),
+              child: Text(
+                  " ${context.read<SchoolController>().state['data']['Admin_email']}"),
             ),
-          ],
-        ));
+
+          PopupMenuButton(
+            icon: const Icon(Icons.keyboard_arrow_down),
+            itemBuilder: (BuildContext context) {
+              return List.generate(
+                StaffPopUpOptions.options.length,
+                (index) => PopupMenuItem(
+                    child: ListTile(
+                  leading: Icon(StaffPopUpOptions.options[index].icon),
+                  title: Text(StaffPopUpOptions.options[index].title!),
+                  onTap: () {
+                    StaffPopUpOptions.options[index].title == 'Logout'
+                        ? Routes.logout(context)
+                        : context
+                            .read<WidgetController>()
+                            .pushWidget(AdminProfile());
+                    Navigator.pop(context);
+                  },
+                )),
+              );
+            },
+          ),
+        ],
+      ),
+    );
   }
 }
 
 class SearchField extends StatefulWidget {
   final ValueChanged<String?>? onChanged;
   const SearchField({
-    Key? key,  this.onChanged,
+    Key? key,
+    this.onChanged,
   }) : super(key: key);
 
   @override
@@ -112,7 +119,7 @@ class _SearchFieldState extends State<SearchField> {
   @override
   Widget build(BuildContext context) {
     return TextField(
-      onChanged:widget.onChanged ,
+      onChanged: widget.onChanged,
       decoration: InputDecoration(
         hintText: "Search",
         fillColor: Theme.of(context).canvasColor,

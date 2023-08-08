@@ -222,7 +222,8 @@ class _BarChartPageState extends State<BarChartPage> {
   Widget build(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width,
-      margin: const EdgeInsets.all(8.0),
+      height: MediaQuery.of(context).size.width,
+      margin: const EdgeInsets.all(18.0),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8.0),
         color: Theme.of(context).brightness == Brightness.light

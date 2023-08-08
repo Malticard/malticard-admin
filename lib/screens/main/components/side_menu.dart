@@ -67,6 +67,9 @@ class _SideMenuState extends State<SideMenu> {
                       title: store[index]['title'],
                       svgSrc: store[index]['icon'],
                       press: () {
+                        if(Responsive.isMobile(context)){
+                          Routes.popPage(context);
+                        }
                         context.read<SidebarController>().changeView(index);
                         // update page title
                         context
@@ -140,11 +143,14 @@ class DrawerListTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       selected: selected,
-      selectedTileColor: Colors.blueAccent.withOpacity(0.1),
+        iconColor: selected ? Colors.blue : Colors.white54,
+      textColor: selected ? Colors.blue : Colors.white54,
+      // tileColor: selected ?Colors.grey[200]: const Color.fromRGBO(6, 109, 161, 1.0),
+      selectedTileColor:Theme.of(context).brightness == Brightness.light ? Color.fromARGB(71, 46, 47, 47):Color.fromARGB(70, 166, 172, 172),
       onTap: press,
-      shape: RoundedRectangleBorder(
-        side: selected ? BorderSide(color: Colors.white60) : BorderSide.none,
-      ),
+      // shape: RoundedRectangleBorder(
+      //   side: selected ? BorderSide(color: Colors.white60) : BorderSide.none,
+      // ),
       horizontalTitleGap: 0.6,
       leading: SvgPicture.asset(
         svgSrc,

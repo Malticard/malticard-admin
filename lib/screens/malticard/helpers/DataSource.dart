@@ -6,8 +6,7 @@ import '../UpdateSchool.dart';
 import '/exports/exports.dart';
 
 class SchoolDataSource extends DataTableSource {
-  SchoolDataSource(
-    this.context,
+  SchoolDataSource(this.context,
       {this.data = const [],
       this.paginatorController,
       required this.currentPage,
@@ -63,25 +62,23 @@ class SchoolDataSource extends DataTableSource {
           Text(
             rowData.schoolEmail,
           ),
-        ), DataCell(
-          buildActionButtons(context, () {
-             showDialog(
-                context: context,
-                builder: (context) {
-                  return UpdateSchool(schoolModel: rowData);
-                });
-           }, () {
-            showDialog(
+        ),
+        DataCell(buildActionButtons(context, () {
+          showDialog(
               context: context,
               builder: (context) {
-                return CommonDelete(
-                    title:
-                        '${rowData.schoolName}',
-                    url: AppUrls.deleteSchool + rowData.id);
-              },
-            );
-            })
-        ),
+                return UpdateSchool(schoolModel: rowData);
+              });
+        }, () {
+          showDialog(
+            context: context,
+            builder: (context) {
+              return CommonDelete(
+                  title: '${rowData.schoolName}',
+                  url: AppUrls.deleteSchool + rowData.id);
+            },
+          );
+        })),
         // Add more DataCells for each column in your data
       ],
     );
@@ -170,16 +167,17 @@ class GuardiansDataSource extends DataTableSource {
 }
 
 class StudentsDataSource extends DataTableSource {
-  StudentsDataSource({required this.data, required this.guardianId,required this.context});
+  StudentsDataSource(
+      {required this.data, required this.guardianId, required this.context});
   List<StudentModel> data;
   BuildContext context;
   final String guardianId;
-  
+
 // Replace with your actual data source
 
   @override
   DataRow? getRow(int index) {
-     List<GlobalKey> keys = List.generate(data.length, (index) => GlobalKey());
+    List<GlobalKey> keys = List.generate(data.length, (index) => GlobalKey());
     final rowData = data[index];
     return DataRow.byIndex(
       index: index,
@@ -207,16 +205,26 @@ class StudentsDataSource extends DataTableSource {
             ),
           ),
         ),
-        DataCell(
-          OutlinedButton.icon(
+        DataCell(OutlinedButton(
             onPressed: () {
-              print("download");
-              saveQRCode(context,
-                  keys[index], rowData.studentFname + "_" + rowData.studentLname);
+              Clipboard.setData(
+                ClipboardData(
+                  text: "$guardianId,${rowData.id}",
+                ),
+              ).then((value) {
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  content: Text("Copied to Clipboard"),
+                ));
+              });
             },
-            icon: Icon(
-                Icons.download),
-            label: Text("Download"),
+            child: Icon(Icons.copy))),
+        DataCell(
+          IconButton(
+            onPressed: () {
+              saveQRCode(context, keys[index],
+                  rowData.studentFname + "_" + rowData.studentLname);
+            },
+            icon: Icon(Icons.download),
           ),
         )
       ],

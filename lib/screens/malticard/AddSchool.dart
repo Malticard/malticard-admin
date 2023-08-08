@@ -132,46 +132,39 @@ Map<String,dynamic> schoolData = {};
         return Form(
           key: formKey,
           child: Dialog(
-            backgroundColor: Colors.transparent,
-            child: Card(
-              color: Theme.of(context).brightness == Brightness.dark
-                  ? Theme.of(context).canvasColor
-                  : Colors.white,
-              elevation: 0,
-              margin: EdgeInsets.only(left: 20, right: 20),
-              child: SizedBox(
-                width: size.width / 3,
-                height: size.width / 1.5,
-                child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      formGen(_school, _schoolControllers, _schoolErrorFields,
-                          "School Details"),
-                      CommonButton(
-                        buttonText: "Submit school details",
-                        onTap: () {
-                          if (formKey.currentState!.validate() == true) {
-                            if (_schoolControllers[0]
-                                    .text
-                                    .trim()
-                                    .split(" ")
-                                    .length <
-                                2) {
-                              showMessage(
-                                  context: context,
-                                  msg: 'Please provide both names',
-                                  type: 'warning');
-                            } else {
-                              saveSchoolDetail();
-                            }
+            backgroundColor: Theme.of(context).canvasColor ,
+            child: SizedBox(
+              width: Responsive.isDesktop(context) ? size.width /3 : size.width,
+              height:Responsive.isMobile(context) ?size.width * 1.25 : size.width / 1.5,
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    formGen(_school, _schoolControllers, _schoolErrorFields,
+                        "School Details"),
+                    CommonButton(
+                      buttonText: "Submit school details",
+                      onTap: () {
+                        if (formKey.currentState!.validate() == true) {
+                          if (_schoolControllers[0]
+                                  .text
+                                  .trim()
+                                  .split(" ")
+                                  .length <
+                              2) {
+                            showMessage(
+                                context: context,
+                                msg: 'Please provide both names',
+                                type: 'warning');
+                          } else {
+                            saveSchoolDetail();
                           }
-                        },
-                        padding: EdgeInsets.all(30),
-                        height: 55,
-                      ),
-                    ],
-                  ),
+                        }
+                      },
+                      padding: EdgeInsets.all(30),
+                      height: 55,
+                    ),
+                  ],
                 ),
               ),
             ),

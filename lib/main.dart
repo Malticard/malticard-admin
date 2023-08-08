@@ -3,6 +3,7 @@ import 'package:malticard/controllers/DashbaordWidgetController.dart';
 import '/exports/exports.dart';
 import 'controllers/BreadCrumbController.dart';
 import 'controllers/GuardianIdController.dart';
+import 'controllers/MenuAppController.dart';
 import 'controllers/SidebarController.dart';
 
 void main() async {
@@ -17,6 +18,9 @@ void main() async {
         BlocProvider(create: (context) => ImageUploadController()),
         BlocProvider(create: (context) => SidebarController()),
         ChangeNotifierProvider(create: (context) => MainController()),
+        ChangeNotifierProvider(
+            create: (context) => MenuAppController(),
+          ),
         BlocProvider(create: (context) => BreadCrumbController()),
         BlocProvider(create: (context) => ThemeController()),
         BlocProvider(create: (context) => GuardianIdController()),
@@ -41,7 +45,7 @@ void main() async {
                 theme: theme.copyWith(
                   useMaterial3: true,
                   textTheme:
-                      GoogleFonts.chilankaTextTheme(Theme.of(context).textTheme)
+                      GoogleFonts.aBeeZeeTextTheme(Theme.of(context).textTheme)
                           .apply(
                     bodyColor: theme.brightness == Brightness.light
                         ? Colors.black

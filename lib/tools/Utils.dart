@@ -266,14 +266,15 @@ void showMessage(
 // show progress widget
 void showProgress(BuildContext context, {String? msg}) {
   showDialog(
-    barrierDismissible: false,
+    // barrierDismissible: false,
     context: context,
     builder: (context) => Dialog(
       backgroundColor: Colors.transparent,
       child: Card(
         child: SizedBox(
-          width: MediaQuery.of(context).size.width /5,
-          height: MediaQuery.of(context).size.width /5,
+          width: Responsive.isDesktop(context) ? MediaQuery.of(context).size.width /5 :MediaQuery.of(context).size.width ,
+          height: Responsive.isDesktop(context) ? MediaQuery.of(context).size.width /5 :MediaQuery.of(context).size.width /2 ,
+          
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,

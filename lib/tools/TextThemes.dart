@@ -6,7 +6,7 @@ class TextStyles {
   TextStyles(this.context);
 
   TextStyle getTitleStyle() {
-    return GoogleFonts.chilanka(
+    return GoogleFonts.aBeeZee(
       fontSize: 24,
       fontWeight: FontWeight.w600,
       color: Theme.of(context).brightness == Brightness.dark
@@ -16,7 +16,7 @@ class TextStyles {
   }
 
   TextStyle getDescriptionStyle() {
-    return GoogleFonts.chilanka(
+    return GoogleFonts.aBeeZee(
       fontSize: 15,
       fontWeight: FontWeight.w400,
       color: Theme.of(context).brightness == Brightness.dark
@@ -26,7 +26,7 @@ class TextStyles {
   }
 
   TextStyle getRegularStyle() {
-    return GoogleFonts.chilanka(
+    return GoogleFonts.aBeeZee(
       fontSize: 15,
       fontWeight: FontWeight.w400,
       color: Theme.of(context).brightness == Brightness.dark
@@ -36,7 +36,7 @@ class TextStyles {
   }
 
   TextStyle getBoldStyle() {
-    return GoogleFonts.chilanka(
+    return GoogleFonts.aBeeZee(
       fontSize: 16,
       fontWeight: FontWeight.bold,
       color: Theme.of(context).brightness == Brightness.dark

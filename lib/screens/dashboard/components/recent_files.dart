@@ -33,6 +33,8 @@ class CustomDataTable extends StatefulWidget {
 }
 
 class _CustomDataTableState extends State<CustomDataTable> {
+  final _horizontalScrollController = ScrollController();
+  final _scrollController = ScrollController();
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -42,9 +44,11 @@ class _CustomDataTableState extends State<CustomDataTable> {
       children: [
         // widget.topWidget,
         SizedBox(
-          width: size.width,
-          height: size.width / 2.2,
+          width: size.height,
+          height: Responsive.isMobile(context) ? size.height / 1.2 : size.width /2.2,
           child: PaginatedDataTable2(
+            scrollController: _scrollController,
+            horizontalScrollController: _horizontalScrollController,
             header: widget.header ?? Container(),
             columnSpacing: defaultPadding,
             showCheckboxColumn: false,
@@ -64,6 +68,7 @@ class _CustomDataTableState extends State<CustomDataTable> {
             onPageChanged: widget.onPageChanged,
           ),
         ),
+      if(Responsive.isDesktop(context))
         Positioned(
           bottom: 20,
           right: MediaQuery.of(context).size.width / 3,

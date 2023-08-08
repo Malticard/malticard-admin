@@ -22,7 +22,7 @@ class _DashboardState extends State<Dashboard> {
           Row(
             children: [
               Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(18.0),
                 child: Text(
                   "Number of taps in a year",
                   style: TextStyles(context).getTitleStyle().copyWith(fontSize: 20),
@@ -32,22 +32,25 @@ class _DashboardState extends State<Dashboard> {
           ),
           SizedBox(
             width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.width * 0.3,
+            height: Responsive.isMobile(context) ? MediaQuery.of(context).size.width :MediaQuery.of(context).size.width *0.3,
             child: BarChartPage(),
           ),
-           Row(
-            children: [
-              Text(
-                "Weekly stats",
-                style: TextStyles(context).getTitleStyle(),
-              ),
-            ],
-          ),
-          SizedBox(
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.width * 0.3,
-            child: WeeklyTaps(),
-          ),
+          //  Row(
+          //   children: [
+          //     Padding(
+          //       padding: const EdgeInsets.all(18.0),
+          //       child: Text(
+          //         "Weekly stats",
+          //         style: TextStyles(context).getTitleStyle().copyWith(fontSize: 20),
+          //       ),
+          //     ),
+          //   ],
+          // ),
+          // SizedBox(
+          //   width: MediaQuery.of(context).size.width,
+          //   height: Responsive.isMobile(context) ? MediaQuery.of(context).size.width :MediaQuery.of(context).size.width *0.3,
+          //   child: WeeklyTaps(),
+          // ),
           Space(
             space: 0.07,
           )

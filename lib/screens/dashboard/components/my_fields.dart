@@ -72,7 +72,7 @@ void liveDashboardUpdates() async {
     _dashboardController.add(_dashData);
 
     // check new events for every 4 seconds
-    Timer.periodic(const Duration(seconds: 4), (timer) async {
+    Timer.periodic(const Duration(seconds: 1), (timer) async {
       this._timer = timer;
       if(mounted){
         var _dashData = await fetchDashboardMetaData(context);
