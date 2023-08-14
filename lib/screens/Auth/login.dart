@@ -28,7 +28,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     Size size = MediaQuery.of(context).size;
 
     return Scaffold(
@@ -120,7 +119,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       Expanded(
                         flex: 3,
                         child: Container(
-                         margin: EdgeInsets.only(
+                          margin: EdgeInsets.only(
                               right: size.width / 16,
                               left: size.width / 16,
                               bottom: size.width / 16,
@@ -257,7 +256,6 @@ class _LoginScreenState extends State<LoginScreen> {
             padding: padding.copyWith(left: 30, right: 30),
             buttonText: "Sign in", //AppLocalizations(context).of("login"),
             onTap: () {
-              // if (context.watch<OnlineCheckerController>().state == true) {
               if (_allValidation() && formKey.currentState!.validate()) {
                 loginUser(
                     context, _emailController.text, _passwordController.text);
@@ -275,7 +273,6 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
     );
   }
-
 
   bool _allValidation() {
     bool isValid = true;

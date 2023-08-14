@@ -24,7 +24,7 @@ class CustomDataTable extends StatefulWidget {
     required this.topWidget,
     this.onPageChanged,
     this.paginatorController,
-    this.rowsPerPage=20,
+    this.rowsPerPage = 20,
     this.onRowsPerPageChange,
   }) : super(key: key);
 
@@ -44,8 +44,10 @@ class _CustomDataTableState extends State<CustomDataTable> {
       children: [
         // widget.topWidget,
         SizedBox(
-          width: size.height,
-          height: Responsive.isMobile(context) ? size.height / 1.2 : size.width /2.2,
+          width: size.width,
+          height: Responsive.isMobile(context)
+              ? size.height / 1.2
+              : size.width / 2.2,
           child: PaginatedDataTable2(
             scrollController: _scrollController,
             horizontalScrollController: _horizontalScrollController,
@@ -68,12 +70,12 @@ class _CustomDataTableState extends State<CustomDataTable> {
             onPageChanged: widget.onPageChanged,
           ),
         ),
-      if(Responsive.isDesktop(context))
-        Positioned(
-          bottom: 20,
-          right: MediaQuery.of(context).size.width / 3,
-          child: PageNumber(controller: widget.paginatorController!),
-        )
+        if (Responsive.isDesktop(context))
+          Positioned(
+            bottom: 20,
+            right: MediaQuery.of(context).size.width / 3,
+            child: PageNumber(controller: widget.paginatorController!),
+          )
       ],
     );
   }

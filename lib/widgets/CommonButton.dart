@@ -35,7 +35,7 @@ class CommonButton extends StatelessWidget {
         onClick: onTap ?? () {},
         child: SizedBox(
           width: width ?? MediaQuery.of(context).size.width / 2,
-          height: height,
+          height: Responsive.isMobile(context) ? 40 : 45,
           child: Card(
             shape: RoundedRectangleBorder(
               side: enableBorder
@@ -53,7 +53,7 @@ class CommonButton extends StatelessWidget {
                     buttonText ?? "",
                     style: TextStyles(context).getRegularStyle().copyWith(
                           color: textColor,
-                          fontSize: 16,
+                          fontSize: Responsive.isMobile(context) ? 14 : 16,
                           fontWeight: FontWeight.w600,
                         ),
                   ),

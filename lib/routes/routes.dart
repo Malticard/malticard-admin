@@ -29,6 +29,7 @@ class Routes {
   }
 
   static void logout(BuildContext context) {
+    showProgress(context, msg: "Logging out in progress..");
     // clear all set data
     SharedPreferences.getInstance()
         .then((value) => value.clear())
@@ -45,6 +46,5 @@ Map<String, Widget Function(BuildContext)> routes(BuildContext context) {
   return {
     Routes.home: (context) => const MainScreen(),
     Routes.login: (context) => LoginScreen(),
-    // Routes.malticard:(context) => MalticardView()
   };
 }

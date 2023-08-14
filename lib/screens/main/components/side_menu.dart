@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import '/controllers/SidebarController.dart';
 import '/exports/exports.dart';
 
@@ -15,12 +17,15 @@ class _SideMenuState extends State<SideMenu> {
   @override
   void initState() {
     store = malticardViews;
+    BlocProvider.of<SidebarController>(context).getCurrentView();
     super.initState();
   }
 
-  int selected = 0;
+  int? selected;
   @override
   Widget build(BuildContext context) {
+    BlocProvider.of<SidebarController>(context).getCurrentView();
+
     return Drawer(
       key: context.read<MainController>().scaffoldKey,
       backgroundColor: Theme.of(context).brightness == Brightness.light
@@ -53,32 +58,28 @@ class _SideMenuState extends State<SideMenu> {
               ),
             ),
           ),
-          BlocConsumer<SidebarController, int>(
-            listener: (context, state) {
-              setState(() => selected = state);
-            },
+          BlocBuilder<SidebarController, int>(
             builder: (context, state) {
               return Expanded(
                 child: ListView(
                   children: List.generate(
                     store.length,
                     (index) => DrawerListTile(
-                      selected: selected == index,
+                      selected: index == state,
                       title: store[index]['title'],
                       svgSrc: store[index]['icon'],
                       press: () {
-                        if(Responsive.isMobile(context)){
-                          Routes.popPage(context);
-                        }
-                        context.read<SidebarController>().changeView(index);
+                        BlocProvider.of<SidebarController>(context)
+                            .changeView(index);
                         // update page title
                         context
                             .read<TitleController>()
                             .setTitle(store[index]['title']);
                         // update rendered page
-                        context
-                            .read<WidgetController>()
-                            .pushWidget(store[index]['page']);
+                        context.read<WidgetController>().pushWidget(index);
+                        if (Responsive.isMobile(context)) {
+                          Routes.popPage(context);
+                        }
                       },
                     ),
                   ),
@@ -143,10 +144,12 @@ class DrawerListTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       selected: selected,
-        iconColor: selected ? Colors.blue : Colors.white54,
+      iconColor: selected ? Colors.blue : Colors.white54,
       textColor: selected ? Colors.blue : Colors.white54,
       // tileColor: selected ?Colors.grey[200]: const Color.fromRGBO(6, 109, 161, 1.0),
-      selectedTileColor:Theme.of(context).brightness == Brightness.light ? Color.fromARGB(71, 46, 47, 47):Color.fromARGB(70, 166, 172, 172),
+      selectedTileColor: Theme.of(context).brightness == Brightness.light
+          ? Color.fromARGB(71, 46, 47, 47)
+          : Color.fromARGB(70, 166, 172, 172),
       onTap: press,
       // shape: RoundedRectangleBorder(
       //   side: selected ? BorderSide(color: Colors.white60) : BorderSide.none,

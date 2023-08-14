@@ -41,7 +41,7 @@ class _CommonFormFieldsState extends State<CommonFormFields>
   // Error messages
 
   List<String?>? dropMsg;
-   var _imageBytes = null;
+  var _imageBytes = null;
 
   @override
   void initState() {
@@ -52,21 +52,22 @@ class _CommonFormFieldsState extends State<CommonFormFields>
     super.initState();
     // _controller = AnimationController(vsync: this,);
   }
-void _handleImageUpload(int a) async {
-    if (kIsWeb) { 
-    PickedFile? picker =  await ImagePicker.platform.pickImage(source: ImageSource.gallery);
-    if (picker != null) {
-      var element = await picker.readAsBytes();
-          setState(() {
-            _imageBytes = element;
-          });
+
+  void _handleImageUpload(int a) async {
+    if (kIsWeb) {
+      PickedFile? picker =
+          await ImagePicker.platform.pickImage(source: ImageSource.gallery);
+      if (picker != null) {
+        var element = await picker.readAsBytes();
+        setState(() {
+          _imageBytes = element;
+        });
         BlocProvider.of<ImageUploadController>(context).uploadImage({
           "image": picker.readAsBytes().asStream(),
           "name": widget.formControllers[0].text,
           "size": picker.readAsBytes().asStream().length,
         });
-    }
-
+      }
     } else {
       FilePicker.platform.pickFiles(
         dialogTitle: "${widget.formFields[a]['title']}",
@@ -81,7 +82,6 @@ void _handleImageUpload(int a) async {
       });
     }
   }
-
 
   ImageProvider<Object>? drawImage(var url) {
     if (url == null) {
@@ -103,37 +103,34 @@ void _handleImageUpload(int a) async {
                 style: TextStyles(context).getDescriptionStyle()),
           ),
           SizedBox(
-            child: BlocConsumer<ImageUploadController , Map<String,dynamic>>(
-              builder: (context,x) {
+            child: BlocConsumer<ImageUploadController, Map<String, dynamic>>(
+              builder: (context, x) {
                 return CircleAvatar(
-                  radius: 35,
+                  radius: Responsive.isDesktop(context) ? 50 : 25,
                   backgroundImage: drawImage(_imageBytes),
                 );
-              }, listener: ( context,state) { 
+              },
+              listener: (context, state) {
                 // setState(() {
                 //   _imageBytes = state['byte'];
                 // });
-               },
+              },
             ),
           ),
           // code for uploading profile picture  using file picker
-          OutlinedButtonTheme(
-            data: OutlinedButtonThemeData(
-              style: OutlinedButton.styleFrom(
+          OutlinedButton(
+            style: OutlinedButton.styleFrom(
                 shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(28)),
-                fixedSize: Size(150, 50),
-                foregroundColor: Colors.black45,
-                // backgroundColor: Colors.blue,
-              ),
-            ),
-            child: OutlinedButton(
-              onPressed: () => _handleImageUpload(ind),
-              child: Text(
-                "Upload",
-                style: TextStyles(context).getRegularStyle(),
-              ),
-            ),
+              borderRadius: BorderRadius.circular(
+                  Responsive.isMobile(context) ? 100 : 10.0),
+            )),
+            onPressed: () => _handleImageUpload(ind),
+            child: Responsive.isMobile(context)
+                ? Icon(Icons.upload_file_rounded)
+                : Text(
+                    "Upload",
+                    style: TextStyles(context).getRegularStyle(),
+                  ),
           ),
         ],
       ),
@@ -203,11 +200,11 @@ void _handleImageUpload(int a) async {
                                         firstDate: firstDate,
                                         lastDate: lastDate)
                                     .then((value) {
-                                  setState(() {
-                                    widget.formControllers[index - 1].text =
-                                        "${days[value!.weekday - 1]}, ${months[(value.month) - 1]} ${markDates(value.day)}";
-                                    ;
-                                  });
+                                  // setState(() {
+                                  //   widget.formControllers[index - 1].text =
+                                  //       "${days[value!.weekday - 1]}, ${months[(value.month) - 1]} ${markDates(value.day)}";
+                                  //   ;
+                                  // });
                                 });
                               },
                               isObscureText: widget.formFields[index - 1]

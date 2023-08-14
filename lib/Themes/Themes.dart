@@ -4,20 +4,46 @@ class AppThemes {
   static final ThemeData lightTheme = ThemeData(
     scaffoldBackgroundColor: creamColor,
     canvasColor: snowColor,
-    primaryColor: Colors.blueAccent,
-    primarySwatch: Colors.blue,
-    backgroundColor: const Color.fromARGB(204, 9, 87, 139),
+    primaryColor: const Color.fromARGB(204, 9, 87, 139),
     highlightColor: Colors.white,
+    useMaterial3: true,
+    textTheme: GoogleFonts.aBeeZeeTextTheme().apply(
+      bodyColor: Colors.black,
+      displayColor: Colors.black,
+    ),
+    colorScheme: ColorScheme.fromSeed(
+      seedColor: const Color.fromARGB(204, 9, 87, 139),
+      brightness: Brightness.light,
+    ),
+    drawerTheme: const DrawerThemeData(
+      elevation: 5,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.zero,
+      ),
+      backgroundColor: bgColor,
+    ),
     cardColor: Colors.grey[200],
-    brightness: Brightness.light,
   );
+
   static final ThemeData darkTheme = ThemeData(
     scaffoldBackgroundColor: bgColor,
     canvasColor: secondaryColor,
-    primaryColor: Colors.blueAccent,
-    primarySwatch: Colors.blue,
-    backgroundColor: Colors.black,
-    highlightColor: Colors.blueAccent,
-    brightness: Brightness.dark,
+    primaryColor: const Color.fromARGB(204, 9, 87, 139),
+    useMaterial3: true,
+    drawerTheme: const DrawerThemeData(
+      elevation: 5,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.zero,
+      ),
+      backgroundColor: bgColor,
+    ),
+    textTheme: GoogleFonts.aBeeZeeTextTheme().apply(
+      bodyColor: Colors.white,
+      displayColor: Colors.white,
+    ),
+    colorScheme: ColorScheme.fromSeed(
+      seedColor: const Color.fromARGB(204, 9, 87, 139),
+      brightness: Brightness.dark,
+    ),
   );
 }

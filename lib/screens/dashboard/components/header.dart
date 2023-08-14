@@ -8,6 +8,7 @@ class Header extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    BlocProvider.of<MalticardController>(context).getMalticardData();
     return Row(
       children: [
         if (!Responsive.isDesktop(context))
@@ -16,28 +17,30 @@ class Header extends StatelessWidget {
             onPressed: context.read<MenuAppController>().controlMenu,
           ),
         // if (!Responsive.isMobile(context))
-          BlocBuilder<TitleController, String>(builder: (context, title) {
-            return Padding(
-              padding: const EdgeInsets.only(left:18.0),
-              child: Text(
-                title,
-                style:Responsive.isMobile(context)?  TextStyles(context).getTitleStyle().copyWith(fontSize: 18): TextStyles(context).getTitleStyle(),
-              ),
-            );
-          }),
+        BlocBuilder<TitleController, String>(builder: (context, title) {
+          return Padding(
+            padding: const EdgeInsets.only(left: 18.0),
+            child: Text(
+              title,
+              style: Responsive.isMobile(context)
+                  ? TextStyles(context).getTitleStyle().copyWith(fontSize: 18)
+                  : TextStyles(context).getTitleStyle(),
+            ),
+          );
+        }),
         if (!Responsive.isMobile(context))
           Spacer(flex: Responsive.isDesktop(context) ? 2 : 1),
         Expanded(child: Container()),
-        // CommonButton(
-        //   width: 50,
-        //   buttonTextWidget: Icon(
-        //     Theme.of(context).brightness == Brightness.light
-        //         ? Icons.dark_mode
-        //         : Icons.light_mode,
-        //     color: Colors.white70,
-        //   ),
-        //   onTap: () => context.read<ThemeController>().toggleDarkLightTheme(),
-        // ),
+        CommonButton(
+          width: 50,
+          buttonTextWidget: Icon(
+            Theme.of(context).brightness == Brightness.light
+                ? Icons.dark_mode
+                : Icons.light_mode,
+            color: Colors.white70,
+          ),
+          onTap: () => context.read<ThemeController>().toggleDarkLightTheme(),
+        ),
         const ProfileCard()
       ],
     );
@@ -56,11 +59,15 @@ class ProfileCard extends StatefulWidget {
 class _ProfileCardState extends State<ProfileCard> {
   @override
   Widget build(BuildContext context) {
+    BlocProvider.of<MalticardController>(context).getMalticardData();
     return Container(
       margin: const EdgeInsets.only(left: defaultPadding),
-      padding: const EdgeInsets.symmetric(
-        horizontal: defaultPadding,
-        vertical: defaultPadding / 2,
+      padding: EdgeInsets.symmetric(
+        horizontal: Responsive.isDesktop(context)
+            ? defaultPadding / 2
+            : defaultPadding / 4,
+        vertical:
+            Responsive.isDesktop(context) ? defaultPadding : defaultPadding / 2,
       ),
       decoration: BoxDecoration(
         color: Theme.of(context).canvasColor,
@@ -69,12 +76,12 @@ class _ProfileCardState extends State<ProfileCard> {
       ),
       child: Row(
         children: [
-          //  Image.memory(context.read<SchoolController>().state['data']['pr']),
+          //  Image.memory(context.read<MalticardController>().state['data']['pr']),
           if (!Responsive.isMobile(context))
             Padding(
               padding: EdgeInsets.symmetric(horizontal: defaultPadding / 2),
               child: Text(
-                  " ${context.read<SchoolController>().state['data']['Admin_email']}"),
+                  " ${context.read<MalticardController>().state['data']['Admin_email']}"),
             ),
 
           PopupMenuButton(
@@ -87,12 +94,7 @@ class _ProfileCardState extends State<ProfileCard> {
                   leading: Icon(StaffPopUpOptions.options[index].icon),
                   title: Text(StaffPopUpOptions.options[index].title!),
                   onTap: () {
-                    StaffPopUpOptions.options[index].title == 'Logout'
-                        ? Routes.logout(context)
-                        : context
-                            .read<WidgetController>()
-                            .pushWidget(AdminProfile());
-                    Navigator.pop(context);
+                    Routes.logout(context);
                   },
                 )),
               );

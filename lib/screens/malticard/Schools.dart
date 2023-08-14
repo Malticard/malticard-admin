@@ -1,7 +1,6 @@
 import 'package:malticard/controllers/DashbaordWidgetController.dart';
 import 'package:malticard/screens/malticard/Guardians.dart';
 import '/screens/malticard/helpers/DataSource.dart';
-
 import '/exports/exports.dart';
 
 class Schools extends StatefulWidget {
@@ -72,97 +71,96 @@ class _SchoolsState extends State<Schools> {
           var schoolData = snapshot.data;
           filteredRows = snapshot.data?.results ?? [];
           return CustomDataTable(
-                empty: !snapshot.hasData ?  Loader(
-                  text: "Schools...",
-                ) : NoDataWidget(text: "No Schools found",),
-                  paginatorController: _paginatorController,
-                  rowsPerPage: _rowsPerpage,
-                  header: Row(
-                    children: [
-                      SizedBox(
-                        width: 150,
-                        height: 50,
-                        child: ElevatedButton.icon(
-                          icon: Icon(Icons.add),
-                          label: Text("Add School"),
-                          onPressed: () {
-                            showDialog(
-                                context: context,
-                                builder: (context) {
-                                  return SizedBox(
-                                    // width:
-                                    //     MediaQuery.of(context).size.width / 50,
-                                    // height:
-                                    //     MediaQuery.of(context).size.width / 50,
-                                    child: AddSchoolView(),
-                                  );
-                                });
-                          },
-                        ),
-                      ),
-                    ],
+            empty: !snapshot.hasData
+                ? Loader(
+                    text: "Schools...",
+                  )
+                : NoDataWidget(
+                    text: "No Schools found",
                   ),
-                  actions: [
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width / 4,
-                      height: 100,
-                      child: TextFormField(
-                        onChanged: (value) {
-                          // debugPrint(value);
-
-                          if (value.isEmpty) {
-                            setState(() {
-                              _querySchool = null;
-                            });
-                          } else {
-                            setState(() {
-                              _querySchool = value;
-                            });
-                          }
-                        },
-                        decoration: InputDecoration(
-                          labelText: "Search",
-                        ),
-                      ),
-                    )
-                  ],
-                  onPageChanged: (page) {
-                    // print("Page: ${(page / _rowsPerpage) + 1}");
-                    setState(() {
-                      _page = ((page / _rowsPerpage) + 1).toInt();
-                    });
-                  },
-                  onRowsPerPageChange: (value) {
-                    setState(() {
-                      _rowsPerpage = value!;
-                    });
-                  },
-                  source: SchoolDataSource(
-                    context,
-                    paginatorController: _paginatorController,
-                    totalDocuments: schoolData?.totalDocuments ?? 0,
-                    data: filteredRows,
-                    onTap: (value) {
-                      BlocProvider.of<DashboardWidgetController>(context)
-                          .changeWidget(
-                        SchoolGuardians(
-                          schoolId: value.trim(),
-                        ),
-                      );
-                      BlocProvider.of<TitleController>(context).setTitle("Guardians");
+            paginatorController: _paginatorController,
+            rowsPerPage: _rowsPerpage,
+            header: Row(
+              children: [
+                SizedBox(
+                  width: Responsive.isDesktop(context) ? 170 : 150,
+                  height: Responsive.isDesktop(context) ? 40 : 40,
+                  child: ElevatedButton.icon(
+                    // style: ElevatedButton.styleFrom(backgroundColor:Theme.of(context).primaryColor),
+                    icon: Icon(Icons.add),
+                    label: Text(
+                      "Add School",
+                      style: TextStyles(context).getRegularStyle(),
+                    ),
+                    onPressed: () {
+                      showDialog(
+                          context: context,
+                          builder: (context) {
+                            return AddSchoolView();
+                          });
                     },
-                    currentPage: _page,
                   ),
-                  columns: [
-                    // DataColumn(label: Text('#')),
-                    DataColumn(label: Text('School Badge')),
-                    DataColumn(label: Text('School Name')),
-                    DataColumn(label: Text('School Email')),
-                    DataColumn(label: Text('Actions')),
-                  ],
-                  topWidget: Container(),
-                )
-              ;
+                ),
+              ],
+            ),
+            actions: [
+              SizedBox(
+                width: MediaQuery.of(context).size.width / 4,
+                height: 100,
+                child: TextFormField(
+                  onChanged: (value) {
+                    // debugPrint(value);
+                    if (value.isEmpty) {
+                      setState(() {
+                        _querySchool = null;
+                      });
+                    } else {
+                      setState(() {
+                        _querySchool = value;
+                      });
+                    }
+                  },
+                  decoration: InputDecoration(
+                    labelText: "Search",
+                  ),
+                ),
+              )
+            ],
+            onPageChanged: (page) {
+              setState(() {
+                _page = ((page / _rowsPerpage) + 1).toInt();
+              });
+            },
+            onRowsPerPageChange: (value) {
+              setState(() {
+                _rowsPerpage = value!;
+              });
+            },
+            source: SchoolDataSource(
+              context,
+              paginatorController: _paginatorController,
+              totalDocuments: schoolData?.totalDocuments ?? 0,
+              data: filteredRows,
+              onTap: (value) {
+                BlocProvider.of<DashboardWidgetController>(context)
+                    .changeWidget(
+                  SchoolGuardians(
+                    schoolId: value.trim(),
+                  ),
+                );
+                BlocProvider.of<TitleController>(context).setTitle("Guardians");
+              },
+              currentPage: _page,
+            ),
+            columns: [
+              // DataColumn(label: Text('#')),
+              DataColumn(label: Text('School Badge')),
+              DataColumn(label: Text('School Name')),
+              DataColumn(label: Text('School Email')),
+              DataColumn(label: Text('Actions')),
+            ],
+            topWidget: Container(),
+          );
         });
   }
 }

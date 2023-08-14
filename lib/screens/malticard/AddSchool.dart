@@ -54,14 +54,24 @@ class _AddSchoolViewState extends State<AddSchoolView> {
       "hint": "e.g single",
       "password": false,
       'icon': Icons.info_outline_rounded,
-      "data":["Select school type","Single","Mixed"]
+      "data": ["Select school type", "Single", "Mixed"]
     },
     {
       "title": "School Nature *",
       "hint": "e.g nursery",
       "password": false,
-      'icon': Icons.masks_outlined, 
-      "data":["Select school nature","Kindergarten", "Kindergarten & Nursery", "Kindergarten, Nursery & Primary","Nursery & Primary", "Secondary"]
+      'icon': Icons.masks_outlined,
+      "data": [
+        "Select school nature",
+        'Daycare',
+        'Daycare/Nursery',
+        'Daycare/Nursery/Primary',
+        'Primary',
+        'Primary/Secondary',
+        'Nursery/Primary',
+        'Secondary',
+        'International'
+      ]
     },
   ];
 
@@ -96,14 +106,14 @@ class _AddSchoolViewState extends State<AddSchoolView> {
       ),
     );
   }
-Map<String,dynamic> schoolData = {};
+
+  Map<String, dynamic> schoolData = {};
   void saveSchoolDetail() {
     if (validateEmail(_schoolControllers[1].text, context) != false) {
-     
-      showProgress(context,msg:"Adding new school..");
+      showProgress(context, msg: "Adding new school..");
       _handleSchoolRegistration().then((value) {
         Routes.popPage(context);
-         Routes.popPage(context);
+        Routes.popPage(context);
       }).whenComplete(() {
         // Routes.popPage(context);
         showMessage(
@@ -122,20 +132,23 @@ Map<String,dynamic> schoolData = {};
         List.generate(_schoolControllers.length, (i) => '');
 
     Size size = MediaQuery.of(context).size;
-    return BlocConsumer<ImageUploadController, Map<String,dynamic>>(
+    return BlocConsumer<ImageUploadController, Map<String, dynamic>>(
       listener: (context, state) {
         setState(() {
-          schoolData  = state;
+          schoolData = state;
         });
       },
       builder: (context, state) {
         return Form(
           key: formKey,
           child: Dialog(
-            backgroundColor: Theme.of(context).canvasColor ,
+            backgroundColor: Theme.of(context).canvasColor,
             child: SizedBox(
-              width: Responsive.isDesktop(context) ? size.width /3 : size.width,
-              height:Responsive.isMobile(context) ?size.width * 1.25 : size.width / 1.5,
+              width:
+                  Responsive.isDesktop(context) ? size.width / 3 : size.width,
+              height: Responsive.isMobile(context)
+                  ? size.height * 1.25
+                  : size.width / 1.5,
               child: SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -188,9 +201,7 @@ Map<String,dynamic> schoolData = {};
     // school badge upload
     if (kIsWeb) {
       request.files.add(MultipartFile(
-          "image",
-          schoolData['image'],
-          schoolData['size'],
+          "image", schoolData['image'], schoolData['size'],
           filename: schoolData['name']));
     } else {
       request.files.add(MultipartFile(
@@ -200,7 +211,8 @@ Map<String,dynamic> schoolData = {};
 
     // end of school badge upload
     request.fields['school_key[key]'] = "0";
-    request.fields['username'] = "${_schoolControllers[0].text}_${Random.secure().nextInt(1000000)}";
+    request.fields['username'] =
+        "${_schoolControllers[0].text}_${Random.secure().nextInt(1000000)}";
     // end of school badge upload
     // ================================ school fields ====================
     var response = request.send();

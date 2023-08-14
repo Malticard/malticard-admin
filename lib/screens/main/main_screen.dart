@@ -1,3 +1,5 @@
+import 'package:malticard/controllers/SidebarController.dart';
+
 import '../../controllers/MenuAppController.dart';
 import '/exports/exports.dart';
 import 'components/side_menu.dart';
@@ -15,12 +17,15 @@ class _MainScreenState extends State<MainScreen> {
     // app theme state
     context.read<ThemeController>().getTheme();
     // retrieve session state
-    context.read<SchoolController>().getSchoolData();
+    context.read<MalticardController>().getMalticardData();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    context.read<MalticardController>().getMalticardData();
+    BlocProvider.of<WidgetController>(context).showCurrentPage();
+    BlocProvider.of<TitleController>(context).showTitle();
 
     return Scaffold(
       key: context.read<MenuAppController>().scaffoldKey,

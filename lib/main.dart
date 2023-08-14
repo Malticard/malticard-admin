@@ -1,3 +1,6 @@
+import 'dart:developer';
+
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:malticard/controllers/DashbaordWidgetController.dart';
 
 import '/exports/exports.dart';
@@ -19,20 +22,20 @@ void main() async {
         BlocProvider(create: (context) => SidebarController()),
         ChangeNotifierProvider(create: (context) => MainController()),
         ChangeNotifierProvider(
-            create: (context) => MenuAppController(),
-          ),
+          create: (context) => MenuAppController(),
+        ),
         BlocProvider(create: (context) => BreadCrumbController()),
         BlocProvider(create: (context) => ThemeController()),
         BlocProvider(create: (context) => GuardianIdController()),
-        BlocProvider(create: (context) => SchoolController()),
+        BlocProvider(create: (context) => MalticardController()),
         BlocProvider(create: (context) => DashboardWidgetController()),
-        BlocProvider(create: (context) => LightDarkController()),
         BlocProvider(create: (context) => OnlineCheckerController()),
         BlocProvider(create: (context) => TitleController()),
         BlocProvider(create: (context) => DashboardController()),
       ],
       child: BlocBuilder<ThemeController, ThemeData>(
         builder: (context, theme) {
+          // BlocProvider.
           // school data
           return BlocBuilder<TitleController, String>(
             builder: (context, title) {
@@ -42,19 +45,7 @@ void main() async {
                 themeMode: theme.brightness == Brightness.light
                     ? ThemeMode.light
                     : ThemeMode.dark,
-                theme: theme.copyWith(
-                  useMaterial3: true,
-                  textTheme:
-                      GoogleFonts.aBeeZeeTextTheme(Theme.of(context).textTheme)
-                          .apply(
-                    bodyColor: theme.brightness == Brightness.light
-                        ? Colors.black
-                        : Colors.white,
-                    displayColor: theme.brightness == Brightness.light
-                        ? Colors.black
-                        : Colors.white,
-                  ),
-                ),
+                theme: theme,
                 initialRoute: (prefs.getBool('isLogin') == true) &&
                         (prefs.getString("schoolData") == null)
                     ? Routes.home
@@ -67,4 +58,5 @@ void main() async {
       ),
     ),
   );
+  FlutterNativeSplash.remove();
 }

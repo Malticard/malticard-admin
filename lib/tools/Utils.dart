@@ -1,9 +1,11 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:ui';
 import 'dart:ui' as ui;
 
 import 'package:file_saver/file_saver.dart';
 import 'package:flutter/rendering.dart';
+import 'package:malticard/controllers/SidebarController.dart';
 import 'package:malticard/screens/malticard/SchoolsView.dart';
 
 import '../models/StudentModel.dart';
@@ -34,11 +36,14 @@ loginUser(BuildContext context, String email, String password) async {
         Routes.popPage(context);
         if (value.statusCode == 200) {
           var data = jsonDecode(value.body);
-          debugPrint("Login response ${data}");
-          BlocProvider.of<SchoolController>(context).setSchoolData(data);//0754979966
+          log("Login response ${data}");
+          BlocProvider.of<MalticardController>(context)
+              .setMalticardData(data); //0754979966
           BlocProvider.of<TitleController>(context).setTitle("Dashboard");
+          BlocProvider.of<SidebarController>(context).changeView(0);
           if (data['message'] == 'Password not found!!') {
-            showMessage(context: context, msg: data['message'], type: 'danger');
+            showMessage(
+                context: context, msg: "Incorrect password", type: 'danger');
           } else {
             Routes.namedRemovedUntilRoute(context, Routes.home);
             showMessage(
@@ -171,7 +176,7 @@ bool validateEmail(String email, BuildContext context) {
 // build Action Buttons
 Widget buildActionButtons(
     BuildContext context, VoidCallback edit, VoidCallback delete) {
-return Row(
+  return Row(
     children: [
       const SizedBox(
         width: 30,
@@ -227,11 +232,6 @@ List<Map<String, dynamic>> malticardViews = [
     'icon': "assets/icons/menu_store.svg"
   },
 ];
-// valid text controllers
-bool validateTextControllers(List<TextEditingController> controllers) {
-  var ct = controllers.where((element) => element.text.isEmpty).toList();
-  return ct.length < 1 ? true : false;
-}
 
 /// show snackbar message
 /// @param type = 'danger' | 'info' | warning
@@ -271,15 +271,21 @@ void showProgress(BuildContext context, {String? msg}) {
     builder: (context) => Dialog(
       backgroundColor: Colors.transparent,
       child: Card(
+        color: Theme.of(context).canvasColor,
         child: SizedBox(
-          width: Responsive.isDesktop(context) ? MediaQuery.of(context).size.width /5 :MediaQuery.of(context).size.width ,
-          height: Responsive.isDesktop(context) ? MediaQuery.of(context).size.width /5 :MediaQuery.of(context).size.width /2 ,
-          
+          width: Responsive.isDesktop(context)
+              ? MediaQuery.of(context).size.width / 5
+              : MediaQuery.of(context).size.width,
+          height: Responsive.isDesktop(context)
+              ? MediaQuery.of(context).size.width / 5
+              : MediaQuery.of(context).size.width / 2,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-               Space(space: 0.02,),
+              Space(
+                space: 0.02,
+              ),
               Padding(
                 padding: const EdgeInsets.all(18.0),
                 child: SpinKitDualRing(
@@ -287,11 +293,15 @@ void showProgress(BuildContext context, {String? msg}) {
                         ? Colors.white
                         : Theme.of(context).primaryColor),
               ),
-              Space(space: 0.05,),
+              Space(
+                space: 0.05,
+              ),
               Text(
                 "$msg..",
                 textAlign: TextAlign.center,
-                style: TextStyles(context).getRegularStyle().copyWith(fontSize: 17),
+                style: TextStyles(context)
+                    .getRegularStyle()
+                    .copyWith(fontSize: 17),
               ),
             ],
           ),
@@ -299,24 +309,6 @@ void showProgress(BuildContext context, {String? msg}) {
       ),
     ),
   );
-
-}
-
-// mark dates
-String markDates(int date) {
-  if (date == 1 || date == 21 || date == 31) {
-    return "${date}st";
-  } else if (date == 2 || date == 22) {
-    return "${date}nd";
-  } else if (date == 3 || date == 23) {
-    return "${date}rd";
-  }
-  return "${date}th";
-}
-
-// configure am / pm
-String amPm() {
-  return time.hour > 0 && time.hour < 12 ? "am" : "pm";
 }
 
 // Days of the week
@@ -349,27 +341,29 @@ Future<List<StudentModel>> fetchGuardianStudents(String schoolId) async {
       await Client().get(Uri.parse(AppUrls.guardianStudents + schoolId));
   return response.statusCode == 200 ? studentModelFromJson(response.body) : [];
 }
+
 // fetch all taps made
 Future<int> fetchTaps() async {
-   Response response = await Client().get(Uri.parse(AppUrls.getTaps));
-    var data = tapsFromJson(response.body);
-    Map<int, int> monthCounts = {}; // Map to store counts for each month
+  Response response = await Client().get(Uri.parse(AppUrls.getTaps));
+  var data = tapsFromJson(response.body);
+  Map<int, int> monthCounts = {}; // Map to store counts for each month
 
-    // Initialize the monthCounts map with default values (0 counts) for all months
-    for (int month = 1; month <= 12; month++) {
-      monthCounts[month] = 0;
-    }
+  // Initialize the monthCounts map with default values (0 counts) for all months
+  for (int month = 1; month <= 12; month++) {
+    monthCounts[month] = 0;
+  }
 
-    data.forEach((element) {
-      int month = element.createdAt.month;
-      int count = element.count;
-      monthCounts[month] = count; // Update the count for the specific month
-    });
+  data.forEach((element) {
+    int month = element.createdAt.month;
+    int count = element.count;
+    monthCounts[month] = count; // Update the count for the specific month
+  });
 
-    int totalTapsInYear = monthCounts.values.reduce((sum, count) => sum + count);
-    // print("Total Taps in the Year: $totalTapsInYear");
-    return totalTapsInYear;
+  int totalTapsInYear = monthCounts.values.reduce((sum, count) => sum + count);
+  // print("Total Taps in the Year: $totalTapsInYear");
+  return totalTapsInYear;
 }
+
 // function handling scan intervals
 Future<Guardians> fetchGuardians(String schoolId,
     {int page = 1, int limit = 10}) async {
@@ -386,40 +380,57 @@ String handSanIntervals() {
           ? "PickUps"
           : "Nothing taking place currently";
 }
+
 // function to search for schools
-Future<SchoolModel> searchSchools(String schoolName,{int page = 1,int limit = 20}) async {
-  var response = await Client()
-      .get(Uri.parse(AppUrls.searchSchool + "?query=$schoolName&page=$page&pageSize=$limit"));
+Future<SchoolModel> searchSchools(String schoolName,
+    {int page = 1, int limit = 20}) async {
+  var response = await Client().get(Uri.parse(
+      AppUrls.searchSchool + "?query=$schoolName&page=$page&pageSize=$limit"));
   SchoolModel schoolModel = schoolModelFromJson(response.body);
   return schoolModel;
 }
+
 // function to search for guardians
-Future<Guardians> searchGuardians(String schoolId, String guardianName,{int page = 1,int limit = 20}) async {
-  var response = await Client().get(Uri.parse(
-      AppUrls.searchGuardians +
-          schoolId +
-          "?query=$guardianName&page=$page&pageSize=$limit"));
+Future<Guardians> searchGuardians(String schoolId, String guardianName,
+    {int page = 1, int limit = 20}) async {
+  var response = await Client().get(Uri.parse(AppUrls.searchGuardians +
+      schoolId +
+      "?query=$guardianName&page=$page&pageSize=$limit"));
   return guardiansFromJson(response.body);
 }
+
 // function to search for students
-Future<List<StudentModel>> searchStudents(String schoolId, String studentName,{int page = 1,int limit = 20}) async {
-  var response = await Client().get(Uri.parse(
-      AppUrls.searchStudents + schoolId + "?query=$studentName&page=$page&pageSize=$limit"));
+Future<List<StudentModel>> searchStudents(String schoolId, String studentName,
+    {int page = 1, int limit = 20}) async {
+  var response = await Client().get(Uri.parse(AppUrls.searchStudents +
+      schoolId +
+      "?query=$studentName&page=$page&pageSize=$limit"));
   return studentModelFromJson(response.body);
 }
-// function save QR code 
-Future<void> saveQRCode(BuildContext context,GlobalKey key,String name) async {
-    RenderRepaintBoundary boundary = key.currentContext!.findRenderObject() as RenderRepaintBoundary;
-    ui.Image image = await boundary.toImage(pixelRatio: 3.0);
-    ByteData? byteData = await image.toByteData(format: ui.ImageByteFormat.png);
-    Uint8List pngBytes = byteData!.buffer.asUint8List();
-    final result = await FileSaver.instance.saveFile(name:name, bytes: pngBytes, ext: 'png', mimeType: MimeType.apng);
-    if (result.isNotEmpty) {
-      showMessage(context: context, msg:"QR Code saved to gallery! ${result}",type: 'success');
-    } else {
-      showMessage(context: context, msg:"Failed to save QR Code: ${result}",type: 'success');
-    }
+
+// function save QR code
+Future<void> saveQRCode(
+    BuildContext context, GlobalKey key, String name) async {
+  RenderRepaintBoundary boundary =
+      key.currentContext!.findRenderObject() as RenderRepaintBoundary;
+  ui.Image image = await boundary.toImage(pixelRatio: 3.0);
+  ByteData? byteData = await image.toByteData(format: ui.ImageByteFormat.png);
+  Uint8List pngBytes = byteData!.buffer.asUint8List();
+  final result = await FileSaver.instance.saveFile(
+      name: name, bytes: pngBytes, ext: 'png', mimeType: MimeType.png);
+  if (result.isNotEmpty) {
+    showMessage(
+        context: context,
+        msg: "QR Code saved to gallery! ${result}",
+        type: 'success');
+  } else {
+    showMessage(
+        context: context,
+        msg: "Failed to save QR Code: ${result}",
+        type: 'success');
   }
+}
+
 // fetch dashboard meta data
 Future<List<Map<String, dynamic>>> fetchDashboardMetaData(
     BuildContext context) async {

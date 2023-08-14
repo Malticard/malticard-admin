@@ -12,11 +12,11 @@ class UpdateSchool extends StatefulWidget {
 
 class _UpdateSchoolState extends State<UpdateSchool> {
   List<TextEditingController> _schoolControllers = [];
- @override
+  @override
   void initState() {
     super.initState();
-      // school controllers
- _schoolControllers = [
+    // school controllers
+    _schoolControllers = [
       TextEditingController(text: widget.schoolModel.schoolName),
       TextEditingController(text: widget.schoolModel.schoolEmail),
       TextEditingController(text: widget.schoolModel.schoolContact),
@@ -24,9 +24,7 @@ class _UpdateSchoolState extends State<UpdateSchool> {
       TextEditingController(text: widget.schoolModel.schoolBadge),
       TextEditingController(text: widget.schoolModel.schoolType),
       TextEditingController(text: widget.schoolModel.schoolNature),
-      
-  ];
-
+    ];
   }
 
   @override
@@ -66,17 +64,23 @@ class _UpdateSchoolState extends State<UpdateSchool> {
       "hint": "e.g single",
       "password": false,
       'icon': Icons.info_outline_rounded,
-      "data":["Select school type","Single","Mixed"]
+      "data": ["Select school type", "Single", "Mixed"]
     },
     {
       "title": "School Nature *",
       "hint": "e.g nursery",
       "password": false,
-      'icon': Icons.masks_outlined, 
-      "data":["Select school nature","Kindergarten", "Kindergarten & Nursery", "Kindergarten, Nursery & Primary","Nursery & Primary", "Secondary"]
+      'icon': Icons.masks_outlined,
+      "data": [
+        "Select school nature",
+        "Kindergarten",
+        "Kindergarten & Nursery",
+        "Kindergarten, Nursery & Primary",
+        "Nursery & Primary",
+        "Secondary"
+      ]
     },
   ];
-
 
   // overall form padding
   EdgeInsets padding =
@@ -105,10 +109,11 @@ class _UpdateSchoolState extends State<UpdateSchool> {
       ),
     );
   }
-Map<String,dynamic> schoolData = {};
+
+  Map<String, dynamic> schoolData = {};
   void saveSchoolDetail() {
     if (validateEmail(_schoolControllers[1].text, context) != false) {
-      showProgress(context,msg: "Updating school details");
+      showProgress(context, msg: "Updating school details");
       _handleSchoolRegistration().then((value) {
         Routes.popPage(context);
         // showSuccessDialog(_schoolControllers[0].text.trim(), context,
@@ -117,7 +122,7 @@ Map<String,dynamic> schoolData = {};
         //   context.read<WidgetController>().pushWidget(const Dashboard());
         //   context.read<TitleController>().setTitle("Dashboard");
         // });
-         Routes.popPage(context);
+        Routes.popPage(context);
       }).whenComplete(() {
         // Routes.popPage(context);
         showMessage(
@@ -136,56 +141,52 @@ Map<String,dynamic> schoolData = {};
         List.generate(_schoolControllers.length, (i) => '');
 
     Size size = MediaQuery.of(context).size;
-    return BlocConsumer<ImageUploadController, Map<String,dynamic>>(
+    return BlocConsumer<ImageUploadController, Map<String, dynamic>>(
       listener: (context, state) {
         setState(() {
-          schoolData  = state;
+          schoolData = state;
         });
       },
       builder: (context, state) {
         return Form(
           key: formKey,
           child: Dialog(
-            backgroundColor: Colors.transparent,
-            child: Card(
-              color: Theme.of(context).brightness == Brightness.dark
-                  ? Theme.of(context).canvasColor
-                  : Colors.white,
-              elevation: 0,
-              margin: EdgeInsets.only(left: 20, right: 20),
-              child: SizedBox(
-                width: size.width / 3,
-                height: size.width / 1.5,
-                child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      formGen(_school, _schoolControllers, _schoolErrorFields,
-                          "School Details"),
-                      CommonButton(
-                        buttonText: "Submit school details",
-                        onTap: () {
-                          if (formKey.currentState!.validate() == true) {
-                            if (_schoolControllers[0]
-                                    .text
-                                    .trim()
-                                    .split(" ")
-                                    .length <
-                                2) {
-                              showMessage(
-                                  context: context,
-                                  msg: 'Please provide both names',
-                                  type: 'warning');
-                            } else {
-                              saveSchoolDetail();
-                            }
+            backgroundColor: Theme.of(context).canvasColor,
+            child: SizedBox(
+              width:
+                  Responsive.isDesktop(context) ? size.width / 3 : size.width,
+              height: Responsive.isMobile(context)
+                  ? size.height * 1.25
+                  : size.width / 1.5,
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    formGen(_school, _schoolControllers, _schoolErrorFields,
+                        "School Details"),
+                    CommonButton(
+                      buttonText: "Submit school details",
+                      onTap: () {
+                        if (formKey.currentState!.validate() == true) {
+                          if (_schoolControllers[0]
+                                  .text
+                                  .trim()
+                                  .split(" ")
+                                  .length <
+                              2) {
+                            showMessage(
+                                context: context,
+                                msg: 'Please provide both names',
+                                type: 'warning');
+                          } else {
+                            saveSchoolDetail();
                           }
-                        },
-                        padding: EdgeInsets.all(30),
-                        height: 55,
-                      ),
-                    ],
-                  ),
+                        }
+                      },
+                      padding: EdgeInsets.all(30),
+                      height: 55,
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -197,7 +198,8 @@ Map<String,dynamic> schoolData = {};
 
   Future<StreamedResponse> _handleSchoolRegistration() async {
     String uri = _schoolControllers[4].text.trim();
-    var request = MultipartRequest('POST', Uri.parse(AppUrls.updateSchool + widget.schoolModel.id));
+    var request = MultipartRequest(
+        'POST', Uri.parse(AppUrls.updateSchool + widget.schoolModel.id));
     // ================================ school fields ====================
 
     request.fields['school_name'] = _schoolControllers[0].text.trim();
@@ -210,9 +212,7 @@ Map<String,dynamic> schoolData = {};
     // school badge upload
     if (kIsWeb) {
       request.files.add(MultipartFile(
-          "image",
-          schoolData['image'],
-          schoolData['size'],
+          "image", schoolData['image'], schoolData['size'],
           filename: schoolData['name']));
     } else {
       request.files.add(MultipartFile(
@@ -222,7 +222,8 @@ Map<String,dynamic> schoolData = {};
 
     // end of school badge upload
     request.fields['school_key[key]'] = "0";
-    request.fields['username'] = "${_schoolControllers[0].text}_${Random.secure().nextInt(1000000)}";
+    request.fields['username'] =
+        "${_schoolControllers[0].text}_${Random.secure().nextInt(1000000)}";
     // end of school badge upload
     // ================================ school fields ====================
     var response = request.send();

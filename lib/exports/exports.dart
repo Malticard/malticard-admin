@@ -96,7 +96,6 @@ export '/models/OvertimeModel.dart';
 export '/models/Guardians.dart';
 export '/models/SchoolModel.dart';
 
-
 // themes
 
 // constants
@@ -109,13 +108,11 @@ export '/Icons/Images.dart';
 
 // Controllers
 export '/controllers/ThemeController.dart';
-export '/controllers/SchoolController.dart';
-export '/controllers/LightDarkController.dart';
+export '../controllers/MalticardController.dart';
 export '/controllers/ImageUploadController.dart';
 export '/controllers/TitleController.dart';
 export '/controllers/OnlineCheckerController.dart';
 export '/controllers/DashboardController.dart';
-
 
 // themes
 export '/Themes/Themes.dart';
