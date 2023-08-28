@@ -4,6 +4,7 @@ class CommonTextField extends StatelessWidget {
   final String? titleText;
   final String hintText;
   final String? errorText;
+  final bool readOnly;
   final bool isObscureText, isAllowTopTitleView;
   final EdgeInsetsGeometry padding;
   final Function(String)? onChanged;
@@ -17,6 +18,7 @@ class CommonTextField extends StatelessWidget {
   final VoidCallback? onTapSuffix;
   final String? Function(String?)? validate;
   const CommonTextField({
+    this.readOnly = false,
     Key? key,
     this.hintText = '',
     this.isObscureText = false,
@@ -77,6 +79,7 @@ class CommonTextField extends StatelessWidget {
                 height: Responsive.isMobile(context) ? 40 : 45,
                 child: Center(
                   child: TextFormField(
+                    readOnly: readOnly,
                     controller: controller,
                     maxLines: 1,
                     onChanged: onChanged,

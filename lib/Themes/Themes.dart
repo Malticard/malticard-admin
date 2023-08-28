@@ -7,13 +7,13 @@ class AppThemes {
     primaryColor: const Color.fromARGB(204, 9, 87, 139),
     highlightColor: Colors.white,
     useMaterial3: true,
-    textTheme: GoogleFonts.aBeeZeeTextTheme().apply(
-      bodyColor: Colors.black,
-      displayColor: Colors.black,
-    ),
     colorScheme: ColorScheme.fromSeed(
       seedColor: const Color.fromARGB(204, 9, 87, 139),
       brightness: Brightness.light,
+    ),
+    textTheme: GoogleFonts.aBeeZeeTextTheme().apply(
+      bodyColor: Colors.black,
+      displayColor: Colors.black,
     ),
     drawerTheme: const DrawerThemeData(
       elevation: 5,

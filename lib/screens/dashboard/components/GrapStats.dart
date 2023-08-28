@@ -160,6 +160,8 @@
 //     );
 //   }
 // }
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -190,31 +192,35 @@ class _BarChartPageState extends State<BarChartPage> {
   }
 
   void fetchTapData() async {
-    // Replace with your API endpoint
-    final response = await http.get(Uri.parse(AppUrls.getTaps));
+    try {
+      // Replace with your API endpoint
+      final response = await http.get(Uri.parse(AppUrls.getTaps));
+      if (response.statusCode == 200) {
+        var data = jsonDecode(response.body);
+        for (var item in data) {
+          int month = DateTime.parse(item['createdAt']).month;
+          int tapCount = item['count'] + 1;
+          _tapDataForMonths[month - 1].add(TapData(month, tapCount));
+        }
 
-    if (response.statusCode == 200) {
-      var data = jsonDecode(response.body);
-      for (var item in data) {
-        int month = DateTime.parse(item['createdAt']).month;
-        int tapCount = item['count'] + 1;
-        _tapDataForMonths[month - 1].add(TapData(month, tapCount));
-      }
+        List<TapData> accumulatedDataList = [];
+        int accumulatedTapCount = 0;
 
-      List<TapData> accumulatedDataList = [];
-      int accumulatedTapCount = 0;
-
-      for (int month = 1; month <= 12; month++) {
-        if (_tapDataForMonths[month - 1].isNotEmpty) {
-          int lastCount = _tapDataForMonths[month - 1].last.tapCount;
-          accumulatedTapCount += lastCount;
-          accumulatedDataList.add(TapData(month, accumulatedTapCount));
+        for (int month = 1; month <= 12; month++) {
+          if (_tapDataForMonths[month - 1].isNotEmpty) {
+            int lastCount = _tapDataForMonths[month - 1].last.tapCount;
+            accumulatedTapCount += lastCount;
+            accumulatedDataList.add(TapData(month, accumulatedTapCount));
+          }
+        }
+        if (mounted) {
+          setState(() {
+            _tapDataList = accumulatedDataList;
+          });
         }
       }
-
-      setState(() {
-        _tapDataList = accumulatedDataList;
-      });
+    } on http.ClientException catch (e, x) {
+      log(e.toString());
     }
   }
 

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:malticard/controllers/GuardianIdController.dart';
 
 import '../../controllers/DashbaordWidgetController.dart';
@@ -59,8 +61,12 @@ class _StudentsViewState extends State<StudentsView> {
                 page: 1, limit: rowsPerPage);
             _studentController.add(students);
           } else {
-            var students = await fetchGuardianStudents(widget.guardianId);
-            _studentController.add(students);
+            try {
+              var students = await fetchGuardianStudents(widget.guardianId);
+              _studentController.add(students);
+            } on ClientException catch (e, x) {
+              log(e.toString());
+            }
           }
         }
       });
@@ -77,73 +83,75 @@ class _StudentsViewState extends State<StudentsView> {
         builder: (context, snapshot) {
           _filteredRows = snapshot.data ?? [];
           return CustomDataTable(
-                empty: !snapshot.hasData ?  Loader(
-                  text: "Students...",
-                ) : NoDataWidget(text: "No Students found",),
-                  paginatorController: _controller,
-                  title: "Guardian's Students",
-                  actions: [
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width / 4,
-                      height: 100,
-                      child: TextFormField(
-                          controller: _searchController,
-                          onChanged: (value) {
-                            setState(() {
-                              if (value.isEmpty) {
-                              } else {
-                                _filteredRows = _filteredRows.where((row) {
-                                  return row.studentLname == value ||
-                                      row.studentFname == value;
-                                }).toList();
-                              }
-                            });
-                          },
-                          decoration: InputDecoration(
-                            labelText: "Search",
-                          )),
-                    )
-                  ],
-                  source: StudentsDataSource(
-                    data: _filteredRows,
-                    guardianId: widget.guardianId,
-                    context: context,
+            empty: !snapshot.hasData
+                ? Loader(
+                    text: "Students...",
+                  )
+                : NoDataWidget(
+                    text: "No Students found",
                   ),
-                 
-                  header: BlocConsumer<GuardianIdController, String>(
-                    listener: (context, state) {},
-                    builder: (context, school_Id) {
-                      return Row(
-                        children: [
-                          TextButton.icon(
-                            onPressed: () {
-                              BlocProvider.of<DashboardWidgetController>(
-                                      context)
-                                  .changeWidget(
-                                SchoolGuardians(
-                                  schoolId: school_Id,
-                                ),
-                                
-                              );
-                             BlocProvider.of<TitleController>(context).setTitle("Guardians");
-                            },
-                            label: Text("Back to Guardians"),
-                            icon: Icon(Icons.arrow_back),
-                          ),
-                        ],
-                      );
+            paginatorController: _controller,
+            title: "Guardian's Students",
+            actions: [
+              SizedBox(
+                width: MediaQuery.of(context).size.width / 4,
+                height: 100,
+                child: TextFormField(
+                    controller: _searchController,
+                    onChanged: (value) {
+                      setState(() {
+                        if (value.isEmpty) {
+                        } else {
+                          _filteredRows = _filteredRows.where((row) {
+                            return row.studentLname == value ||
+                                row.studentFname == value;
+                          }).toList();
+                        }
+                      });
                     },
-                  ),
-                  columns: [
-                    DataColumn(label: Text('Student\'s Profile')),
-                    DataColumn(label: Text('Student\'s Name')),
-                    DataColumn(label: Text('Student\'s Class')),
-                    DataColumn(label: Text("Qr Code")),
-                    DataColumn(label: Text("Copy Code")),
-                    DataColumn(label: Text("Download QrCode")),
+                    decoration: InputDecoration(
+                      labelText: "Search",
+                    )),
+              )
+            ],
+            source: StudentsDataSource(
+              data: _filteredRows,
+              guardianId: widget.guardianId,
+              context: context,
+            ),
+            header: BlocConsumer<GuardianIdController, String>(
+              listener: (context, state) {},
+              builder: (context, school_Id) {
+                return Row(
+                  children: [
+                    TextButton.icon(
+                      onPressed: () {
+                        BlocProvider.of<DashboardWidgetController>(context)
+                            .changeWidget(
+                          SchoolGuardians(
+                            schoolId: school_Id,
+                          ),
+                        );
+                        BlocProvider.of<TitleController>(context)
+                            .setTitle("Guardians");
+                      },
+                      label: Text("Back to Guardians"),
+                      icon: Icon(Icons.arrow_back),
+                    ),
                   ],
-                  topWidget: SizedBox(),
-              );
+                );
+              },
+            ),
+            columns: [
+              DataColumn(label: Text('Student\'s Profile')),
+              DataColumn(label: Text('Student\'s Name')),
+              DataColumn(label: Text('Student\'s Class')),
+              DataColumn(label: Text("Qr Code")),
+              DataColumn(label: Text("Copy Code")),
+              DataColumn(label: Text("Download QrCode")),
+            ],
+            topWidget: SizedBox(),
+          );
         });
   }
 }

@@ -114,13 +114,17 @@ class _AddSchoolViewState extends State<AddSchoolView> {
       _handleSchoolRegistration().then((value) {
         Routes.popPage(context);
         Routes.popPage(context);
+        if (value.statusCode == 200 || value.statusCode == 201) {
+          showMessage(
+              context: context,
+              msg: "School added successfully",
+              type: "success");
+        } else {
+          showMessage(
+              context: context, msg: "Failed to add school", type: "warning");
+        }
       }).whenComplete(() {
         // Routes.popPage(context);
-        showMessage(
-          context: context,
-          type: 'success',
-          msg: "Added new school successfully",
-        );
       });
     }
   }

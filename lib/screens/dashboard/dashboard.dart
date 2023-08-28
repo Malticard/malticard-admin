@@ -42,22 +42,6 @@ class _DashboardState extends State<Dashboard> {
                 : MediaQuery.of(context).size.width * 0.3,
             child: BarChartPage(),
           ),
-          //  Row(
-          //   children: [
-          //     Padding(
-          //       padding: const EdgeInsets.all(18.0),
-          //       child: Text(
-          //         "Weekly stats",
-          //         style: TextStyles(context).getTitleStyle().copyWith(fontSize: 20),
-          //       ),
-          //     ),
-          //   ],
-          // ),
-          // SizedBox(
-          //   width: MediaQuery.of(context).size.width,
-          //   height: Responsive.isMobile(context) ? MediaQuery.of(context).size.width :MediaQuery.of(context).size.width *0.3,
-          //   child: WeeklyTaps(),
-          // ),
           Space(
             space: 0.07,
           )

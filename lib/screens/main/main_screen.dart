@@ -1,4 +1,5 @@
 import 'package:malticard/controllers/SidebarController.dart';
+import 'package:malticard/global/SessionManager.dart';
 
 import '../../controllers/MenuAppController.dart';
 import '/exports/exports.dart';
@@ -19,11 +20,25 @@ class _MainScreenState extends State<MainScreen> {
     // retrieve session state
     context.read<MalticardController>().getMalticardData();
     super.initState();
+    Timer.periodic(Duration(seconds: 1), (timer) {
+      SessionManager().isTokenExpired().asStream().listen((session) {
+        if (session) {
+          timer.cancel();
+          SessionManager().clearToken();
+          Routes.logout(context);
+          showContentDialog("Please login again", "Session expired", context,
+              () {
+            Navigator.pushReplacementNamed(context, Routes.login);
+          });
+        }
+      });
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    context.read<MalticardController>().getMalticardData();
+    BlocProvider.of<MalticardController>(context, listen: true)
+        .getMalticardData();
     BlocProvider.of<WidgetController>(context).showCurrentPage();
     BlocProvider.of<TitleController>(context).showTitle();
 

@@ -1,11 +1,9 @@
-import 'dart:developer';
-
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:malticard/controllers/DashbaordWidgetController.dart';
 
 import '/exports/exports.dart';
-import 'controllers/BreadCrumbController.dart';
 import 'controllers/GuardianIdController.dart';
+import 'controllers/LoaderController.dart';
 import 'controllers/MenuAppController.dart';
 import 'controllers/SidebarController.dart';
 
@@ -24,7 +22,7 @@ void main() async {
         ChangeNotifierProvider(
           create: (context) => MenuAppController(),
         ),
-        BlocProvider(create: (context) => BreadCrumbController()),
+        ChangeNotifierProvider(create: (context) => LoaderController()),
         BlocProvider(create: (context) => ThemeController()),
         BlocProvider(create: (context) => GuardianIdController()),
         BlocProvider(create: (context) => MalticardController()),

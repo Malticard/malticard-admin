@@ -32,7 +32,9 @@ class Routes {
     showProgress(context, msg: "Logging out in progress..");
     // clear all set data
     SharedPreferences.getInstance()
-        .then((value) => value.clear())
+        .then(
+      (value) => value.remove("schoolData"),
+    )
         .whenComplete(() {
       //
       showMessage(

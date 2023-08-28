@@ -177,13 +177,18 @@ class StudentsDataSource extends DataTableSource {
 
   @override
   DataRow? getRow(int index) {
-    List<GlobalKey> keys = List.generate(data.length, (index) => GlobalKey());
+    List<GlobalKey> keys = List.generate(
+      data.length,
+      (index) => GlobalKey(),
+    );
     final rowData = data[index];
     return DataRow.byIndex(
       index: index,
       cells: [
         DataCell(
-          FutureImage(future: fetchAndDisplayImage(rowData.studentProfilePic)),
+          FutureImage(
+            future: fetchAndDisplayImage(rowData.studentProfilePic),
+          ),
         ),
         DataCell(
           Text(

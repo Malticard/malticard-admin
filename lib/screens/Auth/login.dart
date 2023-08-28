@@ -1,3 +1,5 @@
+import 'package:malticard/controllers/LoaderController.dart';
+
 import '/exports/exports.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -214,63 +216,77 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget _buildForm() {
     return Form(
       key: formKey,
-      child: ListView(
-        children: <Widget>[
-          Space(
-            space: Responsive.isDesktop(context) ? 0.085 : 0.07,
-          ),
-          CommonTextField(
-            fieldColor: Theme.of(context).cardColor,
-            icon: Icons.email_outlined,
-            controller: _emailController,
-            errorText: _errorEmail,
-            titleText: "Email",
-            padding: padding,
-            enableSuffix: true,
-            hintText: "example@gmail.com",
-            keyboardType: TextInputType.emailAddress,
-          ),
-          const Space(space: 0.01),
-          CommonTextField(
-            fieldColor: Theme.of(context).cardColor,
-            icon: Icons.lock_outline,
-            enableSuffix: true,
-            suffixIcon: showPassword
-                ? Icons.remove_red_eye_rounded
-                : Icons.visibility_off,
-            titleText: "Password", //AppLocalizations(context).of("password"),
-            padding: padding,
-            hintText: "************",
-            isObscureText: !showPassword,
-            errorText: _errorPassword,
-            onTapSuffix: () {
-              setState(() {
-                showPassword = !showPassword;
-              });
-            },
-            controller: _passwordController,
-          ),
-          // _forgotYourPasswordUI(),
-          CommonButton(
-            height: 55,
-            padding: padding.copyWith(left: 30, right: 30),
-            buttonText: "Sign in", //AppLocalizations(context).of("login"),
-            onTap: () {
-              if (_allValidation() && formKey.currentState!.validate()) {
-                loginUser(
-                    context, _emailController.text, _passwordController.text);
-              }
-              // } else {
-              //   showMessage(
-              //       context: context, msg: "Your offline..", type: 'warning');
-              // }
-            },
-          ),
-          Space(
-            space: Responsive.isDesktop(context) ? 0.045 : 0.03,
-          ),
-        ],
-      ),
+      child: Consumer<LoaderController>(builder: (context, controller, child) {
+        return ListView(
+          children: <Widget>[
+            Space(
+              space: Responsive.isDesktop(context) ? 0.085 : 0.07,
+            ),
+            CommonTextField(
+              readOnly: controller.isLoading,
+              fieldColor: Theme.of(context).cardColor,
+              icon: Icons.email_outlined,
+              controller: _emailController,
+              errorText: _errorEmail,
+              titleText: "Email",
+              padding: padding,
+              enableSuffix: true,
+              hintText: "example@gmail.com",
+              keyboardType: TextInputType.emailAddress,
+            ),
+            const Space(space: 0.01),
+            CommonTextField(
+              readOnly: controller.isLoading,
+              fieldColor: Theme.of(context).cardColor,
+              icon: Icons.lock_outline,
+              enableSuffix: true,
+              suffixIcon: showPassword
+                  ? Icons.remove_red_eye_rounded
+                  : Icons.visibility_off,
+              titleText: "Password", //AppLocalizations(context).of("password"),
+              padding: padding,
+              hintText: "************",
+              isObscureText: !showPassword,
+              errorText: _errorPassword,
+              onTapSuffix: () {
+                setState(() {
+                  showPassword = !showPassword;
+                });
+              },
+              controller: _passwordController,
+            ),
+            // _forgotYourPasswordUI(),
+            CommonButton(
+              height: 55,
+              padding: padding.copyWith(left: 30, right: 30),
+              buttonTextWidget: controller.isLoading
+                  ? Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: CircularProgressIndicator.adaptive(),
+                    )
+                  : Text("Sign in", style: TextStyles(context).getBoldStyle()),
+              backgroundColor: controller.isLoading
+                  ? Theme.of(context).disabledColor
+                  : Theme.of(context).colorScheme.primary,
+              onTap: () {
+                if (_allValidation() && formKey.currentState!.validate()) {
+                  loginUser(
+                      context, _emailController.text, _passwordController.text);
+                } else {
+                  controller.hideLoader();
+                }
+                // } else {
+                //   showMessage(
+                //       context: context, msg: "Your offline..", type: 'warning');
+                // }
+              },
+            ),
+            Space(
+              space: Responsive.isDesktop(context) ? 0.045 : 0.03,
+            ),
+          ],
+        );
+      }),
     );
   }
 

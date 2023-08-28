@@ -5,7 +5,9 @@ import 'dart:ui' as ui;
 
 import 'package:file_saver/file_saver.dart';
 import 'package:flutter/rendering.dart';
+import 'package:malticard/controllers/LoaderController.dart';
 import 'package:malticard/controllers/SidebarController.dart';
+import 'package:malticard/global/SessionManager.dart';
 import 'package:malticard/screens/malticard/SchoolsView.dart';
 
 import '../models/StudentModel.dart';
@@ -37,14 +39,17 @@ loginUser(BuildContext context, String email, String password) async {
         if (value.statusCode == 200) {
           var data = jsonDecode(value.body);
           log("Login response ${data}");
-          BlocProvider.of<MalticardController>(context)
+          SessionManager().storeToken(data["_token"]);
+          BlocProvider.of<MalticardController>(context, listen: true)
               .setMalticardData(data); //0754979966
           BlocProvider.of<TitleController>(context).setTitle("Dashboard");
           BlocProvider.of<SidebarController>(context).changeView(0);
           if (data['message'] == 'Password not found!!') {
             showMessage(
                 context: context, msg: "Incorrect password", type: 'danger');
+            Provider.of<LoaderController>(context, listen: true).hideLoader();
           } else {
+            Provider.of<LoaderController>(context, listen: true).hideLoader();
             Routes.namedRemovedUntilRoute(context, Routes.home);
             showMessage(
               context: context,
@@ -53,6 +58,7 @@ loginUser(BuildContext context, String email, String password) async {
             );
           }
         } else {
+          Provider.of<LoaderController>(context, listen: true).hideLoader();
           var data = jsonDecode(value.body);
 
           showMessage(
@@ -121,10 +127,13 @@ void showSuccessDialog(String name, BuildContext context,
 }
 
 // show content dialog
-void showContentDialog(String name, BuildContext context) {
-  showDialog(
+void showContentDialog(
+    String name, String title, BuildContext context, VoidCallback onPress) {
+  showAdaptiveDialog(
     context: context,
-    builder: (context) => AlertDialog(
+    barrierDismissible: false,
+    builder: (context) => AlertDialog.adaptive(
+      title: Text(title),
       content: Text(
         name,
         overflow: TextOverflow.visible,
@@ -132,10 +141,7 @@ void showContentDialog(String name, BuildContext context) {
       ),
       actions: [
         TextButton(
-          onPressed: () {
-            Routes.popPage(context);
-            // Routes.namedRoute(context, Routes.dashboard);
-          },
+          onPressed: onPress,
           child: Text(
             "Okay",
             style: TextStyles(context).getRegularStyle(),

@@ -61,7 +61,6 @@ export '/widgets/CommonTextField.dart';
 export '/widgets/CommonButton.dart';
 export '/widgets/CustomDialog.dart';
 export '/widgets/space.dart';
-export '/widgets/CommonMenuWidget.dart';
 export '/widgets/CommonAppBarView.dart';
 export '/widgets/BottomUpAnimation.dart';
 export '/widgets/LoaderWidget.dart';
@@ -78,17 +77,12 @@ export '/routes/routes.dart';
 // third party libraries
 export 'package:flutter_spinkit/flutter_spinkit.dart';
 export 'package:animations/animations.dart';
-export 'package:syncfusion_flutter_sliders/sliders.dart';
-export 'package:flutter_breadcrumb/flutter_breadcrumb.dart';
 export 'package:http/http.dart';
-export 'package:crop_your_image/crop_your_image.dart';
 export 'package:currency_picker/currency_picker.dart';
 export 'package:shared_preferences/shared_preferences.dart';
 export 'package:file_picker/file_picker.dart';
 // export 'package:image_picker_web/image_picker_web.dart';
 export 'package:internet_connection_checker/internet_connection_checker.dart';
-export 'package:art_sweetalert/art_sweetalert.dart';
-export 'package:custom_searchable_dropdown/custom_searchable_dropdown.dart';
 // models
 export '/models/StaffPopUpOptions.dart';
 export '/models/StaffModel.dart';

@@ -86,7 +86,6 @@ class _SchoolsState extends State<Schools> {
                   width: Responsive.isDesktop(context) ? 170 : 150,
                   height: Responsive.isDesktop(context) ? 40 : 40,
                   child: ElevatedButton.icon(
-                    // style: ElevatedButton.styleFrom(backgroundColor:Theme.of(context).primaryColor),
                     icon: Icon(Icons.add),
                     label: Text(
                       "Add School",
