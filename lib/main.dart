@@ -12,6 +12,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Bloc.observer = const Observer();
   var prefs = await SharedPreferences.getInstance();
+  // prefs.clear();
   runApp(
     MultiProvider(
       providers: [

@@ -21,7 +21,7 @@ class _UpdateSchoolState extends State<UpdateSchool> {
       TextEditingController(text: widget.schoolModel.schoolEmail),
       TextEditingController(text: widget.schoolModel.schoolContact),
       TextEditingController(text: widget.schoolModel.schoolAddress),
-      TextEditingController(text: widget.schoolModel.schoolBadge),
+      TextEditingController(text: ""),
       TextEditingController(text: widget.schoolModel.schoolType),
       TextEditingController(text: widget.schoolModel.schoolNature),
     ];
@@ -98,6 +98,7 @@ class _UpdateSchoolState extends State<UpdateSchool> {
       padding: const EdgeInsets.only(top: 18.0),
       child: CommonFormFields(
         padding: padding,
+        currentProfile: widget.schoolModel.schoolBadge,
         formFields: forms,
         formEnabled: false,
         formTitle: title,
@@ -211,14 +212,27 @@ class _UpdateSchoolState extends State<UpdateSchool> {
     request.fields['school_type'] = _schoolControllers[5].text.trim();
     // school badge upload
     if (kIsWeb) {
-      request.files.add(MultipartFile(
-          "image", schoolData['image'], schoolData['size'],
-          filename: schoolData['name']));
+      if (schoolData.isNotEmpty) {
+        request.files.add(MultipartFile(
+            "image", schoolData['image'], schoolData['size'],
+            filename: schoolData['name']));
+      }
     } else {
-      request.files.add(MultipartFile(
-          'image', File(uri).readAsBytes().asStream(), File(uri).lengthSync(),
-          filename: uri.split("/").last));
+      if (uri.isNotEmpty) {
+        request.files.add(MultipartFile(
+            'image', File(uri).readAsBytes().asStream(), File(uri).lengthSync(),
+            filename: uri.split("/").last));
+      }
     }
+    // if (kIsWeb) {
+    //   request.files.add(MultipartFile(
+    //       "image", schoolData['image'], schoolData['size'],
+    //       filename: schoolData['name']));
+    // } else {
+    //   request.files.add(MultipartFile(
+    //       'image', File(uri).readAsBytes().asStream(), File(uri).lengthSync(),
+    //       filename: uri.split("/").last));
+    // }
 
     // end of school badge upload
     request.fields['school_key[key]'] = "0";

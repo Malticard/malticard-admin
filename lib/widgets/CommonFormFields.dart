@@ -18,6 +18,7 @@ class CommonFormFields extends StatefulWidget {
   final Widget? submit;
   final String? formTitle;
   final bool formEnabled;
+  final String? currentProfile;
   const CommonFormFields(
       {super.key,
       required this.padding,
@@ -25,6 +26,7 @@ class CommonFormFields extends StatefulWidget {
       required this.formFields,
       required this.formControllers,
       this.onSubmit,
+      this.currentProfile,
       this.formTitle,
       this.submit,
       this.formEnabled = true,
@@ -84,7 +86,9 @@ class _CommonFormFieldsState extends State<CommonFormFields>
   }
 
   ImageProvider<Object>? drawImage(var url) {
-    if (url == null) {
+    if (widget.currentProfile != null) {
+      return NetworkImage(AppUrls.liveImages + widget.currentProfile!);
+    } else if (url == null) {
       return const AssetImage("assets/icons/001-profile.png");
     }
     return MemoryImage(url);

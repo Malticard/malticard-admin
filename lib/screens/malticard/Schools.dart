@@ -92,7 +92,7 @@ class _SchoolsState extends State<Schools> {
                       style: TextStyles(context).getRegularStyle(),
                     ),
                     onPressed: () {
-                      showDialog(
+                      showAdaptiveDialog(
                           context: context,
                           builder: (context) {
                             return AddSchoolView();

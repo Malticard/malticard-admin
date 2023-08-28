@@ -16,7 +16,6 @@ import '/exports/exports.dart';
 
 // login logic for the user
 loginUser(BuildContext context, String email, String password) async {
-  showProgress(context, msg: "Login in progress");
   try {
     Client()
         .post(
@@ -35,30 +34,31 @@ loginUser(BuildContext context, String email, String password) async {
     )
         .then(
       (value) {
-        Routes.popPage(context);
+        // Routes.popPage(context);
         if (value.statusCode == 200) {
           var data = jsonDecode(value.body);
           log("Login response ${data}");
-          SessionManager().storeToken(data["_token"]);
-          BlocProvider.of<MalticardController>(context, listen: true)
+
+          BlocProvider.of<MalticardController>(context, listen: false)
               .setMalticardData(data); //0754979966
           BlocProvider.of<TitleController>(context).setTitle("Dashboard");
           BlocProvider.of<SidebarController>(context).changeView(0);
           if (data['message'] == 'Password not found!!') {
             showMessage(
                 context: context, msg: "Incorrect password", type: 'danger');
-            Provider.of<LoaderController>(context, listen: true).hideLoader();
+            Provider.of<LoaderController>(context, listen: false).hideLoader();
           } else {
-            Provider.of<LoaderController>(context, listen: true).hideLoader();
+            SessionManager().storeToken(data['data']["_token"]);
+            Provider.of<LoaderController>(context, listen: false).hideLoader();
             Routes.namedRemovedUntilRoute(context, Routes.home);
             showMessage(
               context: context,
-              msg: "Login successfully..",
+              msg: "Logged in successfully..",
               type: 'success',
             );
           }
         } else {
-          Provider.of<LoaderController>(context, listen: true).hideLoader();
+          Provider.of<LoaderController>(context, listen: false).hideLoader();
           var data = jsonDecode(value.body);
 
           showMessage(
@@ -69,13 +69,13 @@ loginUser(BuildContext context, String email, String password) async {
       },
     );
   } on ClientException catch (_) {
-    Routes.popPage(context);
+    // Routes.popPage(context);
     showMessage(context: context, msg: "${_.message}", type: 'danger');
   } on HandshakeException catch (_) {
-    Routes.popPage(context);
+    // Routes.popPage(context);
     showMessage(context: context, msg: "${_.message}", type: 'danger');
   } on FormatException catch (_) {
-    Routes.popPage(context);
+    // Routes.popPage(context);
     showMessage(context: context, msg: "${_.message}", type: 'danger');
   }
 }
@@ -134,10 +134,13 @@ void showContentDialog(
     barrierDismissible: false,
     builder: (context) => AlertDialog.adaptive(
       title: Text(title),
-      content: Text(
-        name,
-        overflow: TextOverflow.visible,
-        style: TextStyles(context).getRegularStyle(),
+      content: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Text(
+          name,
+          overflow: TextOverflow.visible,
+          style: Theme.of(context).textTheme.bodyMedium,
+        ),
       ),
       actions: [
         TextButton(

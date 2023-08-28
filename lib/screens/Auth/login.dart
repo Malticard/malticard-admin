@@ -257,18 +257,25 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
             // _forgotYourPasswordUI(),
             CommonButton(
-              height: 55,
+              height: 60,
               padding: padding.copyWith(left: 30, right: 30),
               buttonTextWidget: controller.isLoading
                   ? Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: CircularProgressIndicator.adaptive(),
                     )
-                  : Text("Sign in", style: TextStyles(context).getBoldStyle()),
+                  : Text(
+                      "Sign in",
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyMedium
+                          ?.copyWith(color: Colors.white),
+                    ),
               backgroundColor: controller.isLoading
-                  ? Theme.of(context).disabledColor
+                  ? Theme.of(context).disabledColor.withOpacity(0.2)
                   : Theme.of(context).colorScheme.primary,
               onTap: () {
+                controller.showLoader();
                 if (_allValidation() && formKey.currentState!.validate()) {
                   loginUser(
                       context, _emailController.text, _passwordController.text);

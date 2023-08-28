@@ -64,13 +64,13 @@ class SchoolDataSource extends DataTableSource {
           ),
         ),
         DataCell(buildActionButtons(context, () {
-          showDialog(
+          showAdaptiveDialog(
               context: context,
               builder: (context) {
                 return UpdateSchool(schoolModel: rowData);
               });
         }, () {
-          showDialog(
+          showAdaptiveDialog(
             context: context,
             builder: (context) {
               return CommonDelete(

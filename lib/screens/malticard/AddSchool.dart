@@ -115,6 +115,9 @@ class _AddSchoolViewState extends State<AddSchoolView> {
         Routes.popPage(context);
         Routes.popPage(context);
         if (value.statusCode == 200 || value.statusCode == 201) {
+          _schoolControllers.forEach((element) {
+            element.clear();
+          });
           showMessage(
               context: context,
               msg: "School added successfully",
@@ -169,10 +172,15 @@ class _AddSchoolViewState extends State<AddSchoolView> {
                                   .split(" ")
                                   .length <
                               2) {
-                            showMessage(
-                                context: context,
-                                msg: 'Please provide both names',
-                                type: 'warning');
+                            showContentDialog(
+                                "Please provide both names",
+                                "Error",
+                                context,
+                                () => Routes.popPage(context));
+                            // showMessage(
+                            //     context: context,
+                            //     msg: 'Please provide both names',
+                            //     type: 'warning');
                           } else {
                             saveSchoolDetail();
                           }
@@ -204,13 +212,17 @@ class _AddSchoolViewState extends State<AddSchoolView> {
     request.fields['school_type'] = _schoolControllers[5].text.trim();
     // school badge upload
     if (kIsWeb) {
-      request.files.add(MultipartFile(
-          "image", schoolData['image'], schoolData['size'],
-          filename: schoolData['name']));
+      if (schoolData.isNotEmpty) {
+        request.files.add(MultipartFile(
+            "image", schoolData['image'], schoolData['size'],
+            filename: schoolData['name']));
+      }
     } else {
-      request.files.add(MultipartFile(
-          'image', File(uri).readAsBytes().asStream(), File(uri).lengthSync(),
-          filename: uri.split("/").last));
+      if (uri.isNotEmpty) {
+        request.files.add(MultipartFile(
+            'image', File(uri).readAsBytes().asStream(), File(uri).lengthSync(),
+            filename: uri.split("/").last));
+      }
     }
 
     // end of school badge upload

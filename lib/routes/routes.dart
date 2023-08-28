@@ -21,7 +21,7 @@ class Routes {
 
   static void namedRemovedUntilRoute(BuildContext context, String route) {
     debugPrint("moved $route");
-    Navigator.of(context).pushNamedAndRemoveUntil(route, (_) => true);
+    Navigator.of(context).pushReplacementNamed(route);
   }
 
   static void popPage(BuildContext context) {
