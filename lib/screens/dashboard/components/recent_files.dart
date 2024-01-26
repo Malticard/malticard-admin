@@ -47,7 +47,7 @@ class _CustomDataTableState extends State<CustomDataTable> {
           width: size.width,
           height: Responsive.isMobile(context)
               ? size.height / 1.2
-              : size.width / 2.2,
+              : size.width / 2.33,
           child: PaginatedDataTable2(
             scrollController: _scrollController,
             horizontalScrollController: _horizontalScrollController,

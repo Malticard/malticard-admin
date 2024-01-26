@@ -46,7 +46,7 @@ class Result {
     final String schoolContact;
     final String schoolEmail;
     final String schoolNature;
-    final String username;
+    // final String username;
     final List<SchoolKey> schoolKey;
     final bool isComplete;
     final DateTime createdAt;
@@ -61,7 +61,7 @@ class Result {
         required this.schoolContact,
         required this.schoolEmail,
         required this.schoolNature,
-        required this.username,
+        // required this.username,
         required this.schoolKey,
         required this.isComplete,
         required this.createdAt,
@@ -77,7 +77,7 @@ class Result {
         schoolContact: json["school_contact"],
         schoolEmail: json["school_email"],
         schoolNature: json["school_nature"],
-        username: json["username"],
+        // username: json["username"],
         schoolKey: List<SchoolKey>.from(json["school_key"].map((x) => SchoolKey.fromJson(x))),
         isComplete: json["isComplete"],
         createdAt: DateTime.parse(json["createdAt"]),
@@ -93,7 +93,7 @@ class Result {
         "school_contact": schoolContact,
         "school_email": schoolEmail,
         "school_nature": schoolNature,
-        "username": username,
+        // "username": username,
         "school_key": List<dynamic>.from(schoolKey.map((x) => x.toJson())),
         "isComplete": isComplete,
         "createdAt": createdAt.toIso8601String(),

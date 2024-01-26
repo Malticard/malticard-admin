@@ -196,12 +196,16 @@ class _BarChartPageState extends State<BarChartPage> {
       // Replace with your API endpoint
       final response = await http.get(Uri.parse(AppUrls.getTaps));
       if (response.statusCode == 200) {
-        var data = jsonDecode(response.body);
-        for (var item in data) {
-          int month = DateTime.parse(item['createdAt']).month;
-          int tapCount = item['count'] + 1;
-          _tapDataForMonths[month - 1].add(TapData(month, tapCount));
+        List<dynamic> data = jsonDecode(response.body);
+        // for (var item in data) {
+        // print("Tap count ${data.first['count']}");
+        if(data.isNotEmpty){
+        int month = DateTime.parse(data.first['createdAt']).month;
+        int tapCount = (data.first['count']);
+        _tapDataForMonths[month - 1].add(TapData(month, tapCount));
         }
+       
+        // }
 
         List<TapData> accumulatedDataList = [];
         int accumulatedTapCount = 0;
@@ -219,7 +223,7 @@ class _BarChartPageState extends State<BarChartPage> {
           });
         }
       }
-    } on http.ClientException catch (e, x) {
+    } on http.ClientException catch (e) {
       log(e.toString());
     }
   }

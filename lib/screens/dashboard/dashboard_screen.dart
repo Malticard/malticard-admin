@@ -11,6 +11,8 @@ class DashboardScreen extends StatefulWidget {
 class _DashboardScreenState extends State<DashboardScreen> {
   @override
   void initState() {
+    BlocProvider.of<MalticardController>(context, listen: false)
+        .getMalticardData();
     super.initState();
     BlocProvider.of<MalticardController>(context).getMalticardData();
     BlocProvider.of<WidgetController>(context).showCurrentPage();
@@ -21,7 +23,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    BlocProvider.of<MalticardController>(context).getMalticardData();
+    BlocProvider.of<MalticardController>(context, listen: true)
+        .getMalticardData();
     BlocProvider.of<WidgetController>(context).showCurrentPage();
     BlocProvider.of<SidebarController>(context).getCurrentView();
     BlocProvider.of<TitleController>(context).showTitle();
@@ -31,6 +34,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         color: Theme.of(context).brightness == Brightness.light
             ? Colors.grey[200]
             : Theme.of(context).scaffoldBackgroundColor,
+        height: size.height,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           // mainAxisAlignment: MainAxisAlignment.center,
@@ -73,7 +77,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     builder: (context, child) {
                   return SizedBox(
                     width: MediaQuery.of(context).size.width,
-                    height: MediaQuery.of(context).size.width / 2,
+                    height: MediaQuery.of(context).size.width / 2.16,
                     child: Padding(
                       padding: EdgeInsets.only(bottom: size.width * 0.02),
                       child: child,

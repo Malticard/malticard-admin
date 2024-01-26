@@ -225,7 +225,7 @@ Future<String?> fetchAndDisplayImage(String imageURL) async {
   //   // Display the image
   //   processedImageBytes = base64Decode(imageBase64);
   // }
-  return AppUrls.liveImages + imageURL;
+  return  imageURL;
 }
 
 // malticard views
@@ -361,16 +361,18 @@ Future<int> fetchTaps() async {
   for (int month = 1; month <= 12; month++) {
     monthCounts[month] = 0;
   }
-
+if(data.isNotEmpty){
   data.forEach((element) {
     int month = element.createdAt.month;
     int count = element.count;
     monthCounts[month] = count; // Update the count for the specific month
   });
-
-  int totalTapsInYear = monthCounts.values.reduce((sum, count) => sum + count);
+  // int totalTapsInYear = monthCounts.values.reduce((sum, count) => sum + count);
   // print("Total Taps in the Year: $totalTapsInYear");
-  return totalTapsInYear;
+  return data.first.count;
+}
+  
+  return 0;
 }
 
 // function handling scan intervals

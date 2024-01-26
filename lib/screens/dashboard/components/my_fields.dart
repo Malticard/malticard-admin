@@ -95,44 +95,45 @@ class _FileInfoCardGridViewState extends State<FileInfoCardGridView> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-        stream: _dashboardController.stream,
-        builder: (context, snapshot) {
-          var dash = snapshot.data;
-          return snapshot.hasData
-              ? GridView.builder(
-                  physics: const NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  itemCount: dash?.length ?? 0,
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: widget.crossAxisCount,
-                    crossAxisSpacing: defaultPadding,
-                    mainAxisSpacing: defaultPadding,
-                    childAspectRatio: widget.childAspectRatio,
+      stream: _dashboardController.stream,
+      builder: (context, snapshot) {
+        var dash = snapshot.data;
+        return snapshot.hasData
+            ? GridView.builder(
+                physics: const NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                itemCount: dash?.length ?? 0,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: widget.crossAxisCount,
+                  crossAxisSpacing: defaultPadding,
+                  mainAxisSpacing: defaultPadding,
+                  childAspectRatio: widget.childAspectRatio,
+                ),
+                itemBuilder: (context, index) => TapEffect(
+                  onClick: () {
+                    if (index == 0) {
+                      // update page title
+                      context
+                          .read<TitleController>()
+                          .setTitle(malticardViews[1]['title']);
+                      // update rendered page
+                      context.read<WidgetController>().pushWidget(1);
+                      context.read<SidebarController>().changeView(1);
+                    }
+                  },
+                  child: FileInfoCard(
+                    label: dash![index]['label'],
+                    value: dash[index]['value'],
+                    icon: dash[index]['icon'],
+                    color: dash[index]['color'],
+                    last_updated: dash[index]['last_updated'],
                   ),
-                  itemBuilder: (context, index) => TapEffect(
-                    onClick: () {
-                      if (index == 0) {
-                        // update page title
-                        context
-                            .read<TitleController>()
-                            .setTitle(malticardViews[1]['title']);
-                        // update rendered page
-                        context.read<WidgetController>().pushWidget(1);
-                        context.read<SidebarController>().changeView(1);
-                      }
-                    },
-                    child: FileInfoCard(
-                      label: dash![index]['label'],
-                      value: dash[index]['value'],
-                      icon: dash[index]['icon'],
-                      color: dash[index]['color'],
-                      last_updated: dash[index]['last_updated'],
-                    ),
-                  ),
-                )
-              : Loader(
-                  text: "Updates..",
-                );
-        });
+                ),
+              )
+            : Loader(
+                text: "Updates..",
+              );
+      },
+    );
   }
 }

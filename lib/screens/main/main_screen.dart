@@ -20,19 +20,18 @@ class _MainScreenState extends State<MainScreen> {
     // retrieve session state
     context.read<MalticardController>().getMalticardData();
     super.initState();
-    Timer.periodic(Duration(seconds: 1), (timer) {
-      SessionManager().isTokenExpired().asStream().listen((session) {
-        if (session) {
-          timer.cancel();
-          SessionManager().clearToken();
-          Routes.logout(context);
-          showContentDialog("Please login again", "Session expired", context,
-              () {
-            Navigator.pushReplacementNamed(context, Routes.login);
-          });
-        }
-      });
-    });
+    // Timer.periodic(Duration(seconds: 1), (timer) {
+    //   SessionManager().isTokenExpired().asStream().listen((session) {
+    //     if (session) {
+    //       timer.cancel();
+    //       SessionManager().clearToken();
+    //       showContentDialog("Please login again", "Session expired", context,
+    //           () {
+    //         Navigator.pushReplacementNamed(context, Routes.login);
+    //       });
+    //     }
+    //   });
+    // });
   }
 
   @override
@@ -43,7 +42,7 @@ class _MainScreenState extends State<MainScreen> {
     BlocProvider.of<TitleController>(context).showTitle();
 
     return Scaffold(
-      key: context.read<MenuAppController>().scaffoldKey,
+      // key: context.read<MenuAppController>().scaffoldKey,
       drawer: const SideMenu(),
       body: SafeArea(
         child: Row(

@@ -58,8 +58,18 @@ class ProfileCard extends StatefulWidget {
 
 class _ProfileCardState extends State<ProfileCard> {
   @override
+  void initState() {
+    BlocProvider.of<MalticardController>(context, listen: false)
+        .getMalticardData();
+    super.initState();
+    BlocProvider.of<MalticardController>(context, listen: false)
+        .getMalticardData();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    BlocProvider.of<MalticardController>(context).getMalticardData();
+    BlocProvider.of<MalticardController>(context, listen: true)
+        .getMalticardData();
     return Container(
       margin: const EdgeInsets.only(left: defaultPadding),
       padding: EdgeInsets.symmetric(
@@ -80,8 +90,7 @@ class _ProfileCardState extends State<ProfileCard> {
           if (!Responsive.isMobile(context))
             Padding(
               padding: EdgeInsets.symmetric(horizontal: defaultPadding / 2),
-              child: Text(
-                  " ${context.read<MalticardController>().state['data']['Admin_email']}"),
+              child: Text("Malticard"),
             ),
 
           PopupMenuButton(
