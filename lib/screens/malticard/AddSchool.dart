@@ -204,6 +204,8 @@ class _AddSchoolViewState extends State<AddSchoolView> {
     var request = MultipartRequest('POST', Uri.parse(AppUrls.addSchool));
     // ================================ school fields ====================
     request.fields['school_name'] = _schoolControllers[0].text.trim();
+    request.fields['name'] =
+        _schoolControllers[0].text.trim().toLowerCase().replaceFirst(" ", "-");
     request.fields['school_nature'] = _schoolControllers[6].text.trim();
     request.fields['school_address'] = _schoolControllers[3].text.trim();
     ;
