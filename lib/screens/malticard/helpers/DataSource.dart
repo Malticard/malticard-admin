@@ -221,9 +221,11 @@ class StudentsDataSource extends DataTableSource {
                   text: "$guardianId,${rowData.id}",
                 ),
               ).then((value) {
-                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                  content: Text("Copied to Clipboard"),
-                ));
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text("Copied to Clipboard"),
+                  ),
+                );
               });
             },
             child: Icon(Icons.copy))),
