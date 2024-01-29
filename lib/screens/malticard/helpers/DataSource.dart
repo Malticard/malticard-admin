@@ -1,6 +1,6 @@
 import 'package:malticard/widgets/FutureImage.dart';
 import 'package:qr_flutter/qr_flutter.dart';
-
+import 'package:screenshot/screenshot.dart';
 import '../../../models/StudentModel.dart';
 import '../UpdateSchool.dart';
 import '/exports/exports.dart';
@@ -177,6 +177,7 @@ class StudentsDataSource extends DataTableSource {
 
   @override
   DataRow? getRow(int index) {
+    final _screenshotController = ScreenshotController();
     List<GlobalKey> keys = List.generate(
       data.length,
       (index) => GlobalKey(),
@@ -201,12 +202,14 @@ class StudentsDataSource extends DataTableSource {
           ),
         ),
         DataCell(
-          RepaintBoundary(
-            key: keys[index],
-            child: QrImageView(
-              data: "$guardianId,${rowData.id}",
-              version: QrVersions.auto,
-              size: 200.0,
+          Screenshot(
+            controller: _screenshotController,
+            child: RepaintBoundary(
+              child: QrImageView(
+                data: "$guardianId,${rowData.id}",
+                version: QrVersions.auto,
+                size: 200.0,
+              ),
             ),
           ),
         ),
@@ -225,8 +228,9 @@ class StudentsDataSource extends DataTableSource {
             child: Icon(Icons.copy))),
         DataCell(
           IconButton(
-            onPressed: () {
-              saveQRCode(context, keys[index],
+            onPressed: () async {
+              var bytes = await _screenshotController.capture();
+              saveQRCode(context, bytes!,
                   rowData.studentFname + "_" + rowData.studentLname);
             },
             icon: Icon(Icons.download),

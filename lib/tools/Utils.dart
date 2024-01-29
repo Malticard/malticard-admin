@@ -214,12 +214,14 @@ Widget buildActionButtons(
     ],
   );
 }
+
 /// function to rename uplaoded file to a unique name
 String renameFile(String fileName) {
   var uuid = Uuid();
   String fileExtension = fileName.split(".").last;
   return uuid.v4() + ".$fileExtension";
 }
+
 Future<String?> fetchAndDisplayImage(String imageURL) async {
   // Uint8List? processedImageBytes;
   // final response =
@@ -230,7 +232,7 @@ Future<String?> fetchAndDisplayImage(String imageURL) async {
   //   // Display the image
   //   processedImageBytes = base64Decode(imageBase64);
   // }
-  return  imageURL;
+  return imageURL;
 }
 
 // malticard views
@@ -344,10 +346,14 @@ List<String> months = <String>[
 ];
 
 Future<SchoolModel> fetchSchools({int page = 1, int limit = 10}) async {
-  var response = await Client()
-      .get(Uri.parse(AppUrls.schools + "?page=$page&pageSize=$limit"));
-  SchoolModel schoolModel = schoolModelFromJson(response.body);
-  return schoolModel;
+  try {
+    var response = await Client()
+        .get(Uri.parse(AppUrls.schools + "?page=$page&pageSize=$limit"));
+    SchoolModel schoolModel = schoolModelFromJson(response.body);
+    return schoolModel;
+  } on ClientException catch (e, _) {
+    return Future.error(e);
+  }
 }
 
 Future<List<StudentModel>> fetchGuardianStudents(String schoolId) async {
@@ -366,17 +372,17 @@ Future<int> fetchTaps() async {
   for (int month = 1; month <= 12; month++) {
     monthCounts[month] = 0;
   }
-if(data.isNotEmpty){
-  data.forEach((element) {
-    int month = element.createdAt.month;
-    int count = element.count;
-    monthCounts[month] = count; // Update the count for the specific month
-  });
-  // int totalTapsInYear = monthCounts.values.reduce((sum, count) => sum + count);
-  // print("Total Taps in the Year: $totalTapsInYear");
-  return data.first.count;
-}
-  
+  if (data.isNotEmpty) {
+    data.forEach((element) {
+      int month = element.createdAt.month;
+      int count = element.count;
+      monthCounts[month] = count; // Update the count for the specific month
+    });
+    // int totalTapsInYear = monthCounts.values.reduce((sum, count) => sum + count);
+    // print("Total Taps in the Year: $totalTapsInYear");
+    return data.first.count;
+  }
+
   return 0;
 }
 
@@ -426,14 +432,10 @@ Future<List<StudentModel>> searchStudents(String schoolId, String studentName,
 
 // function save QR code
 Future<void> saveQRCode(
-    BuildContext context, GlobalKey key, String name) async {
-  RenderRepaintBoundary boundary =
-      key.currentContext!.findRenderObject() as RenderRepaintBoundary;
-  ui.Image image = await boundary.toImage(pixelRatio: 3.0);
-  ByteData? byteData = await image.toByteData(format: ui.ImageByteFormat.png);
-  Uint8List pngBytes = byteData!.buffer.asUint8List();
-  final result = await FileSaver.instance.saveFile(
-      name: name, bytes: pngBytes, ext: 'png', mimeType: MimeType.png);
+    BuildContext context, Uint8List data, String name) async {
+  //  pngBytes = data;
+  final result = await FileSaver.instance
+      .saveFile(name: name, bytes: data, ext: 'png', mimeType: MimeType.png);
   if (result.isNotEmpty) {
     showMessage(
         context: context,

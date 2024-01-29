@@ -62,6 +62,7 @@ dependencies:
   image_picker: ^1.0.1
   url_strategy: ^0.2.0
   uuid: ^4.3.3
+  screenshot: ^2.1.0
 
 dev_dependencies:
   flutter_test:
