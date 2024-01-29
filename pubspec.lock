@@ -213,10 +213,10 @@ packages:
     dependency: "direct main"
     description:
       name: file_picker
-      sha256: be325344c1f3070354a1d84a231a1ba75ea85d413774ec4bdf444c023342e030
+      sha256: "4e42aacde3b993c5947467ab640882c56947d9d27342a5b6f2895b23956954a6"
       url: "https://pub.dev"
     source: hosted
-    version: "5.5.0"
+    version: "6.1.1"
   file_saver:
     dependency: "direct main"
     description:
@@ -269,10 +269,10 @@ packages:
     dependency: "direct main"
     description:
       name: fl_chart
-      sha256: c1e26c7e48496be85104c16c040950b0436674cdf0737f3f6e95511b2529b592
+      sha256: b5e2b0f13d93f8c532b5a2786bfb44580de1f50b927bf95813fa1af617e9caf8
       url: "https://pub.dev"
     source: hosted
-    version: "0.63.0"
+    version: "0.66.1"
   flutter:
     dependency: "direct main"
     description: flutter
@@ -348,10 +348,10 @@ packages:
     dependency: "direct main"
     description:
       name: google_fonts
-      sha256: e20ff62b158b96f392bfc8afe29dee1503c94fbea2cbe8186fd59b756b8ae982
+      sha256: f0b8d115a13ecf827013ec9fc883390ccc0e87a96ed5347a3114cac177ef18e8
       url: "https://pub.dev"
     source: hosted
-    version: "5.1.0"
+    version: "6.1.0"
   html:
     dependency: transitive
     description:
@@ -404,10 +404,10 @@ packages:
     dependency: "direct main"
     description:
       name: image_picker_for_web
-      sha256: "869fe8a64771b7afbc99fc433a5f7be2fea4d1cb3d7c11a48b6b579eb9c797f0"
+      sha256: e2423c53a68b579a7c37a1eda967b8ae536c3d98518e5db95ca1fe5719a730a3
       url: "https://pub.dev"
     source: hosted
-    version: "2.2.0"
+    version: "3.0.2"
   image_picker_ios:
     dependency: transitive
     description:
@@ -761,18 +761,18 @@ packages:
     dependency: transitive
     description:
       name: syncfusion_flutter_core
-      sha256: "9f0a4593f7642b2f106e329734d0e5fc746baf8d0a59495eec586cd0d9ba7d02"
+      sha256: ed8527189f874b9d07f78f2f4306739ce003e8baccfdd7453c0098beef16428f
       url: "https://pub.dev"
     source: hosted
-    version: "22.2.12"
+    version: "24.1.47"
   syncfusion_flutter_sliders:
     dependency: "direct main"
     description:
       name: syncfusion_flutter_sliders
-      sha256: "826e2a6ab71c87ecc33f6c19e4064ed9910980b5ad171a3e2888fe782a324a6c"
+      sha256: "1d51b5b93e54ccd227f7a9ca291ee511718f9c904c017ba210484a4bad4ddc01"
       url: "https://pub.dev"
     source: hosted
-    version: "22.2.12"
+    version: "24.1.47"
   term_glyph:
     dependency: transitive
     description:

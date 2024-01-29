@@ -116,7 +116,7 @@ class _UpdateSchoolState extends State<UpdateSchool> {
     if (validateEmail(_schoolControllers[1].text, context) != false) {
       showProgress(context, msg: "Updating school details");
       _handleSchoolRegistration().then((value) {
-        Routes.popPage(context);
+        // Routes.popPage(context);
         // showSuccessDialog(_schoolControllers[0].text.trim(), context,
         //     onPressed: () {
         //   Routes.popPage(context);
@@ -125,7 +125,7 @@ class _UpdateSchoolState extends State<UpdateSchool> {
         // });
         Routes.popPage(context);
       }).whenComplete(() {
-        // Routes.popPage(context);
+        Routes.popPage(context);
         showMessage(
           context: context,
           type: 'success',
@@ -214,9 +214,13 @@ class _UpdateSchoolState extends State<UpdateSchool> {
     // school badge upload
     if (kIsWeb) {
       if (schoolData.isNotEmpty) {
-        request.files.add(MultipartFile(
-            "image", schoolData['image'], schoolData['size'],
-            filename: schoolData['name']));
+        request.files.add(
+          MultipartFile.fromBytes(
+            "image",
+            schoolData['image'],
+            filename: schoolData['name'],
+          ),
+        );
       }
     } else {
       if (uri.isNotEmpty) {

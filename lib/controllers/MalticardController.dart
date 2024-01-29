@@ -21,7 +21,7 @@ class MalticardController extends Cubit<Map<String, dynamic>> {
     SharedPreferences.getInstance().then((prefs) {
       if (prefs.containsKey('MalticardData')) {
         String? s = prefs.getString('MalticardData');
-        log("Contains MalticardData");
+        // log("Contains MalticardData");
         if (s != null) {
           emit(jsonDecode(s));
         }

@@ -215,14 +215,17 @@ class _AddSchoolViewState extends State<AddSchoolView> {
     // school badge upload
     if (kIsWeb) {
       if (schoolData.isNotEmpty) {
-        request.files.add(MultipartFile(
-            "image", schoolData['image'], schoolData['size'],
-            filename: schoolData['name']));
+        request.files.add(
+          MultipartFile.fromBytes(
+            "image", schoolData['image'], //schoolData['size'],
+            filename: schoolData['name'],
+          ),
+        );
       }
     } else {
       if (uri.isNotEmpty) {
-        request.files.add(MultipartFile(
-            'image', File(uri).readAsBytes().asStream(), File(uri).lengthSync(),
+        request.files.add(MultipartFile.fromBytes(
+            'image', File(uri).readAsBytesSync(), // File(uri).lengthSync(),
             filename: uri.split("/").last));
       }
     }

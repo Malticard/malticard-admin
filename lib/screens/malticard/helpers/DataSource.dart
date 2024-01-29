@@ -1,3 +1,4 @@
+import 'package:malticard/tools/canvas_to_image.dart';
 import 'package:malticard/widgets/FutureImage.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:screenshot/screenshot.dart';
@@ -229,9 +230,9 @@ class StudentsDataSource extends DataTableSource {
         DataCell(
           IconButton(
             onPressed: () async {
-              var bytes = await _screenshotController.capture();
-              saveQRCode(context, bytes!,
-                  rowData.studentFname + "_" + rowData.studentLname);
+              ImageExporterWeb.saveImage(
+                  "${rowData.studentFname}_${rowData.studentLname}",
+                  "$guardianId,${rowData.id}");
             },
             icon: Icon(Icons.download),
           ),
