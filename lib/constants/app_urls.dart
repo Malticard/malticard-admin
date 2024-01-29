@@ -1,5 +1,5 @@
 class AppUrls {
-  static String devURL = "http://127.0.0.1:5050/";//"http://13.127.169.59:5050/";
+  static String devURL = "http://13.127.169.59:5050/";
   static String imageUrl = "assets/images/";
   static String iconUrl = "assets/icons/";
  static String liveImages = "http://13.127.169.59:5050/image/images/";

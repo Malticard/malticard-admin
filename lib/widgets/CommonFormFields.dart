@@ -57,8 +57,8 @@ class _CommonFormFieldsState extends State<CommonFormFields>
 
   void _handleImageUpload(int a) async {
     if (kIsWeb) {
-      PickedFile? picker =
-          await ImagePicker.platform.pickImage(source: ImageSource.gallery);
+      XFile? picker = await ImagePicker.platform
+          .getImageFromSource(source: ImageSource.gallery);
       if (picker != null) {
         var element = await picker.readAsBytes();
         setState(() {
@@ -66,7 +66,7 @@ class _CommonFormFieldsState extends State<CommonFormFields>
         });
         BlocProvider.of<ImageUploadController>(context).uploadImage({
           "image": picker.readAsBytes().asStream(),
-          "name": widget.formControllers[0].text,
+          "name": renameFile(picker.name.trim()),
           "size": picker.readAsBytes().asStream().length,
         });
       }

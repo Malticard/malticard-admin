@@ -61,6 +61,7 @@ dependencies:
   file_saver: ^0.2.7
   image_picker: ^1.0.1
   url_strategy: ^0.2.0
+  uuid: ^4.3.3
 
 dev_dependencies:
   flutter_test:
@@ -68,12 +69,12 @@ dev_dependencies:
 # splash screen
 flutter_native_splash:
 
-  color: "#F6F6F7"
+  color: "#1949B9"
 
-  image: assets/images/malticard.png
+  image: assets/images/brand.png
   web: true
 
-  image_web: assets/images/malticard.png
+  image_web: assets/images/brand.png
   #
   # web_image_mode can be one of the following modes: center, contain, stretch, and cover.
   web_image_mode: center

@@ -1,6 +1,6 @@
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import '/controllers/DashbaordWidgetController.dart';
-import 'package:url_strategy/url_strategy.dart';
+// import 'package:url_strategy/url_strategy.dart';
 import '/exports/exports.dart';
 import 'controllers/GuardianIdController.dart';
 import 'controllers/LoaderController.dart';
@@ -10,7 +10,7 @@ import 'controllers/SidebarController.dart';
 void main() async {
   // Obtain shared preferences.
   WidgetsFlutterBinding.ensureInitialized();
-  setPathUrlStrategy();
+  // setPathUrlStrategy();
   Bloc.observer = const Observer();
   var prefs = await SharedPreferences.getInstance();
   // prefs.clear();

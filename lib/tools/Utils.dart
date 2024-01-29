@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 import 'dart:ui';
 import 'dart:ui' as ui;
-
+import 'package:uuid/uuid.dart';
 import 'package:file_saver/file_saver.dart';
 import 'package:flutter/rendering.dart';
 import 'package:malticard/controllers/LoaderController.dart';
@@ -214,7 +214,12 @@ Widget buildActionButtons(
     ],
   );
 }
-
+/// function to rename uplaoded file to a unique name
+String renameFile(String fileName) {
+  var uuid = Uuid();
+  String fileExtension = fileName.split(".").last;
+  return uuid.v4() + ".$fileExtension";
+}
 Future<String?> fetchAndDisplayImage(String imageURL) async {
   // Uint8List? processedImageBytes;
   // final response =
