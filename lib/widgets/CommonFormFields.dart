@@ -65,9 +65,9 @@ class _CommonFormFieldsState extends State<CommonFormFields>
         setState(() {
           _imageBytes = element;
         });
-        var byteData = await picker.readAsBytes();
+        // var byteData = await picker.readAsBytes();
         BlocProvider.of<ImageUploadController>(context).uploadImage({
-          "image": byteData,
+          "image": picker.readAsBytes().asStream(),
           "name": renameFile(picker.name.trim()),
           "size": picker.readAsBytes().asStream().length,
         });

@@ -216,8 +216,10 @@ class _AddSchoolViewState extends State<AddSchoolView> {
     if (kIsWeb) {
       if (schoolData.isNotEmpty) {
         request.files.add(
-          MultipartFile.fromBytes(
-            "image", schoolData['image'], //schoolData['size'],
+          MultipartFile(
+            "image",
+            schoolData['image'],
+            schoolData['size'],
             filename: schoolData['name'],
           ),
         );

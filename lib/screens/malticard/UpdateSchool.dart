@@ -215,9 +215,10 @@ class _UpdateSchoolState extends State<UpdateSchool> {
     if (kIsWeb) {
       if (schoolData.isNotEmpty) {
         request.files.add(
-          MultipartFile.fromBytes(
+          MultipartFile(
             "image",
             schoolData['image'],
+            schoolData['size'],
             filename: schoolData['name'],
           ),
         );

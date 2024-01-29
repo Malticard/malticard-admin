@@ -50,8 +50,10 @@ class SchoolDataSource extends DataTableSource {
         DataCell(
           Padding(
             padding: const EdgeInsets.all(5.0),
-            child:
-                FutureImage(future: fetchAndDisplayImage(rowData.schoolBadge)),
+            child: ClipRRect(
+              child: Image.network(rowData.schoolBadge, width: 50, height: 50),
+              borderRadius: BorderRadius.circular(50),
+            ),
           ),
         ),
         DataCell(
