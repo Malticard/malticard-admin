@@ -12,6 +12,7 @@ import 'package:malticard/screens/malticard/SchoolsView.dart';
 
 import '../models/StudentModel.dart';
 import '../models/Taps.dart';
+import '../models/school_student_model.dart';
 import '/exports/exports.dart';
 
 // login logic for the user
@@ -247,6 +248,11 @@ List<Map<String, dynamic>> malticardViews = [
     "page": const SchoolsView(),
     'icon': "assets/icons/menu_store.svg"
   },
+  {
+    "title": "Students",
+    "page": const SchoolsView(),
+    'icon': "assets/icons/menu_store.svg"
+  },
 ];
 
 /// show snackbar message
@@ -360,6 +366,22 @@ Future<List<StudentModel>> fetchGuardianStudents(String schoolId) async {
   var response =
       await Client().get(Uri.parse(AppUrls.guardianStudents + schoolId));
   return response.statusCode == 200 ? studentModelFromJson(response.body) : [];
+}
+
+Future<SchoolStudentsModel> fetchSchoolStudents(String schoolId,
+    {int page = 1, int limit = 10}) async {
+  // fetch students
+  try {
+    Response response = await Client().get(
+        Uri.parse(AppUrls.students + schoolId + "?page=$page&pageSize=$limit"));
+    if (response.statusCode == 200) {
+      return schoolStudentsModelFromJson(response.body);
+    } else {
+      return Future.error(json.decode(response.body)['message']);
+    }
+  } on ClientException catch (e, _) {
+    return Future.error(e.message);
+  }
 }
 
 // fetch all taps made

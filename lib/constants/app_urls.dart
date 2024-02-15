@@ -2,7 +2,7 @@ class AppUrls {
   static String devURL = "http://13.127.169.59:5050/";
   static String imageUrl = "assets/images/";
   static String iconUrl = "assets/icons/";
- static String liveImages = "http://13.127.169.59:5050/image/images/";
+  static String liveImages = "http://13.127.169.59:5050/image/images/";
   // post urls
   static String login = devURL + "post/admin-login";
   static String addClass = devURL + "post/class/create";
@@ -18,7 +18,7 @@ class AppUrls {
   // get urls
   static String roles = devURL + "get/roles";
   static String schools = devURL + "get/schools";
-  static String students = devURL + "get/students";
+  static String students = devURL + "get/students/";
   static String overtime = devURL + "get/overtime";
   static String staff = devURL + "get/staff";
   static String settings = devURL + "get/settings";
@@ -45,12 +45,12 @@ class AppUrls {
   static String deleteClass = devURL + "delete/class/";
   static String deleteSchool = devURL + "delete/schools/";
 // guardianStudents
-static String guardianStudents = devURL + "guardianStudents/guardianStudents/";
-// searching 
-static String searchStudents = devURL + "search/search-students/";
-static String searchGuardians = devURL + "search/search-guardians/";
-static String searchSchool = devURL + "search/search-schools";
+  static String guardianStudents =
+      devURL + "guardianStudents/guardianStudents/";
+// searching
+  static String searchStudents = devURL + "search/search-students/";
+  static String searchGuardians = devURL + "search/search-guardians/";
+  static String searchSchool = devURL + "search/search-schools";
 // updating school
-static String updateSchool = devURL + "update/schools/";
+  static String updateSchool = devURL + "update/schools/";
 }
-

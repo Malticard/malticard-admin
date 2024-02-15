@@ -1,5 +1,5 @@
-import 'package:malticard/screens/malticard/SchoolsView.dart';
-
+import '/screens/malticard/SchoolsView.dart';
+import '/screens/malticard/school_students.dart';
 import '/exports/exports.dart';
 
 class WidgetController extends Cubit<Widget> {
@@ -8,6 +8,7 @@ class WidgetController extends Cubit<Widget> {
   static List<Widget> pages = [
     Dashboard(),
     SchoolsView(),
+    SchoolsView(child: SchoolStudents(),),
   ];
   void pushWidget(int page) {
     SharedPreferences.getInstance().then((value) {

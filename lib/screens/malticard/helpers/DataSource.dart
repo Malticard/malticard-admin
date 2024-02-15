@@ -3,6 +3,7 @@ import 'package:malticard/widgets/FutureImage.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:screenshot/screenshot.dart';
 import '../../../models/StudentModel.dart';
+import '../../../models/school_student_model.dart' as st;
 import '../UpdateSchool.dart';
 import '/exports/exports.dart';
 
@@ -250,6 +251,102 @@ class StudentsDataSource extends DataTableSource {
 
   @override
   int get rowCount => data.length;
+
+  @override
+  int get selectedRowCount => 0;
+}
+
+class SchoolStudentsDataSource extends DataTableSource {
+  SchoolStudentsDataSource(
+      {required this.data,
+      this.paginatorController,
+      required this.currentPage,
+      required this.totalDocuments,
+      required this.schoolId,
+      required this.context});
+  List<st.Result> data;
+  BuildContext context;
+  int totalDocuments;
+  final PaginatorController? paginatorController;
+  int currentPage;
+  final String schoolId;
+
+// Replace with your actual data source
+
+  @override
+  DataRow? getRow(int index) {
+    final int pageIndex = currentPage ~/ paginatorController!.rowsPerPage;
+    final int dataIndex = index % paginatorController!.rowsPerPage;
+    final int dataLength = data.length;
+
+    if (pageIndex * paginatorController!.rowsPerPage + dataIndex >=
+        dataLength) {
+      return null;
+    }
+
+    final rowData =
+        data[pageIndex * paginatorController!.rowsPerPage + dataIndex];
+    return DataRow.byIndex(
+      index: index,
+      cells: [
+        DataCell(
+          FutureImage(
+            future: fetchAndDisplayImage(rowData.studentProfilePic),
+          ),
+        ),
+        DataCell(
+          Text(
+            rowData.studentFname + " " + rowData.studentLname,
+          ),
+        ),
+        DataCell(
+          Text(
+            rowData.resultClass.className,
+          ),
+        ),
+        DataCell(
+          RepaintBoundary(
+            child: QrImageView(
+              data: "${rowData.id}",
+              version: QrVersions.auto,
+              size: 200.0,
+            ),
+          ),
+        ),
+        DataCell(OutlinedButton(
+            onPressed: () {
+              Clipboard.setData(
+                ClipboardData(
+                  text: "${rowData.id}",
+                ),
+              ).then((value) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text("Copied to Clipboard"),
+                  ),
+                );
+              });
+            },
+            child: Icon(Icons.copy))),
+        DataCell(
+          IconButton(
+            onPressed: () async {
+              ImageExporterWeb.saveImage(
+                  "${rowData.studentFname}_${rowData.studentLname}",
+                  "${rowData.id}");
+            },
+            icon: Icon(Icons.download),
+          ),
+        )
+      ],
+    );
+  }
+
+  @override
+  bool get isRowCountApproximate => false;
+
+  @override
+  int get rowCount => totalDocuments;
 
   @override
   int get selectedRowCount => 0;

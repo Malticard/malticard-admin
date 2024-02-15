@@ -3,7 +3,8 @@ import '/controllers/DashbaordWidgetController.dart';
 import '/exports/exports.dart';
 
 class SchoolsView extends StatefulWidget {
-  const SchoolsView({super.key});
+  final Widget? child;
+  const SchoolsView({super.key, this.child});
 
   @override
   State<SchoolsView> createState() => _SchoolsViewState();
