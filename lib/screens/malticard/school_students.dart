@@ -141,8 +141,7 @@ class _SchoolStudentsState extends State<SchoolStudents> {
               totalDocuments: schoolData?.totalDocuments ?? 0,
               data: filteredRows,
               onTap: (value) {
-                BlocProvider.of<DashboardWidgetController>(context)
-                    .changeWidget(
+                BlocProvider.of<SchoolsController>(context).changeWidget(
                   StudentSchoolView(
                     schoolId: value.trim(),
                   ),

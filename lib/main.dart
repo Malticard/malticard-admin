@@ -2,10 +2,6 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import '/controllers/DashbaordWidgetController.dart';
 // import 'package:url_strategy/url_strategy.dart';
 import '/exports/exports.dart';
-import 'controllers/GuardianIdController.dart';
-import 'controllers/LoaderController.dart';
-import 'controllers/MenuAppController.dart';
-import 'controllers/SidebarController.dart';
 
 void main() async {
   // Obtain shared preferences.
@@ -29,6 +25,7 @@ void main() async {
         BlocProvider(create: (context) => GuardianIdController()),
         BlocProvider(create: (context) => MalticardController()),
         BlocProvider(create: (context) => DashboardWidgetController()),
+        BlocProvider(create: (context) => SchoolsController()),
         BlocProvider(create: (context) => OnlineCheckerController()),
         BlocProvider(create: (context) => TitleController()),
         BlocProvider(create: (context) => DashboardController()),

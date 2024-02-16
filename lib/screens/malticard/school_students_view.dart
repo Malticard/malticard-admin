@@ -4,7 +4,7 @@ import '../../exports/exports.dart';
 
 import '../../models/school_student_model.dart';
 import '../../models/school_student_model.dart' as st;
-import 'Schools.dart';
+// import 'Schools.dart';
 import 'helpers/DataSource.dart';
 import 'school_students.dart';
 
@@ -53,7 +53,7 @@ class _StudentSchoolViewState extends State<StudentSchoolView> {
       }
       // Listen to the stream and update the UI
 
-      Timer.periodic(Duration(seconds: 3), (timer) async {
+      Timer.periodic(Duration(seconds: 2), (timer) async {
         this.timer = timer;
         // Add a check to see if the widget is still mounted before updating the state
         if (mounted) {
@@ -133,8 +133,7 @@ class _StudentSchoolViewState extends State<StudentSchoolView> {
                   onPressed: () {
                     BlocProvider.of<TitleController>(context)
                         .setTitle("Schools");
-                    BlocProvider.of<DashboardWidgetController>(context)
-                        .changeWidget(
+                    BlocProvider.of<SchoolsController>(context).changeWidget(
                       SchoolStudents(),
                     );
                   },

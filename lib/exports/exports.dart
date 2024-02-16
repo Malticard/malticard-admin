@@ -107,6 +107,11 @@ export '/controllers/ImageUploadController.dart';
 export '/controllers/TitleController.dart';
 export '/controllers/OnlineCheckerController.dart';
 export '/controllers/DashboardController.dart';
+export '/controllers/GuardianIdController.dart';
+export '/controllers/LoaderController.dart';
+export '/controllers/MenuAppController.dart';
+export '/controllers/SidebarController.dart';
+export '/controllers/schools_controller.dart';
 
 // themes
 export '/Themes/Themes.dart';

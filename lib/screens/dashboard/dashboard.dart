@@ -35,13 +35,13 @@ class _DashboardState extends State<Dashboard> {
               ),
             ],
           ),
-          SizedBox(
-            width: MediaQuery.of(context).size.width,
-            height: Responsive.isMobile(context)
-                ? MediaQuery.of(context).size.width
-                : MediaQuery.of(context).size.width * 0.3,
-            child: BarChartPage(),
-          ),
+          // SizedBox(
+          //   width: MediaQuery.of(context).size.width,
+          //   height: Responsive.isMobile(context)
+          //       ? MediaQuery.of(context).size.width
+          //       : MediaQuery.of(context).size.width * 0.3,
+          //   child: BarChartPage(),
+          // ),
           Space(
             space: 0.07,
           )

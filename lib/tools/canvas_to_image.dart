@@ -11,8 +11,8 @@ class ImageExporterWeb {
     final link = html.AnchorElement();
 
     final canvas = html.CanvasElement(
-      width: html.window.innerWidth,
-      height: html.window.innerHeight,
+      width: html.window.innerWidth! ~/ 4.3,
+      height: html.window.innerHeight! ~/ 2.4,
     );
     final context = canvas.context2D;
     int w = canvas.width ?? 0;
