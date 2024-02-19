@@ -112,7 +112,7 @@ class GuardiansDataSource extends DataTableSource {
   final int totalDocuments;
   final int currentPage;
   List<GuardianModel> data;
-  final ValueChanged<String> onTap;
+  final ValueChanged<GuardianModel> onTap;
 
 // Replace with your actual data source
 
@@ -133,7 +133,7 @@ class GuardiansDataSource extends DataTableSource {
         if (value == null) {
           return;
         } else {
-          onTap(rowData.id);
+          onTap(rowData);
         }
       },
       index: index,
@@ -172,20 +172,23 @@ class GuardiansDataSource extends DataTableSource {
 
 class StudentsDataSource extends DataTableSource {
   StudentsDataSource(
-      {required this.data, required this.guardianId, required this.context});
+      {required this.data,
+      required this.guardianId,
+      required this.guardianName,
+      required this.context});
   List<StudentModel> data;
   BuildContext context;
   final String guardianId;
-
+  final String guardianName;
 // Replace with your actual data source
 
   @override
   DataRow? getRow(int index) {
     final _screenshotController = ScreenshotController();
-    List<GlobalKey> keys = List.generate(
-      data.length,
-      (index) => GlobalKey(),
-    );
+    // List<GlobalKey> keys = List.generate(
+    //   data.length,
+    //   (index) => GlobalKey(),
+    // );
     final rowData = data[index];
     return DataRow.byIndex(
       index: index,
@@ -221,7 +224,7 @@ class StudentsDataSource extends DataTableSource {
             onPressed: () {
               Clipboard.setData(
                 ClipboardData(
-                  text: "$guardianId,${rowData.id}",
+                  text: "$guardianId-${guardianName},${rowData.id}",
                 ),
               ).then((value) {
                 ScaffoldMessenger.of(context).showSnackBar(
@@ -236,7 +239,7 @@ class StudentsDataSource extends DataTableSource {
           IconButton(
             onPressed: () async {
               ImageExporterWeb.saveImage(
-                  "${rowData.studentFname}_${rowData.studentLname}",
+                  "${rowData.studentFname}_${rowData.studentLname}-${rowData}",
                   "$guardianId,${rowData.id}");
             },
             icon: Icon(Icons.download),

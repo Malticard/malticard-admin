@@ -80,70 +80,78 @@ class _SchoolGuardiansState extends State<SchoolGuardians> {
           var guardians = snapshot.data;
           _filteredRows = snapshot.data?.results ?? [];
           return CustomDataTable(
-                empty: !snapshot.hasData ?  Loader(
-                  text: "Guardians...",
-                ) : NoDataWidget(text: "No Guardians found",),
-                  rowsPerPage: _rowsPerpage,
-                  onRowsPerPageChange: (rows) {
-                    setState(() {
-                      _rowsPerpage = rows ?? 0;
-                    });
-                  },
-                  paginatorController: _paginatorController,
-                  title: "Guardians",
-                  onPageChanged: (value) {
-                    setState(() {
-                      _currentPage = (value ~/ _rowsPerpage);
-                    });
-                  },
-                  actions: [
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width / 4,
-                      height: 100,
-                      child: TextFormField(
-                          controller: _queryController,
-                          decoration: InputDecoration(
-                            labelText: "Search",
-                          )),
-                    )
-                  ],
-                  source: GuardiansDataSource(
-                    paginatorController: _paginatorController,
-                    data: _filteredRows,
-                    onTap: (guardianId) {
-                      BlocProvider.of<DashboardWidgetController>(context)
-                          .changeWidget(StudentsView(guardianId: guardianId));
-                          BlocProvider.of<TitleController>(context).setTitle("Students");
-                      // capture guardian id
-                      BlocProvider.of<GuardianIdController>(context)
-                          .setGuardianId(widget.schoolId.trim());
-                    },
-                    currentPage: _currentPage,
-                    totalDocuments: guardians?.totalDocuments ?? 0,
+            empty: !snapshot.hasData
+                ? Loader(
+                    text: "Guardians...",
+                  )
+                : NoDataWidget(
+                    text: "No Guardians found",
                   ),
-                  
-                  header: Row(
-                    children: [
-                      TextButton.icon(
-                        onPressed: () {
-                          BlocProvider.of<TitleController>(context).setTitle("Schools");
-                          BlocProvider.of<DashboardWidgetController>(context)
-                              .changeWidget(
-                            Schools(),
-                          );
-                        },
-                        icon: Icon(Icons.arrow_back),
-                        label: Text("Back to Schools"),
-                      ),
-                    ],
-                  ),
-                  columns: [
-                    DataColumn(label: Text('#')),
-                    DataColumn(label: Text('Guardian\'s Name')),
-                    DataColumn(label: Text('Guardian\'s Email')),
-                  ],
-                  topWidget: SizedBox(),
-                );
+            rowsPerPage: _rowsPerpage,
+            onRowsPerPageChange: (rows) {
+              setState(() {
+                _rowsPerpage = rows ?? 0;
+              });
+            },
+            paginatorController: _paginatorController,
+            title: "Guardians",
+            onPageChanged: (value) {
+              setState(() {
+                _currentPage = (value ~/ _rowsPerpage);
+              });
+            },
+            actions: [
+              SizedBox(
+                width: MediaQuery.of(context).size.width / 4,
+                height: 100,
+                child: TextFormField(
+                    controller: _queryController,
+                    decoration: InputDecoration(
+                      labelText: "Search",
+                    )),
+              )
+            ],
+            source: GuardiansDataSource(
+              paginatorController: _paginatorController,
+              data: _filteredRows,
+              onTap: (guardian) {
+                BlocProvider.of<DashboardWidgetController>(context)
+                    .changeWidget(StudentsView(
+                  guardianId: guardian.id,
+                  guardian_name:
+                      "${guardian.guardianFname}-${guardian.guardianLname}",
+                ));
+                BlocProvider.of<TitleController>(context).setTitle("Students");
+                // capture guardian id
+                BlocProvider.of<GuardianIdController>(context)
+                    .setGuardianId(widget.schoolId.trim());
+              },
+              currentPage: _currentPage,
+              totalDocuments: guardians?.totalDocuments ?? 0,
+            ),
+            header: Row(
+              children: [
+                TextButton.icon(
+                  onPressed: () {
+                    BlocProvider.of<TitleController>(context)
+                        .setTitle("Schools");
+                    BlocProvider.of<DashboardWidgetController>(context)
+                        .changeWidget(
+                      Schools(),
+                    );
+                  },
+                  icon: Icon(Icons.arrow_back),
+                  label: Text("Back to Schools"),
+                ),
+              ],
+            ),
+            columns: [
+              DataColumn(label: Text('#')),
+              DataColumn(label: Text('Guardian\'s Name')),
+              DataColumn(label: Text('Guardian\'s Email')),
+            ],
+            topWidget: SizedBox(),
+          );
         });
   }
 }
