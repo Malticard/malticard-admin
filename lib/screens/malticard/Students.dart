@@ -10,9 +10,10 @@ import 'helpers/DataSource.dart';
 
 class StudentsView extends StatefulWidget {
   final String guardianId;
+  final String relationship;
   final String guardian_name;
   const StudentsView(
-      {super.key, this.guardian_name = "", required this.guardianId});
+      {super.key, this.guardian_name = "", this.relationship = "", required this.guardianId});
 
   @override
   State<StudentsView> createState() => _StudentsViewState();
@@ -119,6 +120,7 @@ class _StudentsViewState extends State<StudentsView> {
             source: StudentsDataSource(
               data: _filteredRows,
               guardianId: widget.guardianId,
+              relationship:widget.relationship,
               guardianName: widget.guardian_name,
               context: context,
             ),

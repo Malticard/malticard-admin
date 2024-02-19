@@ -175,11 +175,13 @@ class StudentsDataSource extends DataTableSource {
       {required this.data,
       required this.guardianId,
       required this.guardianName,
+      required this.relationship,
       required this.context});
   List<StudentModel> data;
   BuildContext context;
   final String guardianId;
   final String guardianName;
+  final String relationship;
 // Replace with your actual data source
 
   @override
@@ -239,7 +241,7 @@ class StudentsDataSource extends DataTableSource {
           IconButton(
             onPressed: () async {
               ImageExporterWeb.saveImage(
-                  "${rowData.studentFname}_${rowData.studentLname}-${guardianName}",
+                  "${rowData.studentFname}_${rowData.studentLname}-${guardianName}-$relationship",
                   "$guardianId,${rowData.id}");
             },
             icon: Icon(Icons.download),

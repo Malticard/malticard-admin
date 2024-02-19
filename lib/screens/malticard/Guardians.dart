@@ -118,6 +118,7 @@ class _SchoolGuardiansState extends State<SchoolGuardians> {
                 BlocProvider.of<DashboardWidgetController>(context)
                     .changeWidget(StudentsView(
                   guardianId: guardian.id,
+                  relationship: guardian.relationship,
                   guardian_name:
                       "${guardian.guardianFname}-${guardian.guardianLname}",
                 ));
