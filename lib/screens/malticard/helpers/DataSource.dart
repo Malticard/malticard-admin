@@ -224,7 +224,7 @@ class StudentsDataSource extends DataTableSource {
             onPressed: () {
               Clipboard.setData(
                 ClipboardData(
-                  text: "$guardianId-${guardianName},${rowData.id}",
+                  text: "$guardianId,${rowData.id}",
                 ),
               ).then((value) {
                 ScaffoldMessenger.of(context).showSnackBar(
@@ -239,7 +239,7 @@ class StudentsDataSource extends DataTableSource {
           IconButton(
             onPressed: () async {
               ImageExporterWeb.saveImage(
-                  "${rowData.studentFname}_${rowData.studentLname}-${rowData}",
+                  "${rowData.studentFname}_${rowData.studentLname}-${guardianName}",
                   "$guardianId,${rowData.id}");
             },
             icon: Icon(Icons.download),
