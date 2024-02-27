@@ -53,4 +53,7 @@ class AppUrls {
   static String searchSchool = devURL + "search/search-schools";
 // updating school
   static String updateSchool = devURL + "update/schools/";
+  // getting all students
+  static String allStudents = devURL + "admin/students";
+  static String allGuardians = devURL + "admin/guardians";
 }

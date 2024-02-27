@@ -1,5 +1,5 @@
 import '/exports/exports.dart';
-import 'components/GrapStats.dart';
+// import 'components/GrapStats.dart';
 // import 'components/WeeklyTaps.dart';
 
 class Dashboard extends StatefulWidget {
@@ -22,19 +22,19 @@ class _DashboardState extends State<Dashboard> {
           ),
           Space(),
           Divider(),
-          Row(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(18.0),
-                child: Text(
-                  "Number of taps in a year",
-                  style: TextStyles(context)
-                      .getTitleStyle()
-                      .copyWith(fontSize: 18),
-                ),
-              ),
-            ],
-          ),
+          // Row(
+          //   children: [
+          //     Padding(
+          //       padding: const EdgeInsets.all(18.0),
+          //       child: Text(
+          //         "Number of taps in a year",
+          //         style: TextStyles(context)
+          //             .getTitleStyle()
+          //             .copyWith(fontSize: 18),
+          //       ),
+          //     ),
+          //   ],
+          // ),
           // SizedBox(
           //   width: MediaQuery.of(context).size.width,
           //   height: Responsive.isMobile(context)

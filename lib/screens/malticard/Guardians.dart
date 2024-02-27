@@ -49,16 +49,24 @@ class _SchoolGuardiansState extends State<SchoolGuardians> {
         _guardianController.add(guardians);
       }
       // Listen to the stream and update the UI
-
-      Timer.periodic(Duration(seconds: 1), (timer) async {
+      if (_queryController.text.isNotEmpty) {
+        // logic for searching available guardians
+        var guardians =
+            await searchGuardians(widget.schoolId, _queryController.text);
+        _guardianController.add(guardians);
+      } else {
+        var guardians = await fetchGuardians(widget.schoolId,
+            page: _currentPage, limit: _rowsPerpage);
+        _guardianController.add(guardians);
+      }
+      Timer.periodic(Duration(milliseconds: 900), (timer) async {
         this.timer = timer;
         // Add a check to see if the widget is still mounted before updating the state
         if (mounted) {
           if (_queryController.text.isNotEmpty) {
             // logic for searching available guardians
             var guardians = await searchGuardians(
-                widget.schoolId, _queryController.text,
-                page: _currentPage, limit: _rowsPerpage);
+                widget.schoolId, _queryController.text);
             _guardianController.add(guardians);
           } else {
             var guardians = await fetchGuardians(widget.schoolId,

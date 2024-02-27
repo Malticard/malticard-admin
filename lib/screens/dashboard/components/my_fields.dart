@@ -1,4 +1,4 @@
-import '/controllers/SidebarController.dart';
+// import '/controllers/SidebarController.dart';
 import '/exports/exports.dart';
 
 class DashboardTiles extends StatefulWidget {
@@ -36,7 +36,7 @@ class _DashboardTilesState extends State<DashboardTiles> {
           ),
           tablet: const FileInfoCardGridView(),
           desktop: FileInfoCardGridView(
-            childAspectRatio: _size.width < 1400 ? 1.1 : 1.4,
+            childAspectRatio: _size.width < 1400 ? 1.5 : 2.1,
           ),
         ),
       ],

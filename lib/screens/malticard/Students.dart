@@ -53,7 +53,19 @@ class _StudentsViewState extends State<StudentsView> {
         _studentController.add(students);
       }
       // Listen to the stream and update the UI
-
+if (_searchController.text.isNotEmpty) {
+            var students = await searchStudents(
+                widget.guardianId, _searchController.text,
+               );
+            _studentController.add(students);
+          } else {
+            try {
+              var students = await fetchGuardianStudents(widget.guardianId);
+              _studentController.add(students);
+            } on ClientException catch (e, x) {
+              log(e.toString());
+            }
+          }
       Timer.periodic(Duration(seconds: 3), (timer) async {
         this.timer = timer;
         // Add a check to see if the widget is still mounted before updating the state
@@ -61,7 +73,7 @@ class _StudentsViewState extends State<StudentsView> {
           if (_searchController.text.isNotEmpty) {
             var students = await searchStudents(
                 widget.guardianId, _searchController.text,
-                page: 1, limit: rowsPerPage);
+               );
             _studentController.add(students);
           } else {
             try {

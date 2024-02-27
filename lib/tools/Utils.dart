@@ -436,7 +436,7 @@ Future<SchoolModel> searchSchools(String schoolName,
 
 // function to search for guardians
 Future<Guardians> searchGuardians(String schoolId, String guardianName,
-    {int page = 1, int limit = 20}) async {
+    {int page = 1, int limit = 2000}) async {
   var response = await Client().get(Uri.parse(AppUrls.searchGuardians +
       schoolId +
       "?query=$guardianName&page=$page&pageSize=$limit"));
@@ -445,29 +445,31 @@ Future<Guardians> searchGuardians(String schoolId, String guardianName,
 
 // function to search for students
 Future<List<StudentModel>> searchStudents(String schoolId, String studentName,
-    {int page = 1, int limit = 20}) async {
+    {int page = 1, int limit = 20000}) async {
   var response = await Client().get(Uri.parse(AppUrls.searchStudents +
       schoolId +
       "?query=$studentName&page=$page&pageSize=$limit"));
   return studentModelFromJson(response.body);
 }
 
-// function save QR code
-Future<void> saveQRCode(
-    BuildContext context, Uint8List data, String name) async {
-  //  pngBytes = data;
-  final result = await FileSaver.instance
-      .saveFile(name: name, bytes: data, ext: 'png', mimeType: MimeType.png);
-  if (result.isNotEmpty) {
-    showMessage(
-        context: context,
-        msg: "QR Code saved to gallery! ${result}",
-        type: 'success');
-  } else {
-    showMessage(
-        context: context,
-        msg: "Failed to save QR Code: ${result}",
-        type: 'success');
+Future<int> studentsCount() async {
+  try {
+    Response response = await Client().get(Uri.parse(AppUrls.allStudents));
+    return response.statusCode == 200 ? json.decode(response.body)['data'] : 0;
+  } on ClientException catch (error, _) {
+    debugPrint(error.toString());
+    return Future.error("0");
+  }
+}
+
+// function to fetch all gaurdians
+Future<int> guardiansCount() async {
+  try {
+    Response response = await Client().get(Uri.parse(AppUrls.allGuardians));
+    return response.statusCode == 200 ? json.decode(response.body)['data'] : 0;
+  } on ClientException catch (error, _) {
+    debugPrint(error.toString());
+    return Future.error("0");
   }
 }
 
@@ -477,18 +479,34 @@ Future<List<Map<String, dynamic>>> fetchDashboardMetaData(
   // get students tot
   var schools = await fetchSchools();
   var taps = await fetchTaps();
+  var students = await studentsCount();
+  var guardians = await guardiansCount();
   List<Map<String, dynamic>> malticardData = [
     {
       "label": "SCHOOLS",
       "value": schools.totalDocuments,
-      "icon": "assets/icons/005-overtime.svg",
-      'color': Color.fromARGB(255, 50, 66, 95),
+      "icon": "assets/svgs/school.svg",
+      'color': Color.fromARGB(255, 25, 33, 253),
+      "last_updated": "14:45"
+    },
+    {
+      "label": "STUDENTS",
+      "value": students,
+      "icon": "assets/svgs/students.svg",
+      'color': Color.fromARGB(255, 220, 185, 14),
+      "last_updated": "14:45"
+    },
+    {
+      "label": "GUARDIANS",
+      "value": guardians,
+      "icon": "assets/svgs/guardian.svg",
+      'color': Color.fromARGB(255, 206, 1, 66),
       "last_updated": "14:45"
     },
     {
       "label": "TAPS",
       "value": taps,
-      "icon": "assets/icons/menu_task.svg",
+      "icon": "assets/svgs/tap.svg",
       'color': Color.fromARGB(255, 11, 148, 61),
       "last_updated": "14:45"
     }

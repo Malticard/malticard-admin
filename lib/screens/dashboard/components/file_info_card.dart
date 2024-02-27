@@ -1,9 +1,15 @@
+// ignore_for_file: deprecated_member_use
+
 import '/exports/exports.dart';
 
 class FileInfoCard extends StatelessWidget {
   const FileInfoCard({
-    Key? key, this.color, this.value, required this.icon, required this.label, required this.last_updated,
-    
+    Key? key,
+    this.color,
+    this.value,
+    required this.icon,
+    required this.label,
+    required this.last_updated,
   }) : super(key: key);
 
   final Color? color;
@@ -14,57 +20,65 @@ class FileInfoCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(defaultPadding),
+      padding: EdgeInsets.all(defaultPadding / 2),
       decoration: BoxDecoration(
         color: Theme.of(context).canvasColor,
+        border: Border.all(
+          color: color!.withOpacity(0.15),
+          width: 2,
+        ),
         borderRadius: const BorderRadius.all(Radius.circular(10)),
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Container(
-                padding: EdgeInsets.all(defaultPadding * 0.75),
-                height: 40,
-                width: 40,
-                decoration: BoxDecoration(
-                  color: color,//info['color'].withOpacity(0.1),
-                  borderRadius: const BorderRadius.all(Radius.circular(10)),
-                ),
-                child:
-                 SvgPicture.asset(
-                  icon,
-                  color: Colors.amber, //info['color'],
-                ),
+          Padding(
+            padding: const EdgeInsets.all(18.0),
+            child: Text.rich(
+              TextSpan(
+                children: [
+                  TextSpan(
+                    text: "$label\n",
+                    style: Theme.of(context).textTheme.bodyMedium!.apply(
+                          color: Theme.of(context).brightness == Brightness.dark
+                              ? Colors.white
+                              : Colors.black,
+                          fontWeightDelta: 1,
+                          fontSizeFactor: 0.8,
+                        ),
+                  ),
+                  TextSpan(
+                    text: value?.toString(),
+                    style: Theme.of(context).textTheme.bodyMedium!.apply(
+                          color: Theme.of(context).brightness == Brightness.dark
+                              ? Colors.white
+                              : Colors.black,
+                          fontWeightDelta: 6,
+                          fontSizeFactor: 1.6,
+                        ),
+                  ),
+                ],
               ),
-              Icon(Icons.more_vert, color: Theme.of(context).backgroundColor)
-            ],
+            ),
           ),
-          Text(
-            label,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
+          Container(
+            padding: EdgeInsets.all(defaultPadding * 0.5),
+            margin: EdgeInsets.all(18),
+            height: 60,
+            width: 60,
+            decoration: BoxDecoration(
+              color: color!.withOpacity(0.1),
+              borderRadius: const BorderRadius.all(Radius.circular(10)),
+            ),
+            child: SvgPicture.asset(
+              icon,
+              color: color,
+            ),
           ),
-          ProgressLine(
-            color: color,
-            percentage: value! ~/ 5,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-               value == 1 ? "$value Record":"$value Records",
-                style: TextStyles(context).getBoldStyle(),
-              ),
-              Text(
-                "",
-                style: Theme.of(context).textTheme.caption,
-              ),
-            ],
-          )
+          // Icon(
+          //   Icons.more_vert,
+          //   color: Theme.of(context).backgroundColor,
+          // )
         ],
       ),
     );
