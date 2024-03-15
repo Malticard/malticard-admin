@@ -1,10 +1,11 @@
 import 'dart:developer';
-import '../../controllers/DashbaordWidgetController.dart';
+// import '../../controllers/DashbaordWidgetController.dart';
 import '../../exports/exports.dart';
 
 import '../../models/school_student_model.dart';
 import '../../models/school_student_model.dart' as st;
 // import 'Schools.dart';
+import '../../tools/search_helper.dart';
 import 'helpers/DataSource.dart';
 import 'school_students.dart';
 
@@ -58,14 +59,14 @@ class _StudentSchoolViewState extends State<StudentSchoolView> {
         // Add a check to see if the widget is still mounted before updating the state
         if (mounted) {
           if (_searchController.text.isNotEmpty) {
-            // var students = await searchStudents(
-            //     widget.schoolId, _searchController.text,
-            //     page: 1, limit: rowsPerPage);
-            // _studentController.add(students);
+            var students = await searchSchoolStudents(
+                widget.schoolId, _searchController.text,
+                page: _page, limit: _rowsPerpage);
+            _studentController.add(students);
           } else {
             try {
               var students = await fetchSchoolStudents(widget.schoolId,
-                  page: _page, limit: _rowsPerpage);
+                  page: _page);
               _studentController.add(students);
             } on ClientException catch (e, x) {
               log(e.toString());
@@ -101,21 +102,22 @@ class _StudentSchoolViewState extends State<StudentSchoolView> {
                 width: MediaQuery.of(context).size.width / 4,
                 height: 100,
                 child: TextFormField(
-                    controller: _searchController,
-                    onChanged: (value) {
-                      setState(() {
-                        if (value.isEmpty) {
-                        } else {
-                          _filteredRows = _filteredRows.where((row) {
-                            return row.studentLname == value ||
-                                row.studentFname == value;
-                          }).toList();
-                        }
-                      });
-                    },
-                    decoration: InputDecoration(
-                      labelText: "Search",
-                    )),
+                  controller: _searchController,
+                  onChanged: (value) {
+                    setState(() {
+                      if (value.isEmpty) {
+                      } else {
+                        _filteredRows = _filteredRows.where((row) {
+                          return row.studentLname == value ||
+                              row.studentFname == value;
+                        }).toList();
+                      }
+                    });
+                  },
+                  decoration: InputDecoration(
+                    labelText: "Search",
+                  ),
+                ),
               )
             ],
             source: SchoolStudentsDataSource(
