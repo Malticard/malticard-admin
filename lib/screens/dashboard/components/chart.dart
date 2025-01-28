@@ -28,7 +28,7 @@ class Chart extends StatelessWidget {
                   "29.1",
                   style: Theme.of(context)
                       .textTheme
-                      .bodyText1!
+                      .bodyMedium!
                       .copyWith(fontWeight: FontWeight.bold, fontSize: 30),
                 ),
                 Text("of 128GB")

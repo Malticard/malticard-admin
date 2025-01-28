@@ -15,7 +15,7 @@ class TopHeaderCards extends StatelessWidget {
           children: [
             Text(
               "My Files",
-              style: Theme.of(context).textTheme.subtitle1,
+              style: Theme.of(context).textTheme.bodyLarge,
             ),
             ElevatedButton.icon(
               style: TextButton.styleFrom(
@@ -60,16 +60,17 @@ class FileInfoCardGridView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GridView.builder(
-      physics: const NeverScrollableScrollPhysics(),
-      shrinkWrap: true,
-      itemCount: demoMyFiles.length,
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: crossAxisCount,
-        crossAxisSpacing: defaultPadding,
-        mainAxisSpacing: defaultPadding,
-        childAspectRatio: childAspectRatio,
-      ),
-      itemBuilder: (context, index) => Container()//FileInfoCard(info: demoMyFiles[index]),
-    );
+        physics: const NeverScrollableScrollPhysics(),
+        shrinkWrap: true,
+        itemCount: demoMyFiles.length,
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: crossAxisCount,
+          crossAxisSpacing: defaultPadding,
+          mainAxisSpacing: defaultPadding,
+          childAspectRatio: childAspectRatio,
+        ),
+        itemBuilder: (context, index) =>
+            Container() //FileInfoCard(info: demoMyFiles[index]),
+        );
   }
 }
