@@ -1,6 +1,4 @@
 import '/exports/exports.dart';
-// import 'components/GrapStats.dart';
-// import 'components/WeeklyTaps.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});

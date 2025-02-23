@@ -27,7 +27,7 @@ class _SideMenuState extends State<SideMenu> {
     return Drawer(
       key: context.read<MainController>().scaffoldKey,
       backgroundColor: Theme.of(context).brightness == Brightness.light
-          ? Color.fromRGBO(6, 109, 161, 1.0)
+          ? Theme.of(context).primaryColor
           : Theme.of(context).canvasColor,
       child: Column(
         children: [
@@ -85,7 +85,6 @@ class _SideMenuState extends State<SideMenu> {
               );
             },
           ),
-
         ],
       ),
     );
