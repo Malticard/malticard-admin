@@ -2,104 +2,178 @@
 <html lang="en">
 
 <head>
-  <base href="$FLUTTER_BASE_HREF">
-
-  <meta charset="UTF-8">
+  <base href="$FLUTTER_BASE_HREF" />
+  <meta charset="UTF-8" />
   <meta content="IE=Edge" http-equiv="X-UA-Compatible" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Malticard administration view">
-
-  <!-- iOS meta tags & icons -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Malticard administration view" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   <meta name="apple-mobile-web-app-title" content="Skooltym" />
   <link rel="apple-touch-icon" href="icons/Icon-192.png" />
-
-  <!-- Favicon -->
   <link rel="icon" type="image/png" href="favicon.png" />
-
   <title>Skooltym</title>
   <link rel="manifest" href="manifest.json" />
-
-  <!-- Tailwind CSS -->
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 
-  <script>
-    // The value below is injected by flutter build, do not touch.
-    var serviceWorkerVersion = null;
-  </script>
-
-  <script type="text/javascript">
-    window.flutterWebRenderer = "html";
-  </script>
-
-  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">
-  <style id="splash-screen-style">
-    html {
-      height: 100%
+  <style>
+    :root {
+      --primary-blue: #1949B9;
     }
 
     body {
       margin: 0;
-      min-height: 100%;
-      background-color: #1949B9;
-      background-size: 100% 100%;
+      min-height: 100vh;
+      background-color: var(--primary-blue);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
     }
 
-    .center {
-      margin: 0;
+    .loader-container {
+      position: relative;
+      width: 200px;
+      height: 200px;
+    }
+
+    .logo-container {
       position: absolute;
       top: 50%;
       left: 50%;
-      -ms-transform: translate(-50%, -50%);
       transform: translate(-50%, -50%);
+      z-index: 2;
     }
 
-    .contain {
-      display: block;
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-    }
-
-    .stretch {
-      display: block;
-      width: 100%;
-      height: 100%;
-    }
-
-    .cover {
-      display: block;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    .bottom {
+    .circle {
       position: absolute;
-      bottom: 0;
+      border: 4px solid rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      width: 100%;
+      height: 100%;
+    }
+
+    .circle-outer {
+      border-top-color: #ffffff;
+    }
+
+    .circle-middle {
+      width: 80%;
+      height: 80%;
+      top: 10%;
+      left: 10%;
+      border-right-color: #ffffff;
+      opacity: 0.8;
+    }
+
+    .circle-inner {
+      width: 60%;
+      height: 60%;
+      top: 20%;
+      left: 20%;
+      border-bottom-color: #ffffff;
+      opacity: 0.6;
+    }
+
+    .loading-text {
+      position: absolute;
+      bottom: -60px;
       left: 50%;
-      -ms-transform: translate(-50%, 0);
-      transform: translate(-50%, 0);
+      transform: translateX(-50%);
+      color: white;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-size: 1.2rem;
+      white-space: nowrap;
     }
 
-    .bottomLeft {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-    }
-
-    .bottomRight {
-      position: absolute;
-      bottom: 0;
-      right: 0;
+    .dots span {
+      opacity: 0;
     }
   </style>
-  <script id="splash-screen-script">
+</head>
+
+<body>
+  <div class="loader-container">
+    <div class="logo-container">
+      <!-- <picture id="splash">
+        <source
+          srcset="splash/img/light-1x.png 1x, splash/img/light-2x.png 2x, splash/img/light-3x.png 3x, splash/img/light-4x.png 4x"
+          media="(prefers-color-scheme: light)">
+        <source
+          srcset="splash/img/dark-1x.png 1x, splash/img/dark-2x.png 2x, splash/img/dark-3x.png 3x, splash/img/dark-4x.png 4x"
+          media="(prefers-color-scheme: dark)">
+        <img class="w-10 h-10" aria-hidden="true" src="splash/img/light-1x.png" />
+      </picture> -->
+    </div>
+    <div class="circle circle-outer"></div>
+    <div class="circle circle-middle"></div>
+    <div class="circle circle-inner"></div>
+    <div class="loading-text">
+      Loading<span class="dots"><span>.</span><span>.</span><span>.</span></span>
+    </div>
+  </div>
+
+  <script>
+    window.flutterWebRenderer = "html";
+    var serviceWorkerVersion = null;
+
+    // GSAP Animations
+    document.addEventListener('DOMContentLoaded', () => {
+      // Rotate circles
+      gsap.to('.circle-outer', {
+        rotation: 360,
+        duration: 2,
+        repeat: -1,
+        ease: 'none'
+      });
+
+      gsap.to('.circle-middle', {
+        rotation: -360,
+        duration: 3,
+        repeat: -1,
+        ease: 'none'
+      });
+
+      gsap.to('.circle-inner', {
+        rotation: 360,
+        duration: 4,
+        repeat: -1,
+        ease: 'none'
+      });
+
+      // Logo pulse
+      gsap.to('.logo-container', {
+        scale: 1.1,
+        duration: 1,
+        repeat: -1,
+        yoyo: true,
+        ease: 'power1.inOut'
+      });
+
+      // Animate dots
+      const dots = document.querySelectorAll('.dots span');
+      gsap.to(dots, {
+        opacity: 1,
+        duration: 0.5,
+        stagger: {
+          each: 0.2,
+          repeat: -1,
+          yoyo: true
+        }
+      });
+    });
+
     function removeSplashFromWeb() {
-      document.getElementById("splash")?.remove();
-      document.getElementById("splash-branding")?.remove();
-      document.body.style.background = "transparent";
+      gsap.to('.loader-container', {
+        opacity: 0,
+        duration: 0.5,
+        onComplete: () => {
+          document.getElementById("splash")?.remove();
+          document.getElementById("splash-branding")?.remove();
+          document.body.style.background = "transparent";
+        }
+      });
     }
   </script>
   <script async src="https://www.googletagmanager.com/gtag/js?id=UA-56074942-10"></script>
@@ -107,22 +181,8 @@
     window.dataLayer = window.dataLayer || [];
     function gtag() { dataLayer.push(arguments); }
     gtag('js', new Date());
-
     gtag('config', 'UA-56074942-10');
   </script>
-
-</head>
-
-<body class="bg-blue-900">
-  <picture id="splash">
-    <source
-      srcset="splash/img/light-1x.png 1x, splash/img/light-2x.png 2x, splash/img/light-3x.png 3x, splash/img/light-4x.png 4x"
-      media="(prefers-color-scheme: light)">
-    <source
-      srcset="splash/img/dark-1x.png 1x, splash/img/dark-2x.png 2x, splash/img/dark-3x.png 3x, splash/img/dark-4x.png 4x"
-      media="(prefers-color-scheme: dark)">
-    <img class="center" aria-hidden="true" src="splash/img/light-1x.png" alt="">
-  </picture>
   <script src="flutter_bootstrap.js" async></script>
 </body>
 

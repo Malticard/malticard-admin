@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import '../exports/exports.dart';
 
 class MalticardController extends Cubit<Map<String, dynamic>> {

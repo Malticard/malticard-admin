@@ -1,5 +1,5 @@
-import 'package:malticard/tools/canvas_to_image.dart';
-import 'package:malticard/widgets/FutureImage.dart';
+import '/tools/canvas_to_image.dart';
+import '/widgets/FutureImage.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:screenshot/screenshot.dart';
 import '../../../models/StudentModel.dart';
@@ -20,7 +20,7 @@ class SchoolDataSource extends DataTableSource {
   final int currentPage;
   final ValueChanged<String>? onTap;
   final BuildContext context;
-// Replace with your actual data source
+  // Replace with your actual data source
   String _schoolId = "";
 
   @override
@@ -226,7 +226,7 @@ class StudentsDataSource extends DataTableSource {
             onPressed: () {
               Clipboard.setData(
                 ClipboardData(
-                  text: "$guardianId,${rowData.id}",
+                  text: "${rowData.id}",
                 ),
               ).then((value) {
                 ScaffoldMessenger.of(context).showSnackBar(
@@ -242,7 +242,7 @@ class StudentsDataSource extends DataTableSource {
             onPressed: () async {
               ImageExporterWeb.saveImage(
                   "${rowData.studentFname}_${rowData.studentLname}-${guardianName}-$relationship",
-                  "$guardianId,${rowData.id}");
+                  "${rowData.id}");
             },
             icon: Icon(Icons.download),
           ),
@@ -295,9 +295,18 @@ class SchoolStudentsDataSource extends DataTableSource {
       index: index,
       cells: [
         DataCell(
-          FutureImage(
-            future: fetchAndDisplayImage(rowData.studentProfilePic),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(50),
+            child: Image.network(
+              rowData.studentProfilePic,
+              errorBuilder: (context, error, stackTrace) => Image.network(
+                "https//backend.skooltym.com/uploads/default.png",
+              ),
+            ),
           ),
+          // FutureImage(
+          //   future: fetchAndDisplayImage(rowData.studentProfilePic),
+          // ),
         ),
         DataCell(
           Text(
@@ -318,7 +327,8 @@ class SchoolStudentsDataSource extends DataTableSource {
             ),
           ),
         ),
-        DataCell(OutlinedButton(
+        DataCell(
+          OutlinedButton(
             onPressed: () {
               Clipboard.setData(
                 ClipboardData(
@@ -332,7 +342,11 @@ class SchoolStudentsDataSource extends DataTableSource {
                 );
               });
             },
-            child: Icon(Icons.copy))),
+            child: Icon(
+              Icons.copy,
+            ),
+          ),
+        ),
         DataCell(
           IconButton(
             onPressed: () async {
@@ -340,7 +354,9 @@ class SchoolStudentsDataSource extends DataTableSource {
                   "${rowData.studentFname}_${rowData.studentLname}",
                   "${rowData.id}");
             },
-            icon: Icon(Icons.download),
+            icon: Icon(
+              Icons.download,
+            ),
           ),
         )
       ],

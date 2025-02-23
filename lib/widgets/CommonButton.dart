@@ -43,7 +43,7 @@ class CommonButton extends StatelessWidget {
                   : BorderSide.none,
               borderRadius: BorderRadius.circular(radius),
             ),
-            color: backgroundColor ?? Theme.of(context).colorScheme.primary,
+            color: backgroundColor ?? Theme.of(context).primaryColor,
             shadowColor: Colors.black12.withOpacity(
               Theme.of(context).brightness == Brightness.dark ? 0.6 : 0.2,
             ),

@@ -65,10 +65,10 @@ class _StudentSchoolViewState extends State<StudentSchoolView> {
             _studentController.add(students);
           } else {
             try {
-              var students = await fetchSchoolStudents(widget.schoolId,
-                  page: _page);
+              var students =
+                  await fetchSchoolStudents(widget.schoolId, page: _page);
               _studentController.add(students);
-            } on ClientException catch (e, x) {
+            } on ClientException catch (e) {
               log(e.toString());
             }
           }

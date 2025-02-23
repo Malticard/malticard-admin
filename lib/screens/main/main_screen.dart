@@ -1,7 +1,3 @@
-import 'package:malticard/controllers/SidebarController.dart';
-import 'package:malticard/global/SessionManager.dart';
-
-import '../../controllers/MenuAppController.dart';
 import '/exports/exports.dart';
 import 'components/side_menu.dart';
 

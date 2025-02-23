@@ -1,3 +1,4 @@
+import 'dart:developer' as d;
 import 'dart:math';
 
 import '../../exports/exports.dart';
@@ -116,6 +117,7 @@ class _UpdateSchoolState extends State<UpdateSchool> {
     if (validateEmail(_schoolControllers[1].text, context) != false) {
       showProgress(context, msg: "Updating school details");
       _handleSchoolRegistration().then((value) {
+        d.log(value.statusCode.toString());
         // Routes.popPage(context);
         // showSuccessDialog(_schoolControllers[0].text.trim(), context,
         //     onPressed: () {
@@ -230,16 +232,6 @@ class _UpdateSchoolState extends State<UpdateSchool> {
             filename: uri.split("/").last));
       }
     }
-    // if (kIsWeb) {
-    //   request.files.add(MultipartFile(
-    //       "image", schoolData['image'], schoolData['size'],
-    //       filename: schoolData['name']));
-    // } else {
-    //   request.files.add(MultipartFile(
-    //       'image', File(uri).readAsBytes().asStream(), File(uri).lengthSync(),
-    //       filename: uri.split("/").last));
-    // }
-
     // end of school badge upload
     request.fields['school_key[key]'] = "0";
     request.fields['username'] =

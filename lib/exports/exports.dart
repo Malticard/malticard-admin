@@ -76,9 +76,9 @@ export '/routes/routes.dart';
 
 // third party libraries
 export 'package:flutter_spinkit/flutter_spinkit.dart';
-export 'package:animations/animations.dart';
+// export 'package:animations/animations.dart ';
 export 'package:http/http.dart';
-export 'package:currency_picker/currency_picker.dart';
+// export 'package:currency_picker/currency_picker.dart';
 export 'package:shared_preferences/shared_preferences.dart';
 export 'package:file_picker/file_picker.dart';
 // export 'package:image_picker_web/image_picker_web.dart';

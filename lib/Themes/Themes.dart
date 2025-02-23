@@ -4,11 +4,11 @@ class AppThemes {
   static final ThemeData lightTheme = ThemeData(
     scaffoldBackgroundColor: creamColor,
     canvasColor: snowColor,
-    primaryColor: const Color.fromARGB(204, 9, 87, 139),
+    primaryColor: Color(0xFF1949B9),
     highlightColor: Colors.white,
     useMaterial3: true,
     colorScheme: ColorScheme.fromSeed(
-      seedColor: const Color.fromARGB(204, 9, 87, 139),
+      seedColor: Color(0xFF1949B9),
       brightness: Brightness.light,
     ),
     textTheme: GoogleFonts.aBeeZeeTextTheme().apply(
@@ -28,7 +28,7 @@ class AppThemes {
   static final ThemeData darkTheme = ThemeData(
     scaffoldBackgroundColor: bgColor,
     canvasColor: secondaryColor,
-    primaryColor: const Color.fromARGB(204, 9, 87, 139),
+    primaryColor: Color(0xFF1949B9),
     useMaterial3: true,
     drawerTheme: const DrawerThemeData(
       elevation: 5,
@@ -42,7 +42,7 @@ class AppThemes {
       displayColor: Colors.white,
     ),
     colorScheme: ColorScheme.fromSeed(
-      seedColor: const Color.fromARGB(204, 9, 87, 139),
+      seedColor: Color(0xFF1949B9),
       brightness: Brightness.dark,
     ),
   );

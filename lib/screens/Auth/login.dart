@@ -1,5 +1,3 @@
-import 'package:malticard/controllers/LoaderController.dart';
-
 import '/exports/exports.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -35,7 +33,7 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       backgroundColor: Theme.of(context).brightness == Brightness.dark
           ? Theme.of(context).scaffoldBackgroundColor
-          : const Color.fromARGB(204, 9, 87, 139),
+          : Color(0xFF1949B9),
       body: RemoveFocuse(
         onClick: () {
           FocusScope.of(context).requestFocus(FocusNode());

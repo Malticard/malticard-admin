@@ -13,7 +13,10 @@ class StudentsView extends StatefulWidget {
   final String relationship;
   final String guardian_name;
   const StudentsView(
-      {super.key, this.guardian_name = "", this.relationship = "", required this.guardianId});
+      {super.key,
+      this.guardian_name = "",
+      this.relationship = "",
+      required this.guardianId});
 
   @override
   State<StudentsView> createState() => _StudentsViewState();
@@ -53,33 +56,35 @@ class _StudentsViewState extends State<StudentsView> {
         _studentController.add(students);
       }
       // Listen to the stream and update the UI
-if (_searchController.text.isNotEmpty) {
-            var students = await searchStudents(
-                widget.guardianId, _searchController.text,
-               );
-            _studentController.add(students);
-          } else {
-            try {
-              var students = await fetchGuardianStudents(widget.guardianId);
-              _studentController.add(students);
-            } on ClientException catch (e, x) {
-              log(e.toString());
-            }
-          }
+      if (_searchController.text.isNotEmpty) {
+        var students = await searchStudents(
+          widget.guardianId,
+          _searchController.text,
+        );
+        _studentController.add(students);
+      } else {
+        try {
+          var students = await fetchGuardianStudents(widget.guardianId);
+          _studentController.add(students);
+        } on ClientException catch (e) {
+          log(e.toString());
+        }
+      }
       Timer.periodic(Duration(seconds: 3), (timer) async {
         this.timer = timer;
         // Add a check to see if the widget is still mounted before updating the state
         if (mounted) {
           if (_searchController.text.isNotEmpty) {
             var students = await searchStudents(
-                widget.guardianId, _searchController.text,
-               );
+              widget.guardianId,
+              _searchController.text,
+            );
             _studentController.add(students);
           } else {
             try {
               var students = await fetchGuardianStudents(widget.guardianId);
               _studentController.add(students);
-            } on ClientException catch (e, x) {
+            } on ClientException catch (e) {
               log(e.toString());
             }
           }
@@ -132,7 +137,7 @@ if (_searchController.text.isNotEmpty) {
             source: StudentsDataSource(
               data: _filteredRows,
               guardianId: widget.guardianId,
-              relationship:widget.relationship,
+              relationship: widget.relationship,
               guardianName: widget.guardian_name,
               context: context,
             ),
