@@ -200,46 +200,77 @@ class _AddSchoolViewState extends State<AddSchoolView> {
   }
 
   Future<StreamedResponse> _handleSchoolRegistration() async {
-    String uri = _schoolControllers[4].text.trim();
-    var request = MultipartRequest('POST', Uri.parse(AppUrls.addSchool));
-    // ================================ school fields ====================
-    request.fields['school_name'] = _schoolControllers[0].text.trim();
-    request.fields['name'] =
-        _schoolControllers[0].text.trim().toLowerCase().replaceFirst(" ", "-");
-    request.fields['school_nature'] = _schoolControllers[6].text.trim();
-    request.fields['school_address'] = _schoolControllers[3].text.trim();
-    ;
-    request.fields['school_contact'] = _schoolControllers[2].text.trim();
-    request.fields['school_email'] = _schoolControllers[1].text.trim();
-    request.fields['school_type'] = _schoolControllers[5].text.trim();
-    // school badge upload
-    if (kIsWeb) {
-      if (schoolData.isNotEmpty) {
-        request.files.add(
-          MultipartFile(
-            "image",
-            schoolData['image'],
-            schoolData['size'],
-            filename: schoolData['name'],
-          ),
-        );
-      }
-    } else {
-      if (uri.isNotEmpty) {
-        request.files.add(MultipartFile.fromBytes(
-            'image', File(uri).readAsBytesSync(), // File(uri).lengthSync(),
-            filename: uri.split("/").last));
-      }
-    }
+    try {
+      String uri = _schoolControllers[4].text.trim();
+      final request = MultipartRequest('POST', Uri.parse(AppUrls.addSchool));
 
-    // end of school badge upload
-    request.fields['school_key[key]'] = "0";
-    request.fields['username'] =
-        "${_schoolControllers[0].text}_${Random.secure().nextInt(1000000)}";
-    // end of school badge upload
-    // ================================ school fields ====================
-    var response = request.send();
-    //
-    return response;
+      // Basic school fields
+      request.fields.addAll({
+        'school_name': _schoolControllers[0].text.trim(),
+        'name': _schoolControllers[0]
+            .text
+            .trim()
+            .toLowerCase()
+            .replaceAll(" ", "-"),
+        'school_nature': _schoolControllers[6].text.trim(),
+        'school_address': _schoolControllers[3].text.trim(),
+        'school_contact': _schoolControllers[2].text.trim(),
+        'school_email': _schoolControllers[1].text.trim(),
+        'school_type': _schoolControllers[5].text.trim(),
+        'school_key[key]': "0",
+        'username':
+            "${_schoolControllers[0].text}_${Random.secure().nextInt(1000000)}",
+      });
+
+      // Handle image upload for Web
+      if (kIsWeb) {
+        if (schoolData.isNotEmpty && schoolData['image'] != null) {
+          try {
+            request.files.add(
+              MultipartFile(
+                "image",
+                schoolData['image'],
+                schoolData['size'],
+                filename: schoolData['name'],
+              ),
+            );
+          } catch (e) {
+            print('Error adding web image: $e');
+            throw Exception('Failed to process web image');
+          }
+        }
+      }
+      // Handle image upload for Mobile
+      else {
+        if (uri.isNotEmpty) {
+          try {
+            final file = File(uri);
+            if (!await file.exists()) {
+              throw Exception('Image file not found');
+            }
+
+            final bytes = await file.readAsBytes();
+            final filename = uri.split("/").last;
+
+            request.files.add(
+              MultipartFile.fromBytes(
+                'image',
+                bytes,
+                filename: filename,
+              ),
+            );
+          } catch (e) {
+            print('Error adding mobile image: $e');
+            throw Exception('Failed to process mobile image');
+          }
+        }
+      }
+
+      // Send the request
+      return await request.send();
+    } catch (e) {
+      print('School registration error: $e');
+      throw Exception('Failed to complete school registration: $e');
+    }
   }
 }

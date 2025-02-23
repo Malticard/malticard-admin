@@ -61,7 +61,6 @@ class _CommonFormFieldsState extends State<CommonFormFields>
           .getImageFromSource(source: ImageSource.gallery);
       if (picker != null) {
         var element = await picker.readAsBytes();
-        print(element);
         setState(() {
           _imageBytes = element;
         });
@@ -91,7 +90,8 @@ class _CommonFormFieldsState extends State<CommonFormFields>
     if (widget.currentProfile != null) {
       return NetworkImage(widget.currentProfile!);
     } else if (url == null) {
-      return const AssetImage("assets/icons/001-profile.png");
+      return const NetworkImage(
+          "https://backend.skooltym.com/uploads/default.png");
     }
     return MemoryImage(url);
   }
