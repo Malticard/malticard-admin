@@ -1,14 +1,7 @@
-import 'dart:convert';
 import 'dart:developer';
-import 'dart:ui';
-import 'dart:ui' as ui;
 import 'package:uuid/uuid.dart';
-import 'package:file_saver/file_saver.dart';
-import 'package:flutter/rendering.dart';
-import 'package:malticard/controllers/LoaderController.dart';
-import 'package:malticard/controllers/SidebarController.dart';
-import 'package:malticard/global/SessionManager.dart';
-import 'package:malticard/screens/malticard/SchoolsView.dart';
+import '/global/SessionManager.dart';
+import '/screens/malticard/SchoolsView.dart';
 
 import '../models/StudentModel.dart';
 import '../models/Taps.dart';
