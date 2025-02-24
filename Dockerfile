@@ -1,41 +1,50 @@
-# Stage 1: Build with specific Flutter version
-FROM flutter:3.27.3-web AS build
+# Stage 1: Build the Flutter web app
+FROM ubuntu:22.04 AS builder
 
-WORKDIR /app
+# Install dependencies
+RUN apt-get update && apt-get install -y \
+    curl \
+    git \
+    unzip \
+    xz-utils \
+    libglu1-mesa \
+    wget \
+    ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
 
-# Enable web and get dependencies first for cache optimization
+# Set noninteractive installation
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Install Flutter with specific version
+RUN git clone https://github.com/flutter/flutter.git -b 3.27.3 /flutter
+ENV PATH="/flutter/bin:${PATH}"
+
+# Set up Flutter
+RUN flutter doctor
 RUN flutter config --enable-web
-COPY pubspec.yaml .
-RUN flutter pub get
 
-# Copy remaining source files and build
+# Verify Flutter and Dart versions
+RUN flutter --version
+
+# Copy the Flutter project
+WORKDIR /app
 COPY . .
-RUN flutter build web --release -v
 
-# Stage 2: Serve with Nginx
-FROM nginx:1.25.3-alpine
+# Build the web app
+RUN flutter pub get
+RUN flutter build web --release
 
-# Copy build artifacts
-COPY --from=build /app/build/web /usr/share/nginx/html
+# Stage 2: Deploy with Nginx
+FROM nginx:alpine
 
-# Create optimized Nginx configuration
-RUN echo "server {" > /etc/nginx/conf.d/default.conf && \
-    echo "    listen 80;" >> /etc/nginx/conf.d/default.conf && \
-    echo "    server_name _;" >> /etc/nginx/conf.d/default.conf && \
-    echo "    root /usr/share/nginx/html;" >> /etc/nginx/conf.d/default.conf && \
-    echo "    index index.html;" >> /etc/nginx/conf.d/default.conf && \
-    echo "    location / {" >> /etc/nginx/conf.d/default.conf && \
-    echo "        try_files \$uri \$uri/ /index.html;" >> /etc/nginx/conf.d/default.conf && \
-    echo "        add_header Cache-Control 'no-store, no-cache, must-revalidate, proxy-revalidate';" >> /etc/nginx/conf.d/default.conf && \
-    echo "        expires 0;" >> /etc/nginx/conf.d/default.conf && \
-    echo "    }" >> /etc/nginx/conf.d/default.conf && \
-    echo "    error_page 500 502 503 504 /50x.html;" >> /etc/nginx/conf.d/default.conf && \
-    echo "    location = /50x.html { root /usr/share/nginx/html; }" >> /etc/nginx/conf.d/default.conf && \
-    echo "}" >> /etc/nginx/conf.d/default.conf
+# Copy the built web app from the builder stage
+COPY --from=builder /app/build/web /usr/share/nginx/html
 
-# Security headers and permissions
-RUN chmod -R 755 /usr/share/nginx/html && \
-    chown -R nginx:nginx /usr/share/nginx/html
+# Copy custom nginx config if needed
+# COPY nginx.conf /etc/nginx/conf.d/default.conf
 
+# Expose port 80
 EXPOSE 80
+
+# Start Nginx
 CMD ["nginx", "-g", "daemon off;"]
