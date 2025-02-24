@@ -32,7 +32,7 @@ COPY . .
 
 # Build the web app
 RUN flutter pub get
-RUN flutter build web --release
+RUN flutter build web --release -v
 
 # Stage 2: Deploy with Nginx
 FROM nginx:alpine
