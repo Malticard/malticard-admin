@@ -1,5 +1,7 @@
 import 'dart:developer';
+import 'package:malticard/screens/malticard/advert_manager_view.dart';
 import 'package:uuid/uuid.dart';
+import '../screens/malticard/Schools.dart';
 import '/global/SessionManager.dart';
 import '/screens/malticard/SchoolsView.dart';
 
@@ -95,9 +97,9 @@ String greetUser() {
 // show successDialog
 void showSuccessDialog(String name, BuildContext context,
     {VoidCallback? onPressed}) {
-  showDialog(
+  showAdaptiveDialog(
     context: context,
-    builder: (context) => AlertDialog(
+    builder: (context) => AlertDialog.adaptive(
       title: Text(
         "$name added successfully",
         textAlign: TextAlign.center,
@@ -238,12 +240,12 @@ List<Map<String, dynamic>> malticardViews = [
   },
   {
     "title": "Schools",
-    "page": const SchoolsView(),
+    "page": const Schools(),
     'icon': "assets/icons/menu_store.svg"
   },
   {
-    "title": "Students",
-    "page": const SchoolsView(),
+    "title": "Advert Manager",
+    "page": const AdvertManagerView(),
     'icon': "assets/icons/menu_store.svg"
   },
 ];

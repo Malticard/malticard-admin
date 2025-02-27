@@ -1,3 +1,9 @@
+import 'dart:developer';
+
+import 'package:malticard/models/advert_model.dart';
+import 'package:malticard/tools/advert_service.dart';
+
+import '../../../main.dart';
 import '/tools/canvas_to_image.dart';
 import '/widgets/FutureImage.dart';
 import 'package:qr_flutter/qr_flutter.dart';
@@ -52,7 +58,14 @@ class SchoolDataSource extends DataTableSource {
           Padding(
             padding: const EdgeInsets.all(5.0),
             child: ClipRRect(
-              child: Image.network(rowData.schoolBadge, width: 50, height: 50),
+              child: Image.network(
+                rowData.schoolBadge,
+                width: 50,
+                height: 50,
+                headers: {
+                  'Access-Control-Allow-Origin': '*',
+                },
+              ),
               borderRadius: BorderRadius.circular(50),
             ),
           ),
@@ -357,6 +370,177 @@ class SchoolStudentsDataSource extends DataTableSource {
             icon: Icon(
               Icons.download,
             ),
+          ),
+        )
+      ],
+    );
+  }
+
+  @override
+  bool get isRowCountApproximate => false;
+
+  @override
+  int get rowCount => totalDocuments;
+
+  @override
+  int get selectedRowCount => 0;
+}
+
+class AdvertDataSource extends DataTableSource {
+  AdvertDataSource({
+    this.paginatorController,
+    required this.totalDocuments,
+    required this.currentPage,
+    required this.data,
+    // required this.onToggle,
+  });
+  final PaginatorController? paginatorController;
+  final int totalDocuments;
+  final int currentPage;
+  List<AdvertModel> data;
+  // final ValueChanged<String> onToggle;
+
+// Replace with your actual data source
+
+  @override
+  DataRow? getRow(int index) {
+    final int pageIndex = currentPage ~/ paginatorController!.rowsPerPage;
+    final int dataIndex = index % paginatorController!.rowsPerPage;
+    final int dataLength = data.length;
+
+    if (pageIndex * paginatorController!.rowsPerPage + dataIndex >=
+        dataLength) {
+      return null;
+    }
+    BuildContext context = navigatorKey.currentContext!;
+    int row = pageIndex * paginatorController!.rowsPerPage + dataIndex;
+    final rowData = data[row];
+    bool adStatus = true;
+    return DataRow.byIndex(
+      index: index,
+      cells: [
+        DataCell(
+          Padding(
+              padding: const EdgeInsets.all(5.0),
+              child: FutureImage(
+                future: fetchAndDisplayImage(rowData.imageUrl),
+              )),
+        ),
+        DataCell(
+          Text(
+            rowData.title,
+          ),
+        ),
+        DataCell(
+          Text(
+            rowData.targetUrl,
+          ),
+        ),
+        DataCell(
+          Chip(
+            padding: EdgeInsets.all(1),
+            backgroundColor: rowData.isActive
+                ? Colors.green
+                : const Color.fromARGB(255, 175, 76, 76),
+            label: Icon(
+              rowData.isActive ? Icons.check_circle : Icons.cancel,
+              color: Colors.white,
+            ),
+          ),
+        ),
+        DataCell(
+          Row(
+            children: [
+              // handle toggling advert status
+              Switch.adaptive(
+                  value: rowData.isActive,
+                  onChanged: (status) {
+                    showAdaptiveDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog.adaptive(
+                            title: Text("Toggle Advert Status"),
+                            content: Text(
+                                "You're about change the status of the advert..."),
+                            actions: [
+                              TextButton(
+                                onPressed: () => Routes.popPage(context),
+                                child: Text(
+                                  "Cancel",
+                                ),
+                              ),
+                              TextButton(
+                                onPressed: () {
+                                  // log("Toggle " + value);
+                                  Routes.popPage(context);
+                                  showProgress(context,
+                                      msg: "Toggling advert..");
+                                  AdvertService.toggleAdStatus(rowData.id)
+                                      .then((x) {
+                                    Routes.popPage(context);
+                                    showSuccessDialog(
+                                        "Toggled advert", context);
+                                  }).catchError((error) {
+                                    print(error);
+                                    Routes.popPage(context);
+                                  });
+                                },
+                                child: Text(
+                                  "Toggle Ad",
+                                  style: TextStyle(
+                                    color: Colors.green,
+                                  ),
+                                ),
+                              )
+                            ],
+                          );
+                        });
+                  }),
+              IconButton(
+                onPressed: () {
+                  showAdaptiveDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog.adaptive(
+                          title: Text("Delete Advert"),
+                          content: Text(
+                              "Are you sure you want to delete this advert?"),
+                          actions: [
+                            TextButton(
+                              onPressed: () => Routes.popPage(context),
+                              child: Text(
+                                "Cancel",
+                              ),
+                            ),
+                            TextButton(
+                              onPressed: () {
+                                Routes.popPage(context);
+                                showProgress(context, msg: "Deleting advert..");
+                                AdvertService.deleteAd(id: rowData.id)
+                                    .then((x) {
+                                  Routes.popPage(context);
+                                  showSuccessDialog("Deleted advert", context);
+                                }).catchError((error) {
+                                  Routes.popPage(context);
+                                });
+                              },
+                              child: Text(
+                                "Delete",
+                                style: TextStyle(
+                                  color: Colors.red,
+                                ),
+                              ),
+                            )
+                          ],
+                        );
+                      });
+                },
+                icon: Icon(
+                  Icons.delete_outline_rounded,
+                  color: Colors.red,
+                ),
+              )
+            ],
           ),
         )
       ],

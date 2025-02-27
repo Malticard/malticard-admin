@@ -94,6 +94,7 @@ class _SchoolsState extends State<Schools> {
                     onPressed: () {
                       showAdaptiveDialog(
                           context: context,
+                          barrierDismissible: true,
                           builder: (context) {
                             return AddSchoolView();
                           });

@@ -59,6 +59,7 @@ dependencies:
   url_strategy: ^0.3.0
   uuid: ^4.3.3
   screenshot: ^3.0.0
+  http_parser: ^4.1.2
 
 dev_dependencies:
   flutter_test:

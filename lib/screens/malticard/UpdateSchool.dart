@@ -1,6 +1,8 @@
 import 'dart:developer' as d;
 import 'dart:math';
 
+import 'package:http_parser/http_parser.dart';
+
 import '../../exports/exports.dart';
 
 class UpdateSchool extends StatefulWidget {
@@ -232,6 +234,10 @@ class _UpdateSchoolState extends State<UpdateSchool> {
                 schoolData['image'],
                 schoolData['size'],
                 filename: schoolData['name'],
+                contentType: MediaType(
+                  "image",
+                  schoolData['type'],
+                ),
               ),
             );
           } catch (e) {

@@ -1,4 +1,5 @@
-import '../screens/malticard/StudentSchoolsView.dart';
+import '/screens/malticard/advert_manager_view.dart';
+// import '../screens/malticard/StudentSchoolsView.dart';
 import '/screens/malticard/SchoolsView.dart';
 import '/exports/exports.dart';
 
@@ -8,7 +9,7 @@ class WidgetController extends Cubit<Widget> {
   static List<Widget> pages = [
     Dashboard(),
     SchoolsView(),
-    StudentsSchoolsView(),
+    AdvertManagerView(),
   ];
   void pushWidget(int page) {
     SharedPreferences.getInstance().then((value) {

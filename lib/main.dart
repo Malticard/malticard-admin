@@ -1,8 +1,10 @@
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:malticard/controllers/advert_provider.dart';
 import '/controllers/DashbaordWidgetController.dart';
 // import 'package:url_strategy/url_strategy.dart';
 import '/exports/exports.dart';
 
+var navigatorKey = GlobalKey<NavigatorState>();
 void main() async {
   // Obtain shared preferences.
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,6 +21,9 @@ void main() async {
         ChangeNotifierProvider(create: (context) => MainController()),
         ChangeNotifierProvider(
           create: (context) => MenuAppController(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => AdvertProvider(),
         ),
         ChangeNotifierProvider(create: (context) => LoaderController()),
         BlocProvider(create: (context) => ThemeController()),
@@ -38,6 +43,7 @@ void main() async {
             builder: (context, title) {
               return MaterialApp(
                 title: "Malticard | $title",
+                navigatorKey: navigatorKey,
                 debugShowCheckedModeBanner: false,
                 themeMode: theme.brightness == Brightness.light
                     ? ThemeMode.light

@@ -1,4 +1,3 @@
-import '../../controllers/SidebarController.dart';
 import '/exports/exports.dart';
 
 class DashboardScreen extends StatefulWidget {

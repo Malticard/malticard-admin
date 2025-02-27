@@ -2,6 +2,8 @@
 
 import 'dart:math';
 
+import 'package:http_parser/http_parser.dart';
+
 import '/exports/exports.dart';
 
 class AddSchoolView extends StatefulWidget {
@@ -232,6 +234,7 @@ class _AddSchoolViewState extends State<AddSchoolView> {
                 schoolData['image'],
                 schoolData['size'],
                 filename: schoolData['name'],
+                contentType: MediaType("image", schoolData['type']),
               ),
             );
           } catch (e) {
@@ -240,31 +243,31 @@ class _AddSchoolViewState extends State<AddSchoolView> {
           }
         }
       }
-      // Handle image upload for Mobile
-      else {
-        if (uri.isNotEmpty) {
-          try {
-            final file = File(uri);
-            if (!await file.exists()) {
-              throw Exception('Image file not found');
-            }
+      // // Handle image upload for Mobile
+      // else {
+      //   if (uri.isNotEmpty) {
+      //     try {
+      //       final file = File(uri);
+      //       if (!await file.exists()) {
+      //         throw Exception('Image file not found');
+      //       }
 
-            final bytes = await file.readAsBytes();
-            final filename = uri.split("/").last;
+      //       final bytes = await file.readAsBytes();
+      //       final filename = uri.split("/").last;
 
-            request.files.add(
-              MultipartFile.fromBytes(
-                'image',
-                bytes,
-                filename: filename,
-              ),
-            );
-          } catch (e) {
-            print('Error adding mobile image: $e');
-            throw Exception('Failed to process mobile image');
-          }
-        }
-      }
+      //       request.files.add(
+      //         MultipartFile.fromBytes(
+      //           'image',
+      //           bytes,
+      //           filename: filename,
+      //         ),
+      //       );
+      //     } catch (e) {
+      //       print('Error adding mobile image: $e');
+      //       throw Exception('Failed to process mobile image');
+      //     }
+      // }
+      // }
 
       // Send the request
       return await request.send();

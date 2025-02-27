@@ -1,5 +1,6 @@
 class AppUrls {
-  static String devURL = "https://backend.skooltym.com/";
+  static String devURL =
+      "http://127.0.0.1:5050/"; //"https://backend.skooltym.com/";
   static String imageUrl = "assets/images/";
   static String iconUrl = "assets/icons/";
   static String liveImages = "https://backend.skooltym.com/image/images/";
@@ -56,4 +57,10 @@ class AppUrls {
   // getting all students
   static String allStudents = devURL + "admin/students";
   static String allGuardians = devURL + "admin/guardians";
+  // manage ads
+  static String getAds = devURL + "adverts/get";
+  static String createAd = devURL + "adverts/store";
+  static String updateAd = devURL + "adverts/update/";
+  static String deleteAd = devURL + "adverts/delete/";
+  static String toggleAd = devURL + "adverts/toggleStatus/";
 }

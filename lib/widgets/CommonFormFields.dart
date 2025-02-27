@@ -68,7 +68,8 @@ class _CommonFormFieldsState extends State<CommonFormFields>
         BlocProvider.of<ImageUploadController>(context).uploadImage({
           "image": picker.readAsBytes().asStream(),
           "name": renameFile(picker.name.trim()),
-          "size": picker.readAsBytes().asStream().length,
+          "size": await picker.length(),
+          "type": picker.mimeType?.split("/").last,
         });
       }
     } else {
@@ -206,11 +207,12 @@ class _CommonFormFieldsState extends State<CommonFormFields>
                                         firstDate: firstDate,
                                         lastDate: lastDate)
                                     .then((value) {
-                                  // setState(() {
-                                  //   widget.formControllers[index - 1].text =
-                                  //       "${days[value!.weekday - 1]}, ${months[(value.month) - 1]} ${markDates(value.day)}";
-                                  //   ;
-                                  // });
+                                  setState(() {
+                                    widget.formControllers[index - 1].text =
+                                        value.toString();
+                                    // "${days[value!.weekday - 1]}, ${months[(value.month) - 1]} ${(value.day)}";
+                                    ;
+                                  });
                                 });
                               },
                               isObscureText: widget.formFields[index - 1]
@@ -263,7 +265,7 @@ class _CommonFormFieldsState extends State<CommonFormFields>
                 buttonText: widget.buttonText,
                 onTap: () {
                   if (formKey.currentState!.validate() == true) {
-                    List<String> e = widget.errorMsgs
+                    widget.errorMsgs
                         .where((element) => element.isEmpty)
                         .toList();
                     //  this checks if the provided fields are empty hence no errors raised for empty fields

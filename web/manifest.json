@@ -1,6 +1,6 @@
 {
-    "name": "Skooltym",
-    "short_name": "Skooltym",
+    "name": "malticard",
+    "short_name": "malticard",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
