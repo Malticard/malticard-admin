@@ -1,4 +1,4 @@
-import 'dart:developer';
+// import 'dart:developer';
 
 import 'package:malticard/models/advert_model.dart';
 import 'package:malticard/tools/advert_service.dart';
@@ -415,7 +415,7 @@ class AdvertDataSource extends DataTableSource {
     BuildContext context = navigatorKey.currentContext!;
     int row = pageIndex * paginatorController!.rowsPerPage + dataIndex;
     final rowData = data[row];
-    bool adStatus = true;
+
     return DataRow.byIndex(
       index: index,
       cells: [

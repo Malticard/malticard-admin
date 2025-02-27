@@ -203,7 +203,7 @@ class _AddSchoolViewState extends State<AddSchoolView> {
 
   Future<StreamedResponse> _handleSchoolRegistration() async {
     try {
-      String uri = _schoolControllers[4].text.trim();
+      // String uri = _schoolControllers[4].text.trim();
       final request = MultipartRequest('POST', Uri.parse(AppUrls.addSchool));
 
       // Basic school fields
