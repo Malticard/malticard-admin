@@ -1,6 +1,5 @@
 class AppUrls {
-  static String devURL =
-      "http://127.0.0.1:5050/"; //"https://backend.skooltym.com/";
+  static String devURL = "https://backend.skooltym.com/";
   static String imageUrl = "assets/images/";
   static String iconUrl = "assets/icons/";
   static String liveImages = "https://backend.skooltym.com/image/images/";

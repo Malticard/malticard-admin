@@ -113,6 +113,7 @@
   </style>
   <script type="text/javascript">
     window.flutterWebRenderer = "html";
+
   </script>
   <script id="splash-screen-script">
     // GSAP Animations
@@ -140,13 +141,13 @@
       });
 
       // Logo pulse
-      gsap.to('.logo-container', {
+      /* gsap.to('.logo-container', {
         scale: 1.1,
         duration: 1,
         repeat: -1,
         yoyo: true,
         ease: 'power1.inOut'
-      });
+      }); */
 
       // Animate dots
       const dots = document.querySelectorAll('.dots span');
