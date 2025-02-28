@@ -463,20 +463,20 @@ class AdvertDataSource extends DataTableSource {
                   });
                 },
               ),
-              IconButton(
-                onPressed: () {
-                  showAdaptiveDialog(
-                      context: context,
-                      barrierDismissible: true,
-                      builder: (context) {
-                        return UpdateAdvert(advertModel: rowData);
-                      });
-                },
-                icon: Icon(
-                  Icons.edit_outlined,
-                  color: Colors.green,
-                ),
-              ),
+              // IconButton(
+              //   onPressed: () {
+              //     showAdaptiveDialog(
+              //         context: context,
+              //         barrierDismissible: true,
+              //         builder: (context) {
+              //           return UpdateAdvert(advertModel: rowData);
+              //         });
+              //   },
+              //   icon: Icon(
+              //     Icons.edit_outlined,
+              //     color: Colors.green,
+              //   ),
+              // ),
               IconButton(
                 onPressed: () {
                   showAdaptiveDialog(
@@ -501,8 +501,6 @@ class AdvertDataSource extends DataTableSource {
                                     .then((x) {
                                   Routes.popPage(context);
                                   showSuccessDialog("Deleted advert", context);
-                                }).catchError((error) {
-                                  Routes.popPage(context);
                                 });
                               },
                               child: Text(

@@ -18,7 +18,7 @@ class AdvertService {
 
     if (response.statusCode == 200) {
       // var adsData = responseData;
-      // log(adsData.toString());
+      // log(responseData.toString());
       return advertResponseFromJson(response.body);
     } else {
       return Future.error(responseData['message'] ?? 'Failed to load ads');

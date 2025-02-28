@@ -12,25 +12,19 @@ class AdvertProvider with ChangeNotifier {
   String? get error => _error;
 
   // Get active ads for end users
-  Future<void> fetchActiveAds(int page, int limit) async {
+  void fetchActiveAds(int page, int limit) {
     _loading = true;
-    _error = null;
-    notifyListeners();
-    try {
-      _ads = await AdvertService.getAllAds(page, limit);
+    AdvertService.getAllAds(page, limit).then((value) {
       _loading = false;
+      _ads = value;
       notifyListeners();
-    } catch (e) {
-      _loading = false;
-      _error = e.toString();
-      notifyListeners();
-    }
+    });
   }
 
   // Schedule periodic refresh to check for ad expiration
   void startPeriodicRefresh(Duration refreshInterval, int page, int limit) {
-    Future.delayed(refreshInterval, () async {
-      await fetchActiveAds(page, limit);
+    Future.delayed(refreshInterval, () {
+      fetchActiveAds(page, limit);
       startPeriodicRefresh(refreshInterval, page, limit);
     });
   }

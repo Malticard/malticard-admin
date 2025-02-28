@@ -26,7 +26,10 @@ class AdvertResponse {
         currentPage: json["currentPage"],
         pageSize: json["pageSize"],
         data: List<AdvertModel>.from(
-            json["data"].map((x) => AdvertModel.fromJson(x))),
+          json["data"].map(
+            (x) => AdvertModel.fromJson(x),
+          ),
+        ),
       );
 
   Map<String, dynamic> toJson() => {
@@ -66,16 +69,20 @@ class AdvertModel {
   });
 
   factory AdvertModel.fromJson(Map<String, dynamic> json) => AdvertModel(
-        id: json["_id"],
-        title: json["title"],
-        description: json["description"],
-        imageUrl: json["imageUrl"],
+        id: json["_id"] ?? "",
+        title: json["title"] ?? "",
+        description: json["description"] ?? "",
+        imageUrl: json["imageUrl"] ?? "",
         targetUrl: json["targetUrl"],
-        startDate: DateTime.parse(json["startDate"]),
-        endDate: DateTime.parse(json["endDate"]),
-        isActive: json["isActive"],
-        createdAt: DateTime.parse(json["createdAt"]),
-        updatedAt: DateTime.parse(json["updatedAt"]),
+        startDate: DateTime.parse(
+            json["startDate"] ?? DateTime.now().toIso8601String()),
+        endDate:
+            DateTime.parse(json["endDate"] ?? DateTime.now().toIso8601String()),
+        isActive: json["isActive"] ?? false,
+        createdAt: DateTime.parse(
+            json["createdAt"] ?? DateTime.now().toIso8601String()),
+        updatedAt: DateTime.parse(
+            json["updatedAt"] ?? DateTime.now().toIso8601String()),
         v: json["__v"],
       );
 

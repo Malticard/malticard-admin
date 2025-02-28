@@ -1,7 +1,7 @@
 // import 'dart:developer';
 
-import 'package:malticard/controllers/advert_provider.dart';
-// import 'package:malticard/models/advert_model.dart';
+import '/controllers/advert_provider.dart';
+// import '/models/advert_model.dart';
 import 'package:malticard/screens/malticard/add_advert.dart';
 // import 'package:malticard/tools/advert_service.dart';
 
@@ -19,7 +19,7 @@ class _AdvertManagerViewState extends State<AdvertManagerView> {
   // final _queryController = TextEditingController();
   final _paginatorController = PaginatorController();
   int _currentPage = 1;
-  int _rowsPerpage = 20;
+  int _rowsPerpage = 10;
   @override
   void initState() {
     super.initState();
@@ -46,17 +46,28 @@ class _AdvertManagerViewState extends State<AdvertManagerView> {
   @override
   Widget build(BuildContext context) {
     return Consumer<AdvertProvider>(builder: (context, advert, child) {
-      if (mounted) {
-        advert.fetchActiveAds(_currentPage, _rowsPerpage);
-      }
+      // if (mounted) {
+      advert.fetchActiveAds(_currentPage, _rowsPerpage);
+      // log("loading ${advert.loading}");
+      // }
       return CustomDataTable(
         columns: [
           // DataColumn(label: Text('#')),
-          DataColumn(label: Text('Image')),
-          DataColumn(label: Text('Title')),
-          DataColumn(label: Text('TargetURl')),
-          DataColumn(label: Text('Advert Status')),
-          DataColumn(label: Text('Actions')),
+          DataColumn(
+            label: Text('Image'),
+          ),
+          DataColumn(
+            label: Text('Title'),
+          ),
+          DataColumn(
+            label: Text('TargetURl'),
+          ),
+          DataColumn(
+            label: Text('Advert Status'),
+          ),
+          DataColumn(
+            label: Text('Actions'),
+          ),
         ],
         source: AdvertDataSource(
           paginatorController: _paginatorController,
@@ -112,9 +123,9 @@ class _AdvertManagerViewState extends State<AdvertManagerView> {
         },
         paginatorController: _paginatorController,
         title: "Adverts",
-        empty: advert.loading && advert.ads == null
+        empty: advert.ads == null
             ? Loader(
-                text: "Adverts...",
+                text: "Adverts",
               )
             : NoDataWidget(
                 text: "No adverts found",
