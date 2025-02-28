@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
+import 'package:malticard/exports/exports.dart';
 import '/constants/app_urls.dart';
 import '/models/advert_model.dart';
 
@@ -25,7 +26,7 @@ class AdvertService {
   }
 
   // Create a new ad (admin only)
-  static Future<AdvertModel> createAd({
+  static Future<String> createAd({
     required String title,
     required String description,
     required Stream<List<int>> imageStream,
@@ -36,35 +37,40 @@ class AdvertService {
     required DateTime startDate,
     required DateTime endDate,
   }) async {
-    final request = await http.MultipartRequest(
-      "POST",
-      Uri.parse(AppUrls.createAd),
-    );
+    try {
+      final request = await http.MultipartRequest(
+        "POST",
+        Uri.parse(AppUrls.createAd),
+      );
 
-    request.fields['title'] = title;
-    request.fields['description'] = description;
-    request.fields['targetUrl'] = targetUrl;
-    request.fields['startDate'] = startDate.toIso8601String();
-    request.fields['endDate'] = endDate.toIso8601String();
-    request.fields['name'] = "Adverts";
-    // handle image
-    request.files.add(
-      http.MultipartFile(
-        "image",
-        imageStream,
-        size,
-        filename: filename,
-        contentType: MediaType("image", type),
-      ),
-    );
-    var response = await request.send();
-    final Map<String, dynamic> responseData =
-        json.decode(await response.stream.bytesToString());
+      request.fields['title'] = title;
+      request.fields['description'] = description;
+      request.fields['targetUrl'] = targetUrl;
+      request.fields['startDate'] = startDate.toIso8601String();
+      request.fields['endDate'] = endDate.toIso8601String();
+      request.fields['name'] = "Adverts";
+      // handle image
+      request.files.add(
+        http.MultipartFile(
+          "image",
+          imageStream,
+          size,
+          filename: filename,
+          contentType: MediaType("image", type),
+        ),
+      );
+      var response = await request.send();
+      final Map<String, dynamic> responseData =
+          json.decode(await response.stream.bytesToString());
 
-    if (response.statusCode == HttpStatus.ok) {
-      return AdvertModel.fromJson(responseData['data']);
-    } else {
-      throw Exception(responseData['message'] ?? 'Failed to create ad');
+      if (response.statusCode == HttpStatus.ok) {
+        return Future.value("Added new advert");
+      } else {
+        throw Exception(responseData['message'] ?? 'Failed to create ad');
+      }
+    } on Exception catch (e, stack) {
+      stack.toString();
+      return throw Exception(e.toString());
     }
   }
 
@@ -73,25 +79,42 @@ class AdvertService {
     String id,
     Map<String, dynamic> updates,
   ) async {
-    final request = await http.MultipartRequest(
-      "PUT",
-      Uri.parse(AppUrls.updateAd + id),
-    );
-    // handle updating data
-    request.headers['Content-Type'] = "application/json";
-    request.headers['Accept'] = "application/json";
-    request.fields['title'] = updates['title'];
-    request.fields['description'] = updates['description'];
-    request.fields['startDate'] = updates['startDate'].toIso8601String();
-    request.fields['endDate'] = updates['endDate'].toIso8601String();
-    request.fields['isActive'] = updates['isActive'];
-    request.fields['name'] = "Adverts";
-    var response = await request.send();
-    var responseMessage = json.decode(await response.stream.bytesToString());
-    if (response.statusCode == HttpStatus.ok) {
-      return Future.value(responseMessage["message"]);
-    } else {
-      return Future.error(responseMessage["message"]);
+    try {
+      final request = await http.MultipartRequest(
+        "PUT",
+        Uri.parse(AppUrls.updateAd + id),
+      );
+      // handle updating data
+      request.fields['title'] = updates['title'];
+      request.fields['targetUrl'] = updates['targetUrl'];
+      request.fields['startDate'] = updates['startDate'];
+      request.fields['endDate'] = updates['endDate'];
+      request.fields['name'] = "Adverts";
+      // handle image
+      if (updates["image"] != null) {
+        request.files.add(
+          MultipartFile(
+            "image",
+            updates["image"],
+            updates["size"],
+            filename: updates["name"],
+            contentType: MediaType(
+              "image",
+              updates["type"],
+            ),
+          ),
+        );
+      }
+      var response = await request.send();
+      var responseMessage = json.decode(await response.stream.bytesToString());
+      if (response.statusCode == HttpStatus.ok) {
+        return Future.value("Updated advert successfully");
+      } else {
+        return Future.error(
+            responseMessage["message"] ?? "Error updating advert");
+      }
+    } catch (e) {
+      throw Exception(e);
     }
   }
 
@@ -128,7 +151,7 @@ class AdvertService {
     log("Urls: " + AppUrls.toggleAd + id);
     final Map<String, dynamic> responseData = json.decode(response.body);
     if (response.statusCode == 200) {
-      return Future.value(responseData['message']);
+      return Future.value("Toggled scuccessfully");
     } else {
       return Future.error(
           responseData['message'] ?? 'Failed to toggle ad status');

@@ -1,6 +1,7 @@
 // import 'dart:developer';
 
 import 'package:malticard/models/advert_model.dart';
+import 'package:malticard/screens/malticard/update_advert.dart';
 import 'package:malticard/tools/advert_service.dart';
 
 import '../../../main.dart';
@@ -453,49 +454,29 @@ class AdvertDataSource extends DataTableSource {
             children: [
               // handle toggling advert status
               Switch.adaptive(
-                  value: rowData.isActive,
-                  onChanged: (status) {
-                    showAdaptiveDialog(
-                        context: context,
-                        builder: (context) {
-                          return AlertDialog.adaptive(
-                            title: Text("Toggle Advert Status"),
-                            content: Text(
-                                "You're about change the status of the advert..."),
-                            actions: [
-                              TextButton(
-                                onPressed: () => Routes.popPage(context),
-                                child: Text(
-                                  "Cancel",
-                                ),
-                              ),
-                              TextButton(
-                                onPressed: () {
-                                  // log("Toggle " + value);
-                                  Routes.popPage(context);
-                                  showProgress(context,
-                                      msg: "Toggling advert..");
-                                  AdvertService.toggleAdStatus(rowData.id)
-                                      .then((x) {
-                                    Routes.popPage(context);
-                                    showSuccessDialog(
-                                        "Toggled advert", context);
-                                  }).catchError((error) {
-                                    print(error);
-                                    Routes.popPage(context);
-                                  });
-                                },
-                                child: Text(
-                                  "Toggle Ad",
-                                  style: TextStyle(
-                                    color: Colors.green,
-                                  ),
-                                ),
-                              )
-                            ],
-                          );
-                        });
-                  }),
+                value: rowData.isActive,
+                onChanged: (status) {
+                  showProgress(context, msg: "Toggling advert..");
+                  AdvertService.toggleAdStatus(rowData.id).then((x) {
+                    Routes.popPage(context);
+                    showSuccessDialog("Toggled advert", context);
+                  });
+                },
+              ),
+              IconButton(
+                onPressed: () {
+                  showAdaptiveDialog(
+                      context: context,
+                      barrierDismissible: true,
+                      builder: (context) {
+                        return UpdateAdvert(advertModel: rowData);
+                      });
+                },
+                icon: Icon(
+                  Icons.edit_outlined,
+                  color: Colors.green,
+                ),
+              ),
               IconButton(
                 onPressed: () {
                   showAdaptiveDialog(

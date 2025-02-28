@@ -247,30 +247,30 @@ class _UpdateSchoolState extends State<UpdateSchool> {
         }
       }
       // Handle image upload for Mobile
-      else {
-        if (uri.isNotEmpty) {
-          try {
-            final file = File(uri);
-            if (!await file.exists()) {
-              throw Exception('Image file not found');
-            }
+      // else {
+      //   if (uri.isNotEmpty) {
+      //     try {
+      //       final file = File(uri);
+      //       if (!await file.exists()) {
+      //         throw Exception('Image file not found');
+      //       }
 
-            final bytes = await file.readAsBytes();
-            final filename = uri.split("/").last;
+      //       final bytes = await file.readAsBytes();
+      //       final filename = uri.split("/").last;
 
-            request.files.add(
-              MultipartFile.fromBytes(
-                'image',
-                bytes,
-                filename: filename,
-              ),
-            );
-          } catch (e) {
-            print('Error adding mobile image: $e');
-            throw Exception('Failed to process mobile image');
-          }
-        }
-      }
+      //       request.files.add(
+      //         MultipartFile.fromBytes(
+      //           'image',
+      //           bytes,
+      //           filename: filename,
+      //         ),
+      //       );
+      //     } catch (e) {
+      //       print('Error adding mobile image: $e');
+      //       throw Exception('Failed to process mobile image');
+      //     }
+      //   }
+      // }
 
       // Send the request
       return await request.send();
